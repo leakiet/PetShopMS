@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaproject.LoginFormController">
+   <children>
+      <AnchorPane prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <AnchorPane fx:id="formLogin" layoutX="400.0" prefHeight="600.0" prefWidth="400.0" visible="false">
+               <children>
+                  <Label layoutX="152.0" layoutY="110.0" text="LOG IN" textFill="#38723f">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="lgUsername" layoutX="75.0" layoutY="203.0" prefHeight="40.0" prefWidth="250.0" promptText="Username">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button layoutX="75.0" layoutY="353.0" mnemonicParsing="false" onAction="#ocLogin" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: GREEN;" text="Login" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Hyperlink fx:id="linkForgetPassword" layoutX="75.0" layoutY="304.0" onAction="#switchForgetPassword" prefHeight="40.0" prefWidth="138.0" text="Forgot password?">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+                  <PasswordField fx:id="lgPassword" layoutX="75.0" layoutY="260.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="formCreateAccount" layoutX="400.0" prefHeight="600.0" prefWidth="400.0" visible="false">
+               <children>
+                  <Label layoutX="137.0" layoutY="79.0" text="REGISTER" textFill="#38723f">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="suAnswer" layoutX="76.0" layoutY="418.0" prefHeight="40.0" prefWidth="250.0" promptText="Security Answer">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button layoutX="75.0" layoutY="473.0" mnemonicParsing="false" onAction="#ocSignUp" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: GREEN;" text="Sign Up" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <TextField fx:id="suPassword" layoutX="75.0" layoutY="263.0" prefHeight="40.0" prefWidth="250.0" promptText="Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="suPwConfirm" layoutX="75.0" layoutY="314.0" prefHeight="40.0" prefWidth="250.0" promptText="Confirm Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="suName" layoutX="75.0" layoutY="156.0" prefHeight="40.0" prefWidth="250.0" promptText="Full name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="suUsername" layoutX="75.0" layoutY="209.0" prefHeight="40.0" prefWidth="250.0" promptText="Username">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="suQuestion" layoutX="76.0" layoutY="367.0" prefHeight="36.0" prefWidth="250.0" promptText="Security Question" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="formResetPassword" layoutX="400.0" prefHeight="600.0" prefWidth="400.0">
+               <children>
+                  <Label layoutX="77.0" layoutY="111.0" text="RESET PASSWORD" textFill="#38723f">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="rpUsername" layoutX="75.0" layoutY="176.0" prefHeight="40.0" prefWidth="250.0" promptText="Username">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="rpAnswer" layoutX="75.0" layoutY="285.0" prefHeight="40.0" prefWidth="250.0" promptText="Security Answer">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button layoutX="75.0" layoutY="458.0" mnemonicParsing="false" onAction="#ocResetPassword" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: GREEN;" text="Proceed" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <TextField fx:id="rpPassword" layoutX="75.0" layoutY="342.0" prefHeight="40.0" prefWidth="250.0" promptText="New Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="rpConfirmPw" layoutX="75.0" layoutY="398.0" prefHeight="40.0" prefWidth="250.0" promptText="Confirm New Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <ComboBox fx:id="rpQuestion" layoutX="75.0" layoutY="233.0" prefHeight="36.0" prefWidth="250.0" promptText="Security Question" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="leftSide" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: GREEN;">
+               <children>
+                  <Label layoutX="148.0" layoutY="248.0" text="PET SHOP" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="80.0" layoutY="283.0" text="MANAGMENT SYSTEM" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="iconLogin" fitHeight="150.0" fitWidth="166.0" layoutX="125.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../accessories/laughing.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="btnCreateAccount" layoutX="76.0" layoutY="506.0" mnemonicParsing="false" onAction="#switchCreateAccount" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: GREEN;" text="Create Account" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="btnHadAccount" layoutX="19.0" layoutY="506.0" mnemonicParsing="false" onAction="#switchLogin" prefHeight="40.0" prefWidth="366.0" style="-fx-background-color: GREEN;" text="Already had an account? Login here" textFill="WHITE" visible="false">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <ImageView fx:id="iconForgetPassword" fitHeight="150.0" fitWidth="200.0" layoutX="125.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../accessories/happy.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="iconCreateAccount" fitHeight="150.0" fitWidth="200.0" layoutX="127.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../accessories/laughing%202.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
