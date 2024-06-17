@@ -27,8 +27,14 @@ public class EmployeeInfoDAO {
         empList = new ArrayList<>();
     }
 
-    public boolean loginUser(String username, String password) {
-        String sql = "SELECT * FROM tbEmployeeInfo WHERE empUser =?  and empPassword = ? ";
+    public boolean loginUser(String username, String password, String accountType) {
+        String sql;
+        if(accountType == "Staff"){
+             sql = "SELECT * FROM tbEmployeeInfo WHERE empUser =?  and empPassword = ? ";
+        } else {
+             sql = "SELECT * FROM tbAdmin WHERE adUser =?  and adPassword = ? ";
+        }
+        
         try {
             cn = connect.GetConnectDB();
             pStatement = cn.prepareStatement(sql);
@@ -36,7 +42,7 @@ public class EmployeeInfoDAO {
             pStatement.setString(2, password);
             rs = pStatement.executeQuery();
             if (rs.next()) {
-                if (rs.getBoolean("empIsActive") == true) {
+                if (rs.getBoolean(11) == true) {
                     alert = new Alert(AlertType.INFORMATION);
                     alert.setTitle("Message");
                     alert.setHeaderText(null);

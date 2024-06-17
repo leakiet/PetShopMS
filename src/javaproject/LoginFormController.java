@@ -1,23 +1,31 @@
 package javaproject;
 
 import Database.EmployeeInfoDAO;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class LoginFormController implements Initializable {
 
@@ -92,9 +100,18 @@ public class LoginFormController implements Initializable {
     @FXML
     private TextField rpConfirmPw;
 
+    @FXML
+    private TextField lgPwShown;
+
+    @FXML
+    private ComboBox<String> lgAccountType;
+
+    @FXML
+    private CheckBox lgShowPw;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        accountList();
     }
 
     private final String[] questions = {"Your Favourite Food?",
@@ -102,6 +119,30 @@ public class LoginFormController implements Initializable {
         "Your High School Name?",
         "Write Something?"
     };
+
+    private final String[] accounts = {"Admin", "Staff"};
+
+    @FXML
+    public void ocShowPw(ActionEvent event) {
+        if (lgShowPw.isSelected()) {
+            lgPwShown.setText(lgPassword.getText());
+            lgPassword.setVisible(false);
+            lgPwShown.setVisible(true);
+        } else {
+            lgPassword.setText(lgPwShown.getText());
+            lgPassword.setVisible(true);
+            lgPwShown.setVisible(false);
+        }
+    }
+
+    public void accountList() {
+        ArrayList<String> aList = new ArrayList<>();
+
+        aList.addAll(Arrays.asList(accounts));
+
+        ObservableList listData = FXCollections.observableArrayList(aList);
+        lgAccountType.setItems(listData);
+    }
 
     public void questionList() {
         ArrayList<String> qList = new ArrayList<>();
@@ -154,7 +195,7 @@ public class LoginFormController implements Initializable {
     EmployeeInfoDAO empDAO = new EmployeeInfoDAO();
 
     @FXML
-    void ocLogin(ActionEvent event) {
+    void ocLogin(ActionEvent event) throws IOException {
         if (lgUsername.getText().isEmpty() || lgPassword.getText().isEmpty()) {
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
@@ -162,11 +203,65 @@ public class LoginFormController implements Initializable {
             alert.setContentText("Please fill all the fields");
             alert.showAndWait();
         } else {
-            String username = lgUsername.getText();
-            String password = lgPassword.getText();
-            empDAO.loginUser(username, password);
+            if (lgAccountType.getValue() == null) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please select Account Type");
+                alert.showAndWait();
+            } else {
+
+                if (!lgPwShown.isVisible()) {
+                    if (!lgPwShown.getText().equals(lgPassword.getText())) {
+                        lgPwShown.setText(lgPassword.getText());
+                    }
+                } else {
+                    if (!lgPwShown.getText().equals(lgPassword.getText())) {
+                        lgPassword.setText(lgPwShown.getText());
+                    }
+                }
+
+                String username = lgUsername.getText();
+                String password = lgPassword.getText();
+                String accountType = lgAccountType.getValue();
+                boolean loggedIn = empDAO.loginUser(username, password, accountType);
+
+                if (loggedIn) {
+                    if (accountType == "Admin") {
+                        switchToAdminForm();
+                    } else {
+                        switchToMainForm();
+                    }
+                }
+            }
         }
     }
+
+    public void switchToMainForm() throws IOException {
+            URL url = new File("src/javaproject/MainForm.fxml").toURI().toURL();
+            var root = FXMLLoader.load(url);
+            Scene scene = new Scene((Parent) root);
+            Stage stage = new Stage();
+            stage.setTitle("Pet Shop Management System - Staff Portal");
+            stage.setScene(scene);
+            stage.show();
+
+            Stage loginStage = (Stage) formLogin.getScene().getWindow();
+            loginStage.close();
+        }
+    
+    public void switchToAdminForm() throws IOException {
+            URL url = new File("src/javaproject/AdminForm.fxml").toURI().toURL();
+            var root = FXMLLoader.load(url);
+            Scene scene = new Scene((Parent) root);
+            Stage stage = new Stage();
+            stage.setTitle("Pet Shop Management System - Admin Portal");
+            stage.setScene(scene);
+            stage.show();
+
+            Stage loginStage = (Stage) formLogin.getScene().getWindow();
+            loginStage.close();
+        }
 
     @FXML
     void ocSignUp(ActionEvent event) {
@@ -263,6 +358,5 @@ public class LoginFormController implements Initializable {
             }
         }
     }
-    
 
 }
