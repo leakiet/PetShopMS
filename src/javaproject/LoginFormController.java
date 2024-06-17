@@ -239,8 +239,8 @@ public class LoginFormController implements Initializable {
 
     public void switchToMainForm() throws IOException {
             URL url = new File("src/javaproject/MainForm.fxml").toURI().toURL();
-            var root = FXMLLoader.load(url);
-            Scene scene = new Scene((Parent) root);
+            Parent root = FXMLLoader.load(url);
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Pet Shop Management System - Staff Portal");
             stage.setScene(scene);
@@ -252,8 +252,8 @@ public class LoginFormController implements Initializable {
     
     public void switchToAdminForm() throws IOException {
             URL url = new File("src/javaproject/AdminForm.fxml").toURI().toURL();
-            var root = FXMLLoader.load(url);
-            Scene scene = new Scene((Parent) root);
+            Parent root = FXMLLoader.load(url);
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Pet Shop Management System - Admin Portal");
             stage.setScene(scene);

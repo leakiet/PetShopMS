@@ -41,8 +41,6 @@ public class MainFormController implements Initializable {
     @FXML
     private TableView<?> tvGroomingSchedule;
     @FXML
-    private AnchorPane formMenuGrooming;
-    @FXML
     private AnchorPane formAddGrooming;
     @FXML
     private ImageView menuPicture;
@@ -51,19 +49,9 @@ public class MainFormController implements Initializable {
     @FXML
     private AnchorPane formInventory;
     @FXML
-    private TableView<?> tvProductInventory;
-    @FXML
     private AnchorPane formCustomers;
     @FXML
-    private TableView<?> tvCustomers;
-    @FXML
     private AnchorPane formInvoices;
-    @FXML
-    private TableView<?> tvInvoices;
-    @FXML
-    private ScrollPane scrollPaneProducts;
-    @FXML
-    private GridPane gridProducts;
     
     private Image image;
     
