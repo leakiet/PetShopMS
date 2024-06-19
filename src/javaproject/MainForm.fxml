@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="880.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaproject.MainFormController">
+<AnchorPane fx:id="mainForm" prefHeight="880.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaproject.MainFormController">
    <children>
       <AnchorPane fx:id="formMenu" layoutX="-2.0" prefHeight="880.0" prefWidth="246.0" style="-fx-background-color: silver;">
          <children>
-            <ImageView fx:id="menuPicture" fitHeight="150.0" fitWidth="200.0" layoutX="30.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="menuPicture" fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../accessories/laughing.png" />
                </image>
             </ImageView>
-            <Label layoutX="41.0" layoutY="200.0" text="Welcome back ">
+            <Label layoutX="59.0" layoutY="198.0" text="Welcome back ">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="menuFullName" layoutX="65.0" layoutY="230.0" prefHeight="35.0" prefWidth="87.0" text="Full name">
+            <Label fx:id="menuFullName" layoutX="83.0" layoutY="228.0" prefHeight="35.0" prefWidth="87.0" text="Full name">
                <font>
                   <Font size="18.0" />
                </font>
@@ -79,10 +83,10 @@
                   </Label>
                </children>
             </VBox>
-            <Button layoutX="65.0" layoutY="265.0" mnemonicParsing="false" onAction="#btnLogOut" prefHeight="14.0" prefWidth="80.0" text="Log out" />
+            <Button layoutX="83.0" layoutY="263.0" mnemonicParsing="false" onAction="#btnLogOut" prefHeight="14.0" prefWidth="80.0" text="Log out" />
             <VBox accessibleRole="BUTTON" layoutY="795.0" prefHeight="59.0" prefWidth="221.0">
                <children>
-                  <Label alignment="TOP_LEFT" onContextMenuRequested="#switchMenuMyAccounts" prefHeight="70.0" prefWidth="250.0" text="My Account" textAlignment="CENTER">
+                  <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuMyAccounts" prefHeight="70.0" prefWidth="250.0" text="My Account" textAlignment="CENTER">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -94,7 +98,7 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="formProducts" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0">
+      <AnchorPane fx:id="formProducts" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0" visible="false">
          <children>
             <AnchorPane fx:id="formBill" layoutX="1000.0" prefHeight="880.0" prefWidth="380.0" style="-fx-background-color: yellow;">
                <children>
@@ -245,12 +249,23 @@
             </AnchorPane>
             <AnchorPane fx:id="formProductsList" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" style="-fx-background-color: gray;">
                <children>
-                  <Label layoutX="460.0" layoutY="26.0" text="PRODUCTS">
+                  <Label layoutX="420.0" layoutY="14.0" text="PRODUCTS">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <AnchorPane layoutX="36.0" layoutY="71.0" prefHeight="666.0" prefWidth="953.0" />
+                  <ScrollPane layoutX="62.0" layoutY="59.0" prefHeight="699.0" prefWidth="865.0">
+                     <content>
+                        <GridPane fx:id="gridPane" prefHeight="0.0" prefWidth="0.0">
+                           <rotationAxis>
+                              <Point3D />
+                           </rotationAxis>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </ScrollPane>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="formGrooming" layoutY="-2.0" prefHeight="880.0" prefWidth="1000.0" visible="false">
@@ -470,6 +485,72 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="formMyAccount" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0">
+         <children>
+            <AnchorPane prefHeight="100.0" prefWidth="1380.0">
+               <children>
+                  <Label layoutX="31.0" layoutY="28.0" text="PET SHOP MANAGEMENT SYSTEM">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="1246.0" layoutY="58.0" prefHeight="30.0" prefWidth="111.0" text="My Account">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutY="100.0" prefHeight="780.0" prefWidth="1380.0">
+               <children>
+                  <ImageView fitHeight="222.0" fitWidth="270.0" layoutX="131.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../JavaProject/src/accessories/happy.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="168.0" layoutY="284.0" text="Click to change your Picture" />
+                  <VBox layoutX="131.0" layoutY="367.0" prefHeight="265.0" prefWidth="222.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="110.0" prefWidth="104.0" text="Account:" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="226.0" text="Account" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="110.0" prefWidth="104.0" text="Full Name:" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="124.0" prefWidth="209.0" text="Full Name" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="110.0" prefWidth="104.0" text="Phone" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="124.0" prefWidth="209.0" text="Phone" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="110.0" prefWidth="104.0" text="Email: " />
+                              <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="124.0" prefWidth="209.0" text="Email" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <AnchorPane layoutX="458.0" layoutY="14.0" prefHeight="705.0" prefWidth="903.0">
+                     <children>
+                        <Label layoutX="350.0" layoutY="7.0" text="Update Your Profie">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <Button layoutX="177.0" layoutY="313.0" mnemonicParsing="false" text="CHANGE PASSWORD" />
                </children>
             </AnchorPane>
          </children>

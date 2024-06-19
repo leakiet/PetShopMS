@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -136,8 +137,7 @@ public class LoginFormController implements Initializable {
     }
 
     public void accountList() {
-        ArrayList<String> aList = new ArrayList<>();
-
+        List<String> aList = new ArrayList<>();
         aList.addAll(Arrays.asList(accounts));
 
         ObservableList listData = FXCollections.observableArrayList(aList);
@@ -145,8 +145,7 @@ public class LoginFormController implements Initializable {
     }
 
     public void questionList() {
-        ArrayList<String> qList = new ArrayList<>();
-
+        List<String> qList = new ArrayList<>();
         qList.addAll(Arrays.asList(questions));
 
         ObservableList listData = FXCollections.observableArrayList(qList);
@@ -238,30 +237,30 @@ public class LoginFormController implements Initializable {
     }
 
     public void switchToMainForm() throws IOException {
-            URL url = new File("src/javaproject/MainForm.fxml").toURI().toURL();
-            Parent root = FXMLLoader.load(url);
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setTitle("Pet Shop Management System - Staff Portal");
-            stage.setScene(scene);
-            stage.show();
+        URL url = new File("src/javaproject/MainForm.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setTitle("Pet Shop Management System - Staff Portal");
+        stage.setScene(scene);
+        stage.show();
 
-            Stage loginStage = (Stage) formLogin.getScene().getWindow();
-            loginStage.close();
-        }
-    
+        Stage loginStage = (Stage) formLogin.getScene().getWindow();
+        loginStage.close();
+    }
+
     public void switchToAdminForm() throws IOException {
-            URL url = new File("src/javaproject/AdminForm.fxml").toURI().toURL();
-            Parent root = FXMLLoader.load(url);
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setTitle("Pet Shop Management System - Admin Portal");
-            stage.setScene(scene);
-            stage.show();
+        URL url = new File("src/javaproject/AdminForm.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setTitle("Pet Shop Management System - Admin Portal");
+        stage.setScene(scene);
+        stage.show();
 
-            Stage loginStage = (Stage) formLogin.getScene().getWindow();
-            loginStage.close();
-        }
+        Stage loginStage = (Stage) formLogin.getScene().getWindow();
+        loginStage.close();
+    }
 
     @FXML
     void ocSignUp(ActionEvent event) {
@@ -279,6 +278,35 @@ public class LoginFormController implements Initializable {
             String answer = suAnswer.getText();
             String question = suQuestion.getValue();
             boolean error = false;
+
+            if (name.matches(".*\\d+.*")) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Name cannot contain numbers");
+                alert.showAndWait();
+                error = true;
+            }
+
+            // Validate Username (no special characters, min 6 characters)
+            if (!username.matches("^[a-zA-Z0-9_]+$") || username.length() < 6) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Username can only contain letters, numbers, and underscores, and must be at least 6 characters long");
+                alert.showAndWait();
+                error = true;
+            }
+
+            // Validate Password (min 6 characters)
+            if (password.length() < 6) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Password must be at least 6 characters long");
+                alert.showAndWait();
+                error = true;
+            }
 
             if (!password.equals(confirmPassword)) {
                 alert = new Alert(AlertType.ERROR);

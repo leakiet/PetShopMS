@@ -12,7 +12,7 @@ public class Main extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        URL url = new File("src/javaproject/LoginForm.fxml").toURI().toURL();
+        URL url = new File("src/javaproject/MainForm.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
         Scene scene = new Scene(root);
         stage.setTitle("Pet Shop Management System");

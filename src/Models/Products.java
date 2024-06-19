@@ -6,6 +6,10 @@ public class Products {
     private String proImg;
     private float proPrice;
 
+    public Products() {
+    }
+
+    
     public Products(int proId, String proName, String proImg, float proPrice) {
         this.proId = proId;
         this.proName = proName;

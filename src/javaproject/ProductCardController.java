@@ -15,34 +15,30 @@ import javafx.scene.layout.AnchorPane;
 public class ProductCardController implements Initializable {
 
     @FXML
-    private AnchorPane productCardForm;
-    @FXML
     private ImageView proImg;
     @FXML
     private Label proName;
     @FXML
     private Label proPrice;
     @FXML
-    private Spinner<?> proSpinner;
-    @FXML
-    private Button btnAddtoInvoice;
-    
-    private Products products;
-    private Image image;
-    
-    public void setData(Products products){
-        this.products =products;
-        
+    private Label proId;
+
+    public void setData(Products products) {
+        try {
+            String imagePath = products.getProImg();
+            Image image = new Image(getClass().getResource(imagePath).toExternalForm());
+            proImg.setImage(image);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error loading image: " + e.getMessage());
+        }
         proName.setText(products.getProName());
         proPrice.setText(String.valueOf(products.getProPrice()));
-        image = new Image(products.getProImg(), 300, 300, false, true);
-        proImg.setImage(image);
-        
+        proId.setText(String.valueOf(products.getProId()));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }

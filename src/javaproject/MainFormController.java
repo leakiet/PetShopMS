@@ -1,12 +1,26 @@
 package javaproject;
 
 import Models.Products;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
@@ -16,7 +30,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class MainFormController implements Initializable {
 
@@ -52,20 +69,94 @@ public class MainFormController implements Initializable {
     private AnchorPane formCustomers;
     @FXML
     private AnchorPane formInvoices;
-    
-    private Image image;
-    
-    private ObservableList<Products> productCardList;
-    
-    
+    @FXML
+    private GridPane gridPane;
+    @FXML
+    private AnchorPane formMyAccount;
+    @FXML
+    private AnchorPane mainForm;
+
+    ObservableList<Products> productList;
+
+    public ObservableList<Products> data() {
+        ObservableList<Products> list = FXCollections.observableArrayList();
+        Products pro = new Products();
+        pro.setProId(2);
+        pro.setProName("Meow Cloth 2");
+        pro.setProImg("/accessories/CatClothe3.png");
+        pro.setProPrice(200);
+
+        list.add(pro);
+        return list;
+    }
+
+    public void DisplayProduct() {
+        productList = FXCollections.observableArrayList(data());
+
+        if (productList == null) {
+            System.out.println("Product List is Null");
+        }
+
+        int column = 0;
+        int row = 1;
+
+        try {
+            for (int i = 0; i < productList.size(); i++) {
+//                FXMLLoader loader = new FXMLLoader();
+//                URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
+//                loader.setLocation(url);
+
+//                FXMLLoader loader = new FXMLLoader();
+//                URL url = getClass().getResource("ProductCard.fxml").toURI().toURL();
+//                loader.setLocation(url);
+
+//                FXMLLoader loader = new FXMLLoader();
+//                InputStream fxmlStream = getClass().getResourceAsStream("ProductCard.fxml");
+//                loader.load(fxmlStream);
+                    
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getClassLoader().getResource("ProductCard.fxml"));
+
+                if (loader.getLocation() == null) {
+                    System.out.println("FXML file not found");
+                }
+
+                AnchorPane pane = loader.load();
+                ProductCardController controller = loader.getController();
+                controller.setData(productList.get(i));
+
+                if (column == 3) {
+                    column = 0;
+                    ++row;
+                }
+
+                gridPane.add(pane, column++, row);
+                GridPane.setMargin(pane, new Insets(10));
+
+            }
+        } catch (Exception e) {
+            System.out.println("Error Display Product: " + e.getMessage());
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        DisplayProduct();
+    }
+
+    public void openProduct() throws MalformedURLException, IOException {
+        URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setTitle("card Product form");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
 
     @FXML
-    private void switchMenuProducts(MouseEvent event) {
+    private void switchMenuProducts(MouseEvent event) throws IOException {
         formProducts.setVisible(true);
         formSearchProducts.setVisible(true);
         formProductsList.setVisible(true);
@@ -74,6 +165,8 @@ public class MainFormController implements Initializable {
         formInventory.setVisible(false);
         formCustomers.setVisible(false);
         formInvoices.setVisible(false);
+        formMyAccount.setVisible(false);
+//        openProduct();
     }
 
     @FXML
@@ -86,7 +179,7 @@ public class MainFormController implements Initializable {
         formInventory.setVisible(false);
         formCustomers.setVisible(false);
         formInvoices.setVisible(false);
-  
+        formMyAccount.setVisible(false);
     }
 
     @FXML
@@ -95,6 +188,7 @@ public class MainFormController implements Initializable {
         formInventory.setVisible(true);
         formCustomers.setVisible(false);
         formInvoices.setVisible(false);
+        formMyAccount.setVisible(false);
     }
 
     @FXML
@@ -103,6 +197,7 @@ public class MainFormController implements Initializable {
         formInventory.setVisible(false);
         formCustomers.setVisible(true);
         formInvoices.setVisible(false);
+        formMyAccount.setVisible(false);
     }
 
     @FXML
@@ -111,20 +206,31 @@ public class MainFormController implements Initializable {
         formInventory.setVisible(false);
         formCustomers.setVisible(false);
         formInvoices.setVisible(true);
+        formMyAccount.setVisible(false);
     }
 
     @FXML
-    private void btnLogOut(ActionEvent event) {
+    private void btnLogOut(ActionEvent event) throws MalformedURLException, IOException {
+        URL url = new File("src/javaproject/LoginForm.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setTitle("Pet Shop Management System");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+
+        Stage loginStage = (Stage) mainForm.getScene().getWindow();
+        loginStage.close();
     }
 
     @FXML
-    private void switchMenuMyAccounts(ContextMenuEvent event) {
+    private void switchMenuMyAccounts(MouseEvent event) {
+        formProducts.setVisible(false);
+        formInventory.setVisible(false);
+        formCustomers.setVisible(false);
+        formInvoices.setVisible(false);
+        formMyAccount.setVisible(true);
     }
-    
-    public ObservableList<Products> menuGetData(){
-        
-        
-        return productCardList;
-    }
-    
+
 }
