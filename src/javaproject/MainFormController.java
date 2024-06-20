@@ -32,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -76,22 +77,64 @@ public class MainFormController implements Initializable {
     @FXML
     private AnchorPane mainForm;
 
-    ObservableList<Products> productList;
+    List<Products> productList;
 
-    public ObservableList<Products> data() {
-        ObservableList<Products> list = FXCollections.observableArrayList();
+    public List<Products> data() {
+        List<Products> list = new ArrayList<>();
         Products pro = new Products();
+        pro.setProId(1);
+        pro.setProName("Meow Cloth 1");
+        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood1.jpg");
+        pro.setProPrice(200);
+        list.add(pro);
+        
+        pro = new Products();
         pro.setProId(2);
         pro.setProName("Meow Cloth 2");
-        pro.setProImg("/accessories/CatClothe3.png");
-        pro.setProPrice(200);
-
+        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
+        pro.setProPrice(300);
         list.add(pro);
+        
+        pro = new Products();
+        pro.setProId(2);
+        pro.setProName("Meow Cloth 2");
+        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
+        pro.setProPrice(300);
+        list.add(pro);
+        
+        pro = new Products();
+        pro.setProId(3);
+        pro.setProName("Meow Cloth 2");
+        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
+        pro.setProPrice(300);
+        list.add(pro);
+        
+        pro = new Products();
+        pro.setProId(4);
+        pro.setProName("Meow Cloth 2");
+        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
+        pro.setProPrice(300);
+        list.add(pro);
+        
+        pro = new Products();
+        pro.setProId(5);
+        pro.setProName("Meow Cloth 2");
+        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
+        pro.setProPrice(300);
+        list.add(pro);
+        
+        pro = new Products();
+        pro.setProId(6);
+        pro.setProName("Meow Cloth 2");
+        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
+        pro.setProPrice(300);
+        list.add(pro);
+        
         return list;
     }
 
     public void DisplayProduct() {
-        productList = FXCollections.observableArrayList(data());
+        productList = data();
 
         if (productList == null) {
             System.out.println("Product List is Null");
@@ -102,20 +145,9 @@ public class MainFormController implements Initializable {
 
         try {
             for (int i = 0; i < productList.size(); i++) {
-//                FXMLLoader loader = new FXMLLoader();
-//                URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
-//                loader.setLocation(url);
-
-//                FXMLLoader loader = new FXMLLoader();
-//                URL url = getClass().getResource("ProductCard.fxml").toURI().toURL();
-//                loader.setLocation(url);
-
-//                FXMLLoader loader = new FXMLLoader();
-//                InputStream fxmlStream = getClass().getResourceAsStream("ProductCard.fxml");
-//                loader.load(fxmlStream);
-                    
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getClassLoader().getResource("ProductCard.fxml"));
+                FXMLLoader loader = new FXMLLoader();
+                URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
+                loader.setLocation(url);
 
                 if (loader.getLocation() == null) {
                     System.out.println("FXML file not found");
@@ -134,7 +166,7 @@ public class MainFormController implements Initializable {
                 GridPane.setMargin(pane, new Insets(10));
 
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Error Display Product: " + e.getMessage());
         }
     }
@@ -166,7 +198,6 @@ public class MainFormController implements Initializable {
         formCustomers.setVisible(false);
         formInvoices.setVisible(false);
         formMyAccount.setVisible(false);
-//        openProduct();
     }
 
     @FXML

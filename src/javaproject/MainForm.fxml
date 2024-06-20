@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -20,41 +19,41 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainForm" prefHeight="880.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaproject.MainFormController">
+<AnchorPane fx:id="mainForm" prefHeight="880.0" prefWidth="1646.0" styleClass="mainFxmlClass" stylesheets="@../Css/mainform.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaproject.MainFormController">
    <children>
-      <AnchorPane fx:id="formMenu" layoutX="-2.0" prefHeight="880.0" prefWidth="246.0" style="-fx-background-color: silver;">
+      <AnchorPane fx:id="formMenu" layoutX="-1.0" prefHeight="880.0" prefWidth="244.0" style="-fx-background-color: silver;">
          <children>
             <ImageView fx:id="menuPicture" fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../accessories/laughing.png" />
                </image>
             </ImageView>
-            <Label layoutX="59.0" layoutY="198.0" text="Welcome back ">
+            <Label layoutX="52.0" layoutY="198.0" text="Welcome back ">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="menuFullName" layoutX="83.0" layoutY="228.0" prefHeight="35.0" prefWidth="87.0" text="Full name">
+            <Label fx:id="menuFullName" layoutX="62.0" layoutY="229.0" prefHeight="59.0" prefWidth="122.0" text="Full name">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <VBox layoutY="372.0" prefHeight="360.0" prefWidth="220.0">
+            <VBox layoutY="348.0" prefHeight="532.0" prefWidth="247.0">
                <children>
-                  <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuProducts" prefHeight="70.0" prefWidth="250.0" text="Products" textAlignment="CENTER">
+                  <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuProducts" prefHeight="44.0" prefWidth="207.0" text="Products" textAlignment="CENTER">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuGrooming" prefHeight="70.0" prefWidth="250.0" text="Grooming Services" textAlignment="CENTER">
+                  <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuGrooming" prefHeight="59.0" prefWidth="217.0" text="Grooming Services" textAlignment="CENTER">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuInventory" prefHeight="70.0" prefWidth="250.0" text="Inventory" textAlignment="CENTER">
@@ -62,7 +61,7 @@
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuCustomers" prefHeight="70.0" prefWidth="250.0" text="Customers" textAlignment="CENTER">
@@ -70,7 +69,7 @@
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuInvoices" prefHeight="70.0" prefWidth="250.0" text="Invoices" textAlignment="CENTER">
@@ -78,43 +77,39 @@
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-               </children>
-            </VBox>
-            <Button layoutX="83.0" layoutY="263.0" mnemonicParsing="false" onAction="#btnLogOut" prefHeight="14.0" prefWidth="80.0" text="Log out" />
-            <VBox accessibleRole="BUTTON" layoutY="795.0" prefHeight="59.0" prefWidth="221.0">
-               <children>
                   <Label alignment="TOP_LEFT" onMouseClicked="#switchMenuMyAccounts" prefHeight="70.0" prefWidth="250.0" text="My Account" textAlignment="CENTER">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                </children>
             </VBox>
+            <Button layoutX="83.0" layoutY="277.0" mnemonicParsing="false" onAction="#btnLogOut" prefHeight="14.0" prefWidth="80.0" text="Log out" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="formProducts" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0" visible="false">
          <children>
-            <AnchorPane fx:id="formBill" layoutX="1000.0" prefHeight="880.0" prefWidth="380.0" style="-fx-background-color: yellow;">
+            <AnchorPane fx:id="formBill" layoutX="1000.0" prefHeight="880.0" prefWidth="404.0" style="-fx-background-color: yellow;">
                <children>
-                  <TableView fx:id="tvInvoice" layoutX="10.0" layoutY="100.0" prefHeight="360.0" prefWidth="335.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="8.0">
+                  <TableView fx:id="tvInvoice" layoutX="10.0" layoutY="100.0" prefHeight="360.0" prefWidth="363.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="8.0">
                      <columns>
                         <TableColumn maxWidth="326.0" prefWidth="181.0" text="Name" />
-                        <TableColumn prefWidth="78.0" text="Price" />
-                        <TableColumn prefWidth="75.0" text="Quantity" />
+                        <TableColumn prefWidth="81.0" text="Price" />
+                        <TableColumn prefWidth="83.0" text="Quantity" />
                      </columns>
                   </TableView>
-                  <Label layoutX="98.0" layoutY="20.0" prefHeight="65.0" prefWidth="141.0" text="INVOICE">
+                  <Label layoutX="166.0" layoutY="42.0" prefHeight="45.0" prefWidth="73.0" text="INVOICE">
                      <font>
                         <Font size="36.0" />
                      </font>
                   </Label>
-                  <VBox layoutX="36.0" layoutY="479.0" prefHeight="222.0" prefWidth="299.0">
+                  <VBox layoutX="53.0" layoutY="470.0" prefHeight="306.0" prefWidth="299.0" spacing="10.0">
                      <children>
                         <HBox prefHeight="40.0" prefWidth="421.0">
                            <children>
@@ -186,54 +181,54 @@
                               </TextField>
                            </children>
                         </HBox>
+                        <HBox prefHeight="35.0" prefWidth="279.0">
+                           <children>
+                              <Label prefHeight="35.0" prefWidth="224.0" text="Customer Name:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Name">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="35.0" prefWidth="279.0">
+                           <children>
+                              <Label prefHeight="35.0" prefWidth="224.0" text="Customer Phone:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Phone">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </VBox>
-                  <Button layoutX="24.0" layoutY="787.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="97.0" text="Pay Invoice">
+                  <Button layoutX="30.0" layoutY="795.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="97.0" text="Pay Invoice">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="128.0" layoutY="787.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Cancel">
+                  <Button layoutX="146.0" layoutY="795.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="Cancel">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="215.0" layoutY="787.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" text="Print Receipt">
+                  <Button layoutX="253.0" layoutY="795.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" text="Print Receipt">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <HBox layoutX="46.0" layoutY="701.0" prefHeight="35.0" prefWidth="279.0">
-                     <children>
-                        <Label prefHeight="35.0" prefWidth="224.0" text="Customer Name:">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Name">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox layoutX="46.0" layoutY="744.0" prefHeight="35.0" prefWidth="279.0">
-                     <children>
-                        <Label prefHeight="35.0" prefWidth="224.0" text="Customer Phone:">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Phone">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </HBox>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="formSearchProducts" prefHeight="100.0" prefWidth="1000.0" style="-fx-background-color: blue;">
@@ -247,25 +242,26 @@
                   <ComboBox layoutX="569.0" layoutY="35.0" prefHeight="35.0" prefWidth="150.0" promptText="Category" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formProductsList" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" style="-fx-background-color: gray;">
+            <AnchorPane fx:id="formProductsList" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0">
                <children>
-                  <Label layoutX="420.0" layoutY="14.0" text="PRODUCTS">
+                  <Label layoutX="437.0" layoutY="14.0" prefHeight="47.0" prefWidth="130.0" stylesheets="@../Css/mainform.css" text="PRODUCTS">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <ScrollPane layoutX="62.0" layoutY="59.0" prefHeight="699.0" prefWidth="865.0">
-                     <content>
-                        <GridPane fx:id="gridPane" prefHeight="0.0" prefWidth="0.0">
-                           <rotationAxis>
-                              <Point3D />
-                           </rotationAxis>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                           </rowConstraints>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
+                  <VBox layoutX="42.0" layoutY="74.0" prefHeight="680.0" prefWidth="917.0">
+                     <children>
+                        <ScrollPane prefHeight="678.0" prefWidth="964.0">
+                           <content>
+                              <GridPane fx:id="gridPane" prefHeight="20.0" prefWidth="0.0">
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="formGrooming" layoutY="-2.0" prefHeight="880.0" prefWidth="1000.0" visible="false">
@@ -392,21 +388,21 @@
       </AnchorPane>
       <AnchorPane fx:id="formInventory" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0" visible="false">
          <children>
-            <AnchorPane prefHeight="100.0" prefWidth="1380.0">
+            <AnchorPane prefHeight="100.0" prefWidth="1398.0">
                <children>
                   <Label layoutX="31.0" layoutY="28.0" text="PET SHOP MANAGEMENT SYSTEM">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <Label layoutX="1229.0" layoutY="58.0" text="INVENTORY">
+                  <Label layoutX="1182.0" layoutY="51.0" text="INVENTORY">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <TableView layoutY="100.0" prefHeight="452.0" prefWidth="1380.0">
+            <TableView layoutY="100.0" prefHeight="452.0" prefWidth="1398.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="C1" />
                 <TableColumn prefWidth="75.0" text="C2" />
@@ -425,21 +421,21 @@
       </AnchorPane>
       <AnchorPane fx:id="formCustomers" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0" visible="false">
          <children>
-            <AnchorPane prefHeight="100.0" prefWidth="1380.0">
+            <AnchorPane prefHeight="100.0" prefWidth="1398.0">
                <children>
                   <Label layoutX="31.0" layoutY="28.0" text="PET SHOP MANAGEMENT SYSTEM">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <Label layoutX="1229.0" layoutY="58.0" text="CUSTOMERS">
+                  <Label layoutX="1171.0" layoutY="51.0" text="CUSTOMERS">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <TableView layoutY="100.0" prefHeight="452.0" prefWidth="1380.0">
+            <TableView layoutY="100.0" prefHeight="452.0" prefWidth="1398.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
                   <TableColumn prefWidth="75.0" text="C2" />
@@ -465,14 +461,14 @@
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <Label layoutX="1251.0" layoutY="58.0" text="INVOICES">
+                  <Label layoutX="1231.0" layoutY="58.0" text="INVOICES">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <TableView layoutY="100.0" prefHeight="452.0" prefWidth="1380.0">
+            <TableView layoutY="100.0" prefHeight="452.0" prefWidth="1398.0">
                <columns>
                   <TableColumn prefWidth="75.0" text="C1" />
                   <TableColumn prefWidth="75.0" text="C2" />
@@ -489,9 +485,9 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="formMyAccount" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0">
+      <AnchorPane fx:id="formMyAccount" layoutX="244.0" prefHeight="880.0" prefWidth="1404.0">
          <children>
-            <AnchorPane prefHeight="100.0" prefWidth="1380.0">
+            <AnchorPane prefHeight="100.0" prefWidth="1398.0">
                <children>
                   <Label layoutX="31.0" layoutY="28.0" text="PET SHOP MANAGEMENT SYSTEM">
                      <font>
@@ -512,36 +508,36 @@
                         <Image url="@../../../JavaProject/src/accessories/happy.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="168.0" layoutY="284.0" text="Click to change your Picture" />
-                  <VBox layoutX="131.0" layoutY="367.0" prefHeight="265.0" prefWidth="222.0">
+                  <Label layoutX="150.0" layoutY="283.0" text="Click to change your Picture" />
+                  <VBox layoutX="139.0" layoutY="367.0" prefHeight="265.0" prefWidth="207.0">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="110.0" prefWidth="104.0" text="Account:" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="226.0" text="Account" />
+                              <Label prefHeight="66.0" prefWidth="183.0" text="Account:" />
+                              <Label alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="244.0" text="Account" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="110.0" prefWidth="104.0" text="Full Name:" />
+                              <Label prefHeight="66.0" prefWidth="147.0" text="Full Name:" />
                               <Label alignment="CENTER_RIGHT" prefHeight="124.0" prefWidth="209.0" text="Full Name" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="110.0" prefWidth="104.0" text="Phone" />
+                              <Label prefHeight="66.0" prefWidth="116.0" text="Phone" />
                               <Label alignment="CENTER_RIGHT" prefHeight="124.0" prefWidth="209.0" text="Phone" />
                            </children>
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="110.0" prefWidth="104.0" text="Email: " />
+                              <Label prefHeight="67.0" prefWidth="144.0" text="Email: " />
                               <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="124.0" prefWidth="209.0" text="Email" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <AnchorPane layoutX="458.0" layoutY="14.0" prefHeight="705.0" prefWidth="903.0">
+                  <AnchorPane layoutX="455.0" layoutY="14.0" prefHeight="705.0" prefWidth="903.0">
                      <children>
                         <Label layoutX="350.0" layoutY="7.0" text="Update Your Profie">
                            <font>
@@ -550,7 +546,7 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <Button layoutX="177.0" layoutY="313.0" mnemonicParsing="false" text="CHANGE PASSWORD" />
+                  <Button layoutX="161.0" layoutY="315.0" mnemonicParsing="false" text="CHANGE PASSWORD" />
                </children>
             </AnchorPane>
          </children>
