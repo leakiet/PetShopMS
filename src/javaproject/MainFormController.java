@@ -1,5 +1,7 @@
 package javaproject;
 
+import Database.ProductsDAO;
+import Models.InvoiceItem;
 import Models.Products;
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +25,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
@@ -49,7 +53,7 @@ public class MainFormController implements Initializable {
     @FXML
     private AnchorPane formBill;
     @FXML
-    private TableView<?> tvInvoice;
+    private TableView<InvoiceItem> tvInvoice;
     @FXML
     private AnchorPane formProductsList;
     @FXML
@@ -77,64 +81,23 @@ public class MainFormController implements Initializable {
     @FXML
     private AnchorPane mainForm;
 
-    List<Products> productList;
+    ProductsDAO dao = new ProductsDAO();
+    ObservableList<InvoiceItem> invoiceItems = FXCollections.observableArrayList();
 
-    public List<Products> data() {
-        List<Products> list = new ArrayList<>();
-        Products pro = new Products();
-        pro.setProId(1);
-        pro.setProName("Meow Cloth 1");
-        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood1.jpg");
-        pro.setProPrice(200);
-        list.add(pro);
-        
-        pro = new Products();
-        pro.setProId(2);
-        pro.setProName("Meow Cloth 2");
-        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
-        pro.setProPrice(300);
-        list.add(pro);
-        
-        pro = new Products();
-        pro.setProId(2);
-        pro.setProName("Meow Cloth 2");
-        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
-        pro.setProPrice(300);
-        list.add(pro);
-        
-        pro = new Products();
-        pro.setProId(3);
-        pro.setProName("Meow Cloth 2");
-        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
-        pro.setProPrice(300);
-        list.add(pro);
-        
-        pro = new Products();
-        pro.setProId(4);
-        pro.setProName("Meow Cloth 2");
-        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
-        pro.setProPrice(300);
-        list.add(pro);
-        
-        pro = new Products();
-        pro.setProId(5);
-        pro.setProName("Meow Cloth 2");
-        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
-        pro.setProPrice(300);
-        list.add(pro);
-        
-        pro = new Products();
-        pro.setProId(6);
-        pro.setProName("Meow Cloth 2");
-        pro.setProImg("D:\\Java2\\javaproject\\src\\accessories\\CatFood2.jpg");
-        pro.setProPrice(300);
-        list.add(pro);
-        
-        return list;
-    }
+    @FXML
+    private Label updateContact;
+    @FXML
+    private Label updateContact1;
+    @FXML
+    private TableColumn<InvoiceItem, String> tcNameInvoice;
+    @FXML
+    private TableColumn<InvoiceItem, Float> tcPriceInvoice;
+    @FXML
+    private TableColumn<InvoiceItem, Integer> tcQuantityInvoice;
 
     public void DisplayProduct() {
-        productList = data();
+        ArrayList<Products> productList;
+        productList = dao.data();
 
         if (productList == null) {
             System.out.println("Product List is Null");
@@ -156,6 +119,7 @@ public class MainFormController implements Initializable {
                 AnchorPane pane = loader.load();
                 ProductCardController controller = loader.getController();
                 controller.setData(productList.get(i));
+                controller.setMainController(this);
 
                 if (column == 3) {
                     column = 0;
@@ -163,7 +127,7 @@ public class MainFormController implements Initializable {
                 }
 
                 gridPane.add(pane, column++, row);
-                GridPane.setMargin(pane, new Insets(10));
+                GridPane.setMargin(pane, new Insets(15));
 
             }
         } catch (IOException e) {
@@ -171,20 +135,21 @@ public class MainFormController implements Initializable {
         }
     }
 
+    public void addInvoiceItem(InvoiceItem item) {
+        invoiceItems.add(item);
+    }
+
+    private void InvoiceTable() {
+        tcNameInvoice.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        tcPriceInvoice.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        tcQuantityInvoice.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+        tvInvoice.setItems(invoiceItems);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         DisplayProduct();
-    }
-
-    public void openProduct() throws MalformedURLException, IOException {
-        URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
-        Parent root = FXMLLoader.load(url);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setTitle("card Product form");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        InvoiceTable();
     }
 
     @FXML
