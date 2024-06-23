@@ -24,13 +24,13 @@ public class ProductCardController implements Initializable {
     private ImageView proImage;
     private Image image;
 
-    public void setData(Products products) {          
-                String path = "file:/" + products.getProImg().replace("\\", "/");
-                image = new Image(path, 200, 150, false, true);
-                proImage.setImage(image);
-                proName.setText(products.getProName());
-                proPrice.setText(String.valueOf(products.getProPrice()));
-                proId.setText(String.valueOf(products.getProId()));
+    public void setData(Products products) {
+        String path = "file:/" + products.getProImage().replace("\\", "/");
+        image = new Image(path, 200, 150, false, true);
+        proImage.setImage(image);
+        proName.setText(products.getProName());
+        proPrice.setText(String.valueOf(products.getProPrice()));
+        proId.setText(String.valueOf(products.getProId()));
     }
 
     @Override

@@ -1,0 +1,14 @@
+{
+  "java.home": "C:/Users/Admin/Downloads/openlogic-openjdk-jre-11.0.23+9-windows-x64",
+  "java.configuration.runtimes": [
+      {
+          "name": "JavaSE-11",
+          "path": "C:/Users/Admin/Downloads/openlogic-openjdk-jre-11.0.23+9-windows-x64",
+          "default": true
+      }
+  ],
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "c:\\Users\\Admin\\Downloads\\mssql-jdbc-6.4.0.jre8.jar"
+  ]
+}

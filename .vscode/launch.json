@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "javaproject.Main",
+      "projectName": "PetShopMS_d9a23b99"
+    },
+    {
+      "type": "java",
+      "name": "Product",
+      "request": "launch",
+      "mainClass": "product.Product",
+      "projectName": "product_3313ef0d"
+    },
+    {
+      "type": "java",
+      "name": "ProjectTest",
+      "request": "launch",
+      "mainClass": "projecttest.ProjectTest",
+      "projectName": "ProjectTest_1eb05a49"
+    },
+    {
+      "type": "java",
+      "name": "Launch ProjectTest",
+      "request": "launch",
+      "mainClass": "projecttest.ProjectTest",
+      "vmArgs": "--module-path C:/Users/Admin/Downloads/javafx-sdk-22.0.1/lib --add-modules javafx.controls,javafx.fxml",
+      "cwd": "${workspaceFolder}/ProjectTest",
+      "projectName": "ProjectTest"
+    }
+  ]
+}

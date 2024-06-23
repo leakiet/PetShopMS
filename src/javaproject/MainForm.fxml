@@ -386,7 +386,8 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="formInventory" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0" visible="false">
+
+      <AnchorPane fx:id="formInventory" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0">
          <children>
             <AnchorPane prefHeight="100.0" prefWidth="1398.0">
                <children>
@@ -402,22 +403,64 @@
                   </Label>
                </children>
             </AnchorPane>
-            <TableView layoutY="100.0" prefHeight="452.0" prefWidth="1398.0">
+            <TableView fx:id="productTableView" layoutY="100.0" onMouseClicked="#handletable" prefHeight="452.0" prefWidth="1398.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="productIdColumn" prefWidth="49.666656494140625" text="Id" />
+                <TableColumn fx:id="productImageColumn" prefWidth="126.33334350585938" text="Image" />
+                  <TableColumn fx:id="productSkuColumn" prefWidth="124.66665649414062" text="SKU" />
+                  <TableColumn fx:id="productNameColumn" prefWidth="125.3333740234375" text="Name" />
+                  <TableColumn fx:id="productCategoryColumn" prefWidth="152.33331298828125" text="Category" />
+                  <TableColumn fx:id="productDescriptionColumn" prefWidth="277.666748046875" text="Description" />
+                  <TableColumn fx:id="productQuantityColumn" prefWidth="191.0" text="Quantity" />
+                  <TableColumn fx:id="productPriceColumn" prefWidth="142.0" text="Price" />
+                  <TableColumn fx:id="productDateColumn" prefWidth="216.3333740234375" text="Date" />
               </columns>
             </TableView>
-            <AnchorPane layoutY="539.0" prefHeight="327.0" prefWidth="1380.0">
-               <children>
-                  <Label layoutX="608.0" layoutY="124.0" text="input fields">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
+            <AnchorPane layoutY="539.0" prefHeight="327.0" prefWidth="1380.0" />
          </children>
+         <HBox layoutX="14.0" layoutY="575.0" prefHeight="237.0" prefWidth="541.0" spacing="10.0">
+            <children>
+                <VBox spacing="10.0">
+                    <children>
+                        <TextField fx:id="productNameTextField" promptText="ProductName" />
+                <TextField fx:id="producSKUTextField" promptText="ProductSKU" />
+                <TextField fx:id="productDescriptionTextField" prefHeight="53.0" prefWidth="203.0" promptText="ProductDescription" />
+                        <ComboBox fx:id="productCategoryComboBox" promptText="Select option category" />
+                        <Button fx:id="addImageButton" mnemonicParsing="false" onAction="#handleAddImage" onDragDropped="#handleDropImage" prefHeight="31.0" prefWidth="203.0" text="Choose Image" />
+                        <TextField fx:id="productPriceTextField" promptText="Price" />
+                <TextField fx:id="productQuantityTextField" promptText="Quantity" />
+                    </children>
+                </VBox>
+                <VBox spacing="10.0">
+                    <children>
+                        <HBox spacing="10.0">
+                            <children>
+                                <Button fx:id="addProductButton" mnemonicParsing="false" onAction="#handleAddButton" text="Add" />
+                                <Button fx:id="updateProductButton" mnemonicParsing="false" onAction="#handleUpdateButton" text="Update" />
+                                <Button fx:id="deleteProductButton" mnemonicParsing="false" onAction="#handleDeleteButton" text="delete" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+          <Button fx:id="clearBtn" mnemonicParsing="false" onMouseClicked="#handleClearField" text="clear" />
+            </children>
+        </HBox>
+         <HBox layoutX="818.0" layoutY="580.0" prefHeight="60.0" prefWidth="523.0">
+            <children>
+            <ComboBox fx:id="filterProductCategoryComboBox" prefWidth="150.0" promptText="Filter Category">
+                  <HBox.margin>
+                     <Insets right="30.0" />
+                  </HBox.margin>
+               </ComboBox>
+              <TextField fx:id="searchProductTextField" promptText="Seach By name">
+                  <HBox.margin>
+                     <Insets right="30.0" />
+                  </HBox.margin>
+               </TextField>
+            <Button fx:id="searchProductButton" mnemonicParsing="false" onAction="#handleSeachButton" text="seach" />
+            </children>
+         </HBox>
+              <ImageView fx:id="productImageView" fitHeight="208.0" fitWidth="231.0" layoutX="1056.0" layoutY="621.0" pickOnBounds="true" preserveRatio="true" />
       </AnchorPane>
       <AnchorPane fx:id="formCustomers" layoutX="244.0" prefHeight="880.0" prefWidth="1380.0" visible="false">
          <children>
@@ -485,7 +528,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="formMyAccount" layoutX="244.0" prefHeight="880.0" prefWidth="1404.0">
+      <AnchorPane fx:id="formMyAccount" layoutX="244.0" prefHeight="880.0" prefWidth="1404.0" visible="false">
          <children>
             <AnchorPane prefHeight="100.0" prefWidth="1398.0">
                <children>
