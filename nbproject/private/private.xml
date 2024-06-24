@@ -3,11 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Java2/javaproject/src/Models/ProductsCategory.java</file>
+            <file>file:/D:/Java2/javaproject/src/Database/ProductsDAO.java</file>
             <file>file:/D:/Java2/javaproject/src/javaproject/Main.java</file>
+            <file>file:/D:/Java2/javaproject/src/javaproject/AdminFormController.java</file>
             <file>file:/D:/Java2/javaproject/src/javaproject/MainFormController.java</file>
             <file>file:/D:/Java2/javaproject/src/javaproject/ProductCardController.java</file>
             <file>file:/D:/Java2/javaproject/src/javaproject/LoginFormController.java</file>
             <file>file:/D:/Java2/javaproject/src/Css/mainform.css</file>
+            <file>file:/D:/Java2/javaproject/src/Models/Products.java</file>
             <file>file:/D:/Java2/javaproject/src/javaproject/MainForm.fxml</file>
         </group>
     </open-files>

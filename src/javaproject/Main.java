@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         URL url = new File("src/javaproject/MainForm.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
-        Scene scene = new Scene(root, 1650, 880);
+        Scene scene = new Scene(root);
         stage.setTitle("Pet Shop Management System");
         stage.setScene(scene);
         stage.setResizable(true);
