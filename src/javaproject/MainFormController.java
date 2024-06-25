@@ -207,8 +207,6 @@ public class MainFormController implements Initializable {
     String targetDir = "src/images/";
     String seachCategorySelected = "All";
     String imagePath;
-    
-    
 
     public void DisplayProduct() {
         ArrayList<Products> productList;
@@ -265,13 +263,13 @@ public class MainFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         DisplayProduct();
         InvoiceTable();
-        
+
         handleOnDragImage();
         DisplayProducts();
         ComboBoxCategory();
     }
-    
-     public void ResetField() {
+
+    public void ResetField() {
         productNameTextField.setText("");
         producSKUTextField.setText("");
         productDescriptionTextField.setText("");
@@ -340,8 +338,7 @@ public class MainFormController implements Initializable {
         productDateColumn.setCellValueFactory(new PropertyValueFactory<>("proDate"));
         productTableView.setItems(filteredProducts);
     }
-    
-    
+
     private void handleOnDragImage() {
         addImageButton.setOnDragOver(event -> {
             if (event.getGestureSource() != addImageButton && event.getDragboard().hasFiles()) {
@@ -485,14 +482,14 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleAddImage(ActionEvent event) {
-         FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Image");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Images", "*.*"),
                 new FileChooser.ExtensionFilter("JPEG", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("JFIF", "*.jfif"));
-                new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
+        new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
 
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
@@ -599,7 +596,7 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleUpdateButton(ActionEvent event) {
-         if (proSelected == null) {
+        if (proSelected == null) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText("No product selected");
@@ -771,13 +768,41 @@ public class MainFormController implements Initializable {
         try {
             proSelected = productTableView.getSelectionModel().getSelectedItem();
             indexSelected = productTableView.getSelectionModel().getSelectedIndex();
+
+            if (proSelected == null || indexSelected == -1) {
+                throw new IllegalArgumentException("No product selected");
+            }
+
+            if (proSelected.getProName() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productNameTextField.setText(proSelected.getProName());
+            if (proSelected.getProSKU() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             producSKUTextField.setText(proSelected.getProSKU());
+            if (proSelected.getProDescription() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productDescriptionTextField.setText(proSelected.getProDescription());
+            if (proSelected.getProCategory() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productCategoryComboBox.setValue(String.valueOf(proSelected.getProCategory()));
             // System.out.println(selectedCategory);
             imagePath = proSelected.getProImage();
+            if (imagePath == null) {
+                throw new IllegalArgumentException("No image selected");
+            }
+
+            if (proSelected.getProQuantity() == -1) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productQuantityTextField.setText(String.valueOf(proSelected.getProQuantity()));
+
+            if (proSelected.getProPrice() == -1) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productPriceTextField.setText(String.valueOf(proSelected.getProPrice()));
             File file = new File(imagePath);
             if (file.exists()) {
@@ -787,16 +812,9 @@ public class MainFormController implements Initializable {
             } else {
                 System.out.println("File does not exist: " + imagePath);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Throwable cause = e.getCause();
-            if (cause instanceof InvocationTargetException) {
-                cause = cause.getCause();
-            }
-            System.out.println("Exception loading image: " + cause.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("[Warning]: " + e.getMessage());
         }
     }
-    
-    
 
 }
