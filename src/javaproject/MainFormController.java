@@ -341,13 +341,41 @@ public class MainFormController implements Initializable {
         try {
             proSelected = productTableView.getSelectionModel().getSelectedItem();
             indexSelected = productTableView.getSelectionModel().getSelectedIndex();
+
+            if (proSelected == null || indexSelected == -1) {
+                throw new IllegalArgumentException("No product selected");
+            }
+
+            if (proSelected.getProName() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productNameTextField.setText(proSelected.getProName());
+            if (proSelected.getProSKU() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             producSKUTextField.setText(proSelected.getProSKU());
+            if (proSelected.getProDescription() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productDescriptionTextField.setText(proSelected.getProDescription());
+            if (proSelected.getProCategory() == null) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productCategoryComboBox.setValue(String.valueOf(proSelected.getProCategory()));
             // System.out.println(selectedCategory);
             imagePath = proSelected.getProImage();
+            if (imagePath == null) {
+                throw new IllegalArgumentException("No image selected");
+            }
+
+            if (proSelected.getProQuantity() == -1) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productQuantityTextField.setText(String.valueOf(proSelected.getProQuantity()));
+
+            if (proSelected.getProPrice() == -1) {
+                throw new IllegalArgumentException("No product selected");
+            }
             productPriceTextField.setText(String.valueOf(proSelected.getProPrice()));
             File file = new File(imagePath);
             if (file.exists()) {
@@ -357,13 +385,8 @@ public class MainFormController implements Initializable {
             } else {
                 System.out.println("File does not exist: " + imagePath);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Throwable cause = e.getCause();
-            if (cause instanceof InvocationTargetException) {
-                cause = cause.getCause();
-            }
-            System.out.println("Exception loading image: " + cause.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
