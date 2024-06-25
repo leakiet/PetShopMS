@@ -1,8 +1,9 @@
 package javaproject;
 
+import Database.ProductsDAO;
+import Models.InvoiceItem;
 import Models.Products;
 import Models.ProductsCategory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,8 +20,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-
-import Database.ProductsDAO;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,7 +70,7 @@ public class MainFormController implements Initializable {
     @FXML
     private AnchorPane formBill;
     @FXML
-    private TableView<?> tvInvoice;
+    private TableView<InvoiceItem> tvInvoice;
     @FXML
     private AnchorPane formProductsList;
     @FXML
@@ -99,9 +98,72 @@ public class MainFormController implements Initializable {
     @FXML
     private AnchorPane mainForm;
 
-    // List<Products> productList;
     @FXML
-    private TableView<Products> productTableView;
+    private Label updateContact;
+    @FXML
+    private Label updateContact1;
+    @FXML
+    private TableColumn<InvoiceItem, String> tcNameInvoice;
+    @FXML
+    private TableColumn<InvoiceItem, Float> tcPriceInvoice;
+    @FXML
+    private TableColumn<InvoiceItem, Integer> tcQuantityInvoice;
+    @FXML
+    private Button mc;
+    @FXML
+    private Label ma_account;
+    @FXML
+    private Label ma_staffId;
+    @FXML
+    private VBox ma_contactForm;
+    @FXML
+    private Label ma_fullname;
+    @FXML
+    private Label ma_phone;
+    @FXML
+    private Label ma_email;
+    @FXML
+    private Label ma_address;
+    @FXML
+    private VBox ma_updateContactForm;
+    @FXML
+    private TextField ma_updateFullname;
+    @FXML
+    private TextField ma_updatePhone;
+    @FXML
+    private TextField ma_updateEmail;
+    @FXML
+    private TextField ma_updateAddress;
+    @FXML
+    private TextField productNameTextField;
+    @FXML
+    private TextField producSKUTextField;
+    @FXML
+    private TextField productDescriptionTextField;
+    @FXML
+    private ComboBox<String> productCategoryComboBox;
+    @FXML
+    private Button addImageButton;
+    @FXML
+    private TextField productPriceTextField;
+    @FXML
+    private TextField productQuantityTextField;
+    @FXML
+    private Button addProductButton;
+    @FXML
+    private Button updateProductButton;
+    @FXML
+    private Button deleteProductButton;
+    @FXML
+    private Button clearBtn;
+    @FXML
+    private ComboBox<String> filterProductCategoryComboBox;
+    @FXML
+    private TextField searchProductTextField;
+    @FXML
+    private Button searchProductButton;
+    @FXML
+    private ImageView productImageView;
     @FXML
     private TableColumn<Products, Integer> productIdColumn;
     @FXML
@@ -121,35 +183,11 @@ public class MainFormController implements Initializable {
     @FXML
     private TableColumn<Products, String> productDateColumn;
     @FXML
-    private TextField productNameTextField;
-    @FXML
-    private ComboBox<String> productCategoryComboBox;
-    @FXML
-    private Button addImageButton;
-    @FXML
-    private Button addProductButton;
-    @FXML
-    private Button updateProductButton;
-    @FXML
-    private Button deleteProductButton;
-    @FXML
-    private ImageView productImageView;
-    @FXML
-    private TextField searchProductTextField;
-    @FXML
-    private Button searchProductButton;
-    @FXML
-    private ComboBox<String> filterProductCategoryComboBox;
-    @FXML
-    private TextField producSKUTextField;
-    @FXML
-    private TextField productDescriptionTextField;
-    @FXML
-    private TextField productPriceTextField;
-    @FXML
-    private TextField productQuantityTextField;
+    private TableView<Products> productTableView;
 
     ProductsDAO dao = new ProductsDAO();
+    ObservableList<InvoiceItem> invoiceItems = FXCollections.observableArrayList();
+
     ObservableList<Products> productsList = FXCollections.observableArrayList(dao.ListProductDB());
     ObservableList<ProductsCategory> productCategory = FXCollections.observableArrayList(dao.ListCategoryDB());
 
@@ -169,16 +207,71 @@ public class MainFormController implements Initializable {
     String targetDir = "src/images/";
     String seachCategorySelected = "All";
     String imagePath;
+    
+    
+
+    public void DisplayProduct() {
+        ArrayList<Products> productList;
+        productList = dao.data();
+
+        if (productList == null) {
+            System.out.println("Product List is Null");
+        }
+
+        int column = 0;
+        int row = 1;
+
+        try {
+            for (int i = 0; i < productList.size(); i++) {
+                FXMLLoader loader = new FXMLLoader();
+                URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
+                loader.setLocation(url);
+
+                if (loader.getLocation() == null) {
+                    System.out.println("FXML file not found");
+                }
+
+                AnchorPane pane = loader.load();
+                ProductCardController controller = loader.getController();
+                controller.setData(productList.get(i));
+                controller.setMainController(this);
+
+                if (column == 3) {
+                    column = 0;
+                    ++row;
+                }
+
+                gridPane.add(pane, column++, row);
+                GridPane.setMargin(pane, new Insets(15));
+
+            }
+        } catch (IOException e) {
+            System.out.println("Error Display Product: " + e.getMessage());
+        }
+    }
+
+    public void addInvoiceItem(InvoiceItem item) {
+        invoiceItems.add(item);
+    }
+
+    private void InvoiceTable() {
+        tcNameInvoice.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        tcPriceInvoice.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        tcQuantityInvoice.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+        tvInvoice.setItems(invoiceItems);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // DisplayProduct();
+        DisplayProduct();
+        InvoiceTable();
+        
         handleOnDragImage();
         DisplayProducts();
         ComboBoxCategory();
     }
-
-    public void ResetField() {
+    
+     public void ResetField() {
         productNameTextField.setText("");
         producSKUTextField.setText("");
         productDescriptionTextField.setText("");
@@ -231,8 +324,8 @@ public class MainFormController implements Initializable {
 
         productImageColumn.setCellValueFactory(cellData -> {
             ImageView imageView = new ImageView();
-            String imagePath = cellData.getValue().getProImage();
-            File file = new File(imagePath);
+            String imgPath = cellData.getValue().getProImage();
+            File file = new File(imgPath);
             if (file.exists()) {
                 imageView.setImage(new Image(file.toURI().toString()));
             }
@@ -247,16 +340,40 @@ public class MainFormController implements Initializable {
         productDateColumn.setCellValueFactory(new PropertyValueFactory<>("proDate"));
         productTableView.setItems(filteredProducts);
     }
+    
+    
+    private void handleOnDragImage() {
+        addImageButton.setOnDragOver(event -> {
+            if (event.getGestureSource() != addImageButton && event.getDragboard().hasFiles()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
+        addImageButton.setOnDragDropped(event -> {
+            javafx.scene.input.Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasFiles()) {
+                File file = db.getFiles().get(0);
+                String fileName = file.getName().toLowerCase();
+                if (!fileName.endsWith(".jpg") && !fileName.endsWith(".jpeg") && !fileName.endsWith(".png")
+                        && !fileName.endsWith(".webp") && !fileName.endsWith(".webp") && !fileName.endsWith(".jfif")) {
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText("Invalid Image");
+                    alert.setContentText("Please select a valid image file (jpg, jpeg, png, webp, jfif).");
+                    alert.showAndWait();
+                    return;
+                }
+                Image image = new Image(file.toURI().toString());
+                imagePath = file.getAbsolutePath();
+                productImageView.setImage(image);
+                success = true;
+                addImageButton.setText(file.getName());
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
 
-    public void openProduct() throws MalformedURLException, IOException {
-        URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
-        Parent root = FXMLLoader.load(url);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setTitle("card Product form");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
     }
 
     @FXML
@@ -337,104 +454,45 @@ public class MainFormController implements Initializable {
     }
 
     @FXML
-    private void handletable(MouseEvent event) {
-        try {
-            proSelected = productTableView.getSelectionModel().getSelectedItem();
-            indexSelected = productTableView.getSelectionModel().getSelectedIndex();
-
-            if (proSelected == null || indexSelected == -1) {
-                throw new IllegalArgumentException("No product selected");
-            }
-
-            if (proSelected.getProName() == null) {
-                throw new IllegalArgumentException("No product selected");
-            }
-            productNameTextField.setText(proSelected.getProName());
-            if (proSelected.getProSKU() == null) {
-                throw new IllegalArgumentException("No product selected");
-            }
-            producSKUTextField.setText(proSelected.getProSKU());
-            if (proSelected.getProDescription() == null) {
-                throw new IllegalArgumentException("No product selected");
-            }
-            productDescriptionTextField.setText(proSelected.getProDescription());
-            if (proSelected.getProCategory() == null) {
-                throw new IllegalArgumentException("No product selected");
-            }
-            productCategoryComboBox.setValue(String.valueOf(proSelected.getProCategory()));
-            // System.out.println(selectedCategory);
-            imagePath = proSelected.getProImage();
-            if (imagePath == null) {
-                throw new IllegalArgumentException("No image selected");
-            }
-
-            if (proSelected.getProQuantity() == -1) {
-                throw new IllegalArgumentException("No product selected");
-            }
-            productQuantityTextField.setText(String.valueOf(proSelected.getProQuantity()));
-
-            if (proSelected.getProPrice() == -1) {
-                throw new IllegalArgumentException("No product selected");
-            }
-            productPriceTextField.setText(String.valueOf(proSelected.getProPrice()));
-            File file = new File(imagePath);
-            if (file.exists()) {
-                Image image = new Image(file.toURI().toString());
-                productImageView.setImage(image);
-                addImageButton.setText(file.getName());
-            } else {
-                System.out.println("File does not exist: " + imagePath);
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+    private void handleChangePw(MouseEvent event) {
     }
 
     @FXML
-    private void handleOnDragImage() {
-        addImageButton.setOnDragOver(event -> {
-            if (event.getGestureSource() != addImageButton && event.getDragboard().hasFiles()) {
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            }
-            event.consume();
-        });
-        addImageButton.setOnDragDropped(event -> {
-            javafx.scene.input.Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasFiles()) {
-                File file = db.getFiles().get(0);
-                String fileName = file.getName().toLowerCase();
-                if (!fileName.endsWith(".jpg") && !fileName.endsWith(".jpeg") && !fileName.endsWith(".png")
-                        && !fileName.endsWith(".webp") && !fileName.endsWith(".webp") && !fileName.endsWith(".jfif")) {
-                    Alert alert = new Alert(AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText("Invalid Image");
-                    alert.setContentText("Please select a valid image file (jpg, jpeg, png, webp, jfif).");
-                    alert.showAndWait();
-                    return;
-                }
-                Image image = new Image(file.toURI().toString());
-                imagePath = file.getAbsolutePath();
-                productImageView.setImage(image);
-                success = true;
-                addImageButton.setText(file.getName());
-            }
-            event.setDropCompleted(success);
-            event.consume();
-        });
+    private void ma_btnChangePW() {
+    }
 
+    @FXML
+    private void handleSwitchUpdate(ActionEvent event) {
+        ma_updateContactForm.setVisible(true);
+        ma_contactForm.setVisible(false);
+
+    }
+
+    @FXML
+    private void handleBackToInfomation(ActionEvent event) {
+        ma_updateContactForm.setVisible(false);
+        ma_contactForm.setVisible(true);
+
+    }
+
+    @FXML
+    private void handleUpdateContact(ActionEvent event) {
+    }
+
+    @FXML
+    private void updateCancelUpdate(ActionEvent event) {
     }
 
     @FXML
     private void handleAddImage(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
+         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Image");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Images", "*.*"),
                 new FileChooser.ExtensionFilter("JPEG", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("JFIF", "*.jfif"));
-        new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
+                new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
 
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
@@ -465,9 +523,10 @@ public class MainFormController implements Initializable {
             if (productName.isEmpty()) {
                 throw new IllegalArgumentException("Product name cannot be empty!");
             }
-            String productCategory = selectedCategory;
+            String pCategory = selectedCategory;
             String productNameCate = selectedNameCategory;
-            if (productCategory == null) {
+            System.out.println(pCategory);
+            if (pCategory == null) {
                 throw new IllegalArgumentException("Please select a category!");
             }
             String productDescription = productDescriptionTextField.getText();
@@ -540,7 +599,7 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleUpdateButton(ActionEvent event) {
-        if (proSelected == null) {
+         if (proSelected == null) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText("No product selected");
@@ -706,5 +765,38 @@ public class MainFormController implements Initializable {
             }
         });
     }
+
+    @FXML
+    private void handleTableInventory(MouseEvent event) {
+        try {
+            proSelected = productTableView.getSelectionModel().getSelectedItem();
+            indexSelected = productTableView.getSelectionModel().getSelectedIndex();
+            productNameTextField.setText(proSelected.getProName());
+            producSKUTextField.setText(proSelected.getProSKU());
+            productDescriptionTextField.setText(proSelected.getProDescription());
+            productCategoryComboBox.setValue(String.valueOf(proSelected.getProCategory()));
+            // System.out.println(selectedCategory);
+            imagePath = proSelected.getProImage();
+            productQuantityTextField.setText(String.valueOf(proSelected.getProQuantity()));
+            productPriceTextField.setText(String.valueOf(proSelected.getProPrice()));
+            File file = new File(imagePath);
+            if (file.exists()) {
+                Image image = new Image(file.toURI().toString());
+                productImageView.setImage(image);
+                addImageButton.setText(file.getName());
+            } else {
+                System.out.println("File does not exist: " + imagePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Throwable cause = e.getCause();
+            if (cause instanceof InvocationTargetException) {
+                cause = cause.getCause();
+            }
+            System.out.println("Exception loading image: " + cause.getMessage());
+        }
+    }
+    
+    
 
 }

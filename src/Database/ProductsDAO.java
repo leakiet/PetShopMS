@@ -9,11 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import Models.Products;
 import Models.ProductsCategory;
+import java.sql.SQLException;
 
 public class ProductsDAO {
+
     private ConnectDB connect = new ConnectDB();
     private Connection cn = null;
     private Statement stm = null;
@@ -24,6 +25,35 @@ public class ProductsDAO {
 
     private ArrayList<ProductsCategory> category = new ArrayList<>();
 
+    public ArrayList<Products> data() {
+        ArrayList<Products> productList = new ArrayList<>();
+        String sql = "select proId, proName,proImage,proPrice from tbProductInfo";
+        try {
+            cn = connect.GetConnectDB();
+            stm = cn.createStatement();
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                Products product = new Products();
+                product.setProId(rs.getInt("proId"));
+                product.setProName(rs.getString("proName"));
+                product.setProImage(rs.getString("proImage"));
+                product.setProPrice(rs.getFloat("proPrice"));
+                productList.add(product);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                cn.close();
+                stm.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return productList;
+    }
+
     public ArrayList<ProductsCategory> ListCategoryDB() {
         String sql = "SELECT * FROM tbProductCategory;";
         try {
@@ -31,9 +61,9 @@ public class ProductsDAO {
             stm = cn.createStatement();
             rs = stm.executeQuery(sql);
             while (rs.next()) {
-                ProductsCategory category = new ProductsCategory(rs.getInt(1),
+                ProductsCategory cat = new ProductsCategory(rs.getInt(1),
                         rs.getString(2));
-                this.category.add(category);
+                this.category.add(cat);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,10 +134,12 @@ public class ProductsDAO {
             e.printStackTrace();
         } finally {
             try {
-                if (pStm != null)
+                if (pStm != null) {
                     pStm.close();
-                if (cn != null)
+                }
+                if (cn != null) {
                     cn.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -131,17 +163,18 @@ public class ProductsDAO {
                 pStm.setInt(7, pro.getProId());
 
                 // copy image to folder image only if imagePath is not empty
-
                 pStm.executeUpdate();
 
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 try {
-                    if (pStm != null)
+                    if (pStm != null) {
                         pStm.close();
-                    if (cn != null)
+                    }
+                    if (cn != null) {
                         cn.close();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -186,17 +219,18 @@ public class ProductsDAO {
                 pStm.setInt(8, pro.getProId());
 
                 // copy image to folder image only if imagePath is not empty
-
                 pStm.executeUpdate();
 
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 try {
-                    if (pStm != null)
+                    if (pStm != null) {
                         pStm.close();
-                    if (cn != null)
+                    }
+                    if (cn != null) {
                         cn.close();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
