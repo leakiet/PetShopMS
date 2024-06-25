@@ -1,191 +1,198 @@
 .mainFxmlClass {
-    /* Styles for the main form */
-    #mainForm {
-        -fx-background-color: #f0f0f0;
-    }
+  /* Styles for the main form */
+  #mainForm {
+    -fx-background-color: #f0f0f0;
+  }
 
-    /* Styles for the menu */
-    #formMenu {
-        -fx-background-color: #dcdcdc;
-    }
+  /* Styles for the menu */
+  #formMenu {
+    -fx-background-color: #dcdcdc;
+  }
 
-    #menuPicture {
-        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
-    }
+  #menuPicture {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
+  }
 
-    #menuFullName {
-        -fx-font-size: 18px;
-        -fx-font-weight: bold;
-        -fx-text-fill: #333;
-    }
+  #menuFullName {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+  }
 
-    #formMenu Label {
-        -fx-font-size: 18px;
-        -fx-padding: 10px;
-        -fx-cursor: hand;
-        -fx-background-color: transparent;
-        -fx-border-color: transparent;
-        -fx-alignment: center;
-    }
+  #formMenu Label {
+    -fx-font-size: 18px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-alignment: center;
+  }
 
-    #formMenu Label:hover {
-        -fx-background-color: #b0b0b0;
-        -fx-border-radius: 5px;
-    }
+  #formMenu Label:hover {
+    -fx-background-color: #b0b0b0;
+    -fx-border-radius: 5px;
+  }
 
-    #formMenu Button {
-        -fx-font-size: 14px;
-        -fx-padding:  10px;
-        -fx-background-color: #ff6666;
-        -fx-text-fill: white;
-        -fx-border-radius: 5px;
-    }
+  #formMenu Button {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-background-color: #ff6666;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+  }
 
-    #formMenu Button:hover {
-        -fx-background-color: #ff4d4d;
-    }
+  #formMenu Button:hover {
+    -fx-background-color: #ff4d4d;
+  }
 
-    #formMenu VBox {
-        -fx-padding: 10px;
-    }
+  #formMenu VBox {
+    -fx-padding: 10px;
+  }
 
-    /* Styles for the Products section */
-    #formProducts {
-        -fx-background-color: #ffffff;
-    }
+  /* Styles for the Products section */
+  #formProducts {
+    -fx-background-color: #ffffff;
+  }
 
-    #formProductsList Label {
-        -fx-font-size: 14px;
-        -fx-padding: 5px;
-        -fx-alignment: center; /* Align center */
-        -fx-background-color: #f5f5f5;
-        -fx-border-color: #dcdcdc;
-        -fx-border-width: 1px;
-        -fx-border-radius: 5px;
-        -fx-hgrow: ALWAYS; /* Ensure the labels grow to take available space */
-    }
+  #formProductsList Label {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-alignment: center; /* Align center */
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #dcdcdc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-hgrow: ALWAYS; /* Ensure the labels grow to take available space */
+  }
 
-    #gridPane {
-        -fx-padding: 10px;
-        -fx-hgap: 10px;
-        -fx-vgap: 10px;
-    }
+  #gridPane {
+    -fx-padding: 10px;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+  }
 
-    #formSearchProducts {
-        -fx-background-color: #2a9df4;
-    }
+  #formSearchProducts {
+    -fx-background-color: #2a9df4;
+  }
 
-    #formSearchProducts Label {
-        -fx-text-fill: white;
-        -fx-font-size: 30px;
-    }
+  #formSearchProducts Label {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+  }
 
-    #formSearchProducts TextField, #formSearchProducts ComboBox {
-        -fx-font-size: 16px;
-        -fx-padding: 5px;
-    }
+  #formSearchProducts TextField,
+  #formSearchProducts ComboBox {
+    -fx-font-size: 16px;
+    -fx-padding: 5px;
+  }
 
-    #gridPane {
-        -fx-padding: 10px;
-        -fx-hgap: 10px;
-        -fx-vgap: 10px;
-    }
+  #gridPane {
+    -fx-padding: 10px;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+  }
 
-    #formBill {
-        -fx-background-color: #ffffe0;
-        -fx-padding: 20px;
-    }
+  #formBill {
+    -fx-background-color: #ffffe0;
+    -fx-padding: 20px;
+  }
 
-    #formBill Label {
-        -fx-font-size: 18px;
-    }
+  #formBill Label {
+    -fx-font-size: 18px;
+  }
 
-    #formBill TextField {
-        -fx-font-size: 14px;
-        -fx-padding: 5px;
-    }
+  #formBill TextField {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+  }
 
-    #formBill Button {
-        -fx-font-size: 14px;
-        -fx-padding:  10px;
-        -fx-background-color: #4caf50;
-        -fx-text-fill: white;
-        -fx-border-radius: 5px;
-    }
+  #formBill Button {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+  }
 
-    #formBill Button:hover {
-        -fx-background-color: #45a049;
-    }
+  #formBill Button:hover {
+    -fx-background-color: #45a049;
+  }
 
-    /* Styles for the Grooming section */
-    #formGrooming TableView, #formGrooming ListView {
-        -fx-border-color: #dcdcdc;
-    }
+  /* Styles for the Grooming section */
+  #formGrooming TableView,
+  #formGrooming ListView {
+    -fx-border-color: #dcdcdc;
+  }
 
-    #formAddGrooming Label {
-        -fx-font-size: 20px;
-    }
+  #formAddGrooming Label {
+    -fx-font-size: 20px;
+  }
 
-    #formAddGrooming TextField, #formAddGrooming DatePicker {
-        -fx-font-size: 14px;
-        -fx-padding: 5px;
-    }
+  #formAddGrooming TextField,
+  #formAddGrooming DatePicker {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+  }
 
-    #formAddGrooming Button {
-        -fx-font-size: 14px;
-        -fx-padding:  10px;
-        -fx-background-color: #4caf50;
-        -fx-text-fill: white;
-        -fx-border-radius: 5px;
-    }
+  #formAddGrooming Button {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-background-color: #4caf50;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+  }
 
-    #formAddGrooming Button:hover {
-        -fx-background-color: #45a049;
-    }
+  #formAddGrooming Button:hover {
+    -fx-background-color: #45a049;
+  }
 
-    /* Styles for the Inventory section */
-    #formInventory {
-        -fx-background-color: #ffffff;
-    }
+  /* Styles for the Inventory section */
+  #formInventory {
+    -fx-background-color: #ffffff;
+  }
 
-    #formInventory Label {
-        -fx-font-size: 30px;
-    }
+  #formInventory Label {
+    -fx-font-size: 20px;
+  }
 
-    #formInventory TableView {
-        -fx-border-color: #dcdcdc;
-    }
+  #formInventory TableView {
+    -fx-border-color: #dcdcdc;
+    /* -fx-border-radius: 5px; */
+    -fx-padding: 4px;
+    -fx-font-size: 18px;
+    -fx-text-align: center;
+    -fx-alignment: CENTER;
+  }
 
-    /* Styles for the Customers section */
-    #formCustomers {
-        -fx-background-color: #ffffff;
-    }
+  /* Styles for the Customers section */
+  #formCustomers {
+    -fx-background-color: #ffffff;
+  }
 
-    #formCustomers Label {
-        -fx-font-size: 30px;
-    }
+  #formCustomers Label {
+    -fx-font-size: 30px;
+  }
 
-    #formCustomers TableView {
-        -fx-border-color: #dcdcdc;
-    }
+  #formCustomers TableView {
+    -fx-border-color: #dcdcdc;
+  }
 
-    /* Styles for the Invoices section */
-    #formInvoices {
-        -fx-background-color: #ffffff;
-    }
+  /* Styles for the Invoices section */
+  #formInvoices {
+    -fx-background-color: #ffffff;
+  }
 
-    #formInvoices Label {
-        -fx-font-size: 30px;
-    }
+  #formInvoices Label {
+    -fx-font-size: 30px;
+  }
 
-    #formInvoices TableView {
-        -fx-border-color: #dcdcdc;
-    }
-
+  #formInvoices TableView {
+    -fx-border-color: #dcdcdc;
+  }
 }
 
-.product{
-    #formProductsList Label {
-        -fx-font-size: 30px;
-    }
+.product {
+  #formProductsList Label {
+    -fx-font-size: 30px;
+  }
 }

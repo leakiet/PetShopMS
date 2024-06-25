@@ -78,17 +78,6 @@ public class Products {
         this.proDate = proDate;
     }
 
-    public Products(String proName, String proSKU, String proCategory, String proImage,
-            String proDescription, int proQuantity, float proPrice) {
-        this.proName = proName;
-        this.proSKU = proSKU;
-        this.proCategory = proCategory;
-        this.proImage = proImage;
-        this.proDescription = proDescription;
-        this.proQuantity = proQuantity;
-        this.proPrice = proPrice;
-    }
-
     public Products() {
 
     }

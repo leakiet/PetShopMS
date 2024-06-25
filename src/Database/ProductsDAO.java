@@ -62,7 +62,7 @@ public class ProductsDAO {
         return products;
     }
 
-    public Products AddProductDB(Products pro, String imagePath) {
+    public Products AddProductDB(Products pro, String imagePath, String pathRandom) {
         String sql = "INSERT INTO tbProductInfo (proName, proSKU, proCategory ,proImage, proDescription, proQuantity, proPrice) VALUES (?, ?, ?, ? , ?, ?, ?)";
         String targetDir = "src/images/";
         try {
@@ -81,8 +81,14 @@ public class ProductsDAO {
                 Files.delete(oldPath);
             }
 
-            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-            pro.setProImage(targetPath.toString());
+            String fileNameNoExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+            String proImg = targetDir + fileNameNoExtension + pathRandom + "."
+                    + fileName.substring(fileName.lastIndexOf('.') + 1);
+            Files.copy(sourcePath, Paths.get(proImg), StandardCopyOption.REPLACE_EXISTING);
+
+            System.out.println(proImg);
+            pro.setProImage(proImg);
+            // pro.setProImage(targetPath.toString());
             pStm.setString(4, pro.getProImage());
             pStm.setString(5, pro.getProDescription());
             pStm.setInt(6, pro.getProQuantity());
@@ -109,51 +115,93 @@ public class ProductsDAO {
         return pro;
     }
 
-    public void UpdateProductDB(Products pro, String imagePath) {
-        String sql = "update tbProductInfo set proName = ?, proSKU = ?,proCategory = ?, proImage = ?, proDescription = ?, proQuantity = ?, proPrice = ? where proId = ?";
+    public void UpdateProductDB(Products pro, String imagePath, String pathRandom, String oldImage) {
         String targetDir = "src/images/";
-        try {
-            cn = connect.GetConnectDB();
-            pStm = cn.prepareStatement(sql);
-            pStm.setString(1, pro.getProName());
-            pStm.setString(2, pro.getProSKU());
-            pStm.setInt(3, pro.getProCateId());
-            if (!imagePath.isEmpty()) {
-                Path sourcePath = Paths.get(imagePath);
-                String fileName = sourcePath.getFileName().toString();
-                Path targetPath = Paths.get(targetDir + fileName);
-
-                Path oldPath = Paths.get(pro.getProImage());
-                if (Files.exists(oldPath) && !oldPath.equals(targetPath)) {
-                    Files.delete(oldPath);
-                }
-
-                Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                pro.setProImage(targetPath.toString());
-            }
-            pStm.setString(4, pro.getProImage());
-            pStm.setString(5, pro.getProDescription());
-            pStm.setInt(6, pro.getProQuantity());
-            pStm.setFloat(7, pro.getProPrice());
-            pStm.setInt(8, pro.getProId());
-
-            // copy image to folder image only if imagePath is not empty
-
-            pStm.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+        if (oldImage == imagePath) {
+            String sql = "update tbProductInfo set proName = ?, proSKU = ?,proCategory = ?, proDescription = ?, proQuantity = ?, proPrice = ? where proId = ?";
             try {
-                if (pStm != null)
-                    pStm.close();
-                if (cn != null)
-                    cn.close();
+                cn = connect.GetConnectDB();
+                pStm = cn.prepareStatement(sql);
+                pStm.setString(1, pro.getProName());
+                pStm.setString(2, pro.getProSKU());
+                pStm.setInt(3, pro.getProCateId());
+                pStm.setString(4, pro.getProDescription());
+                pStm.setInt(5, pro.getProQuantity());
+                pStm.setFloat(6, pro.getProPrice());
+                pStm.setInt(7, pro.getProId());
+
+                // copy image to folder image only if imagePath is not empty
+
+                pStm.executeUpdate();
+
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (pStm != null)
+                        pStm.close();
+                    if (cn != null)
+                        cn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            String sql = "update tbProductInfo set proName = ?, proSKU = ?,proCategory = ?, proImage = ?, proDescription = ?, proQuantity = ?, proPrice = ? where proId = ?";
+            try {
+                cn = connect.GetConnectDB();
+                pStm = cn.prepareStatement(sql);
+                pStm.setString(1, pro.getProName());
+                pStm.setString(2, pro.getProSKU());
+                pStm.setInt(3, pro.getProCateId());
+
+                if (!imagePath.isEmpty()) {
+                    Path sourcePath = Paths.get(imagePath);
+                    String fileName = sourcePath.getFileName().toString();
+                    Path targetPath = Paths.get(targetDir + fileName);
+
+                    Path oldPath = Paths.get(pro.getProImage());
+                    if (Files.exists(oldPath) && !oldPath.equals(targetPath)) {
+                        Files.delete(oldPath);
+                    }
+
+                    if (oldImage == imagePath) {
+                        pro.setProImage(targetPath.toString());
+                        System.out.println("set roi" + pro.getProImage());
+                    } else {
+                        String fileNameNoExtension = fileName.substring(0,
+                                fileName.lastIndexOf('.'));
+                        String proImg = targetDir + fileNameNoExtension + pathRandom + "."
+                                + fileName.substring(fileName.lastIndexOf('.') + 1);
+                        Files.copy(sourcePath, Paths.get(proImg),
+                                StandardCopyOption.REPLACE_EXISTING);
+                        pro.setProImage(proImg);
+                    }
+                }
+
+                pStm.setString(4, pro.getProImage());
+                pStm.setString(5, pro.getProDescription());
+                pStm.setInt(6, pro.getProQuantity());
+                pStm.setFloat(7, pro.getProPrice());
+                pStm.setInt(8, pro.getProId());
+
+                // copy image to folder image only if imagePath is not empty
+
+                pStm.executeUpdate();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (pStm != null)
+                        pStm.close();
+                    if (cn != null)
+                        cn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        // do ảnh bị update khi không chỉnh sửa nếu không thay đổi mới update
     }
 
     public void DeleteDB(int id) {

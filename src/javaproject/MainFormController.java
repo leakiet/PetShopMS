@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -186,7 +188,8 @@ public class MainFormController implements Initializable {
         // productImageView.setImage(new
         // Image(getClass().getResourceAsStream("/Images/imagedefault1.jpg")));
         addImageButton.setText("Choose Image");
-        productCategoryComboBox.getSelectionModel().selectFirst();
+        productCategoryComboBox.setValue(null);
+        ;
     }
 
     public void ComboBoxCategory() {
@@ -206,6 +209,18 @@ public class MainFormController implements Initializable {
         filterProductCategoryComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             seachCategorySelected = newValue;
         });
+    }
+
+    private String generateRandomString(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder(length);
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            sb.append(characters.charAt(index));
+        }
+        return sb.toString();
     }
 
     public void DisplayProducts() {
@@ -428,6 +443,7 @@ public class MainFormController implements Initializable {
                 throw new IllegalArgumentException("Product name cannot be empty!");
             }
             String productCategory = selectedCategory;
+            String productNameCate = selectedNameCategory;
             if (productCategory == null) {
                 throw new IllegalArgumentException("Please select a category!");
             }
@@ -435,12 +451,20 @@ public class MainFormController implements Initializable {
             if (productDescription.isEmpty()) {
                 throw new IllegalArgumentException("Product description cannot be empty!");
             }
+
             Path sourcePath = Paths.get(imagePath);
             String fileName = sourcePath.getFileName().toString();
             if (fileName == null) {
                 throw new IllegalArgumentException("Please select an image!");
             }
-            String proImg = targetDir + fileName;
+
+            String fileNameNoExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+            String randomStringImage = generateRandomString(5);
+            String proImg = targetDir + fileNameNoExtension + randomStringImage + "."
+                    + fileName.substring(fileName.lastIndexOf('.') + 1);
+            System.out.println(proImg);
+            // String proImg = targetDir + fileName;
+
             float productPrice = Float.parseFloat(productPriceTextField.getText());
             if (productPrice <= 0) {
                 throw new IllegalArgumentException("Product price must be greater than zero!");
@@ -468,11 +492,20 @@ public class MainFormController implements Initializable {
             if (proQuantity <= 0) {
                 throw new IllegalArgumentException("Product quantity must be greater than zero!");
             }
-            Products pro = new Products(productName, productSku, productCategory, proImg,
-                    productDescription, proQuantity, productPrice, date);
-            dao.AddProductDB(pro, imagePath);
-            productsList.add(pro);
-            ResetField();
+            Alert alert = new Alert(AlertType.CONFIRMATION,
+                    "Are you sure you want to add this product " + "'" + productName + "'" + " ?", ButtonType.YES,
+                    ButtonType.CANCEL);
+            alert.showAndWait();
+            alert.setTitle("Confirm Add Product");
+
+            if (alert.getResult() == ButtonType.YES) {
+                Products pro = new Products(productName, productSku, productNameCate, proImg,
+                        productDescription, proQuantity, productPrice, date);
+                dao.AddProductDB(pro, imagePath, randomStringImage);
+                productsList.add(pro);
+                ResetField();
+            }
+
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
@@ -484,6 +517,14 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleUpdateButton(ActionEvent event) {
+        if (proSelected == null) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("No product selected");
+            alert.setContentText("Please select a product to update.");
+            alert.showAndWait();
+            return;
+        }
         try {
             String productName = productNameTextField.getText();
             if (productName.isEmpty()) {
@@ -521,25 +562,70 @@ public class MainFormController implements Initializable {
                 throw new IllegalArgumentException("Please select an image!");
             }
 
-            String proImg = targetDir + fileName;
+            // String proImg = targetDir + fileName;
             LocalDate productDate = LocalDate.now();
             String date = String.valueOf(productDate);
 
-            Products proEdit = new Products(proSelected.getProId(),
-                    productName.equals(proSelected.getProName()) ? proSelected.getProName() : productName,
-                    proSKU.equals(proSelected.getProSKU()) ? proSelected.getProSKU() : proSKU,
-                    selectedNameCategory.equals(proSelected.getProCategory()) ? proSelected.getProCategory()
-                            : selectedNameCategory,
-                    proCate == proSelected.getProCateId() ? proSelected.getProCateId() : proCate,
-                    proImg.equals(proSelected.getProImage()) ? proSelected.getProImage() : proImg,
-                    proDescription.equals(proSelected.getProDescription()) ? proSelected.getProDescription()
-                            : proDescription,
-                    productQuantity == proSelected.getProQuantity() ? proSelected.getProQuantity() : productQuantity,
-                    productPrice == proSelected.getProPrice() ? proSelected.getProPrice() : productPrice,
-                    date.equals(proSelected.getProDate()) ? proSelected.getProDate() : date);
-            dao.UpdateProductDB(proEdit, imagePath);
-            productsList.set(indexSelected, proEdit);
-            ResetField();
+            if (imagePath == proSelected.getProImage()) {
+                String proImg = targetDir + fileName;
+                Alert alert = new Alert(AlertType.CONFIRMATION,
+                        "Are you sure you want to update this product " + "'" + productName + "'" + " ?",
+                        ButtonType.YES,
+                        ButtonType.CANCEL);
+                alert.showAndWait();
+                alert.setTitle("Confirm Update Product");
+
+                if (alert.getResult() == ButtonType.YES) {
+                    Products proEdit = new Products(proSelected.getProId(),
+                            productName.equals(proSelected.getProName()) ? proSelected.getProName() : productName,
+                            proSKU.equals(proSelected.getProSKU()) ? proSelected.getProSKU() : proSKU,
+                            selectedNameCategory.equals(proSelected.getProCategory()) ? proSelected.getProCategory()
+                                    : selectedNameCategory,
+                            proCate == proSelected.getProCateId() ? proSelected.getProCateId() : proCate,
+                            proImg.equals(proSelected.getProImage()) ? proSelected.getProImage() : proImg,
+                            proDescription.equals(proSelected.getProDescription()) ? proSelected.getProDescription()
+                                    : proDescription,
+                            productQuantity == proSelected.getProQuantity() ? proSelected.getProQuantity()
+                                    : productQuantity,
+                            productPrice == proSelected.getProPrice() ? proSelected.getProPrice() : productPrice,
+                            date.equals(proSelected.getProDate()) ? proSelected.getProDate() : date);
+                    dao.UpdateProductDB(proEdit, imagePath, null, proSelected.getProImage());
+                    productsList.set(indexSelected, proEdit);
+                    ResetField();
+                }
+            } else {
+                String fileNameNoExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+                String randomStringImage = generateRandomString(5);
+                String proImg = targetDir + fileNameNoExtension + randomStringImage + "."
+                        + fileName.substring(fileName.lastIndexOf('.') + 1);
+
+                Alert alert = new Alert(AlertType.CONFIRMATION,
+                        "Are you sure you want to update this product " + "'" + productName + "'" + " ?",
+                        ButtonType.YES,
+                        ButtonType.CANCEL);
+                alert.showAndWait();
+                alert.setTitle("Confirm Update Product");
+
+                if (alert.getResult() == ButtonType.YES) {
+                    Products proEdit = new Products(proSelected.getProId(),
+                            productName.equals(proSelected.getProName()) ? proSelected.getProName() : productName,
+                            proSKU.equals(proSelected.getProSKU()) ? proSelected.getProSKU() : proSKU,
+                            selectedNameCategory.equals(proSelected.getProCategory()) ? proSelected.getProCategory()
+                                    : selectedNameCategory,
+                            proCate == proSelected.getProCateId() ? proSelected.getProCateId() : proCate,
+                            proImg.equals(proSelected.getProImage()) ? proSelected.getProImage() : proImg,
+                            proDescription.equals(proSelected.getProDescription()) ? proSelected.getProDescription()
+                                    : proDescription,
+                            productQuantity == proSelected.getProQuantity() ? proSelected.getProQuantity()
+                                    : productQuantity,
+                            productPrice == proSelected.getProPrice() ? proSelected.getProPrice() : productPrice,
+                            date.equals(proSelected.getProDate()) ? proSelected.getProDate() : date);
+                    dao.UpdateProductDB(proEdit, imagePath, randomStringImage, proSelected.getProImage());
+                    productsList.set(indexSelected, proEdit);
+                    ResetField();
+                }
+            }
+
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
@@ -552,13 +638,26 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleDeleteButton(ActionEvent event) {
-        int id = proSelected.getProId();
+        if (proSelected == null) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("No product selected");
+            alert.setContentText("Please select a product to delete.");
+            alert.showAndWait();
+            return;
+        }
+        String productName = proSelected.getProName();
+        Alert alert = new Alert(AlertType.CONFIRMATION,
+                "Are you sure you want to delete this product " + "'" + productName + "'" + " ?", ButtonType.YES,
+                ButtonType.CANCEL);
+        alert.showAndWait();
+        alert.setTitle("Confirm Delete Product");
 
-        // xoa db
-        dao.DeleteDB(id);
-
-        // xoa product ra khỏi ObservableList
-        productsList.remove(indexSelected);
+        if (alert.getResult() == ButtonType.YES) {
+            int id = proSelected.getProId();
+            dao.DeleteDB(id);
+            productsList.remove(indexSelected);
+        }
     }
 
     @FXML
