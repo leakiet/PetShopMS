@@ -2,26 +2,35 @@ package Models;
 
 public class EmployeeInfo {
     private int empId;
-    private String empName;
+    private String empName;  
+    private String empGender;
+    private String empDOB;
     private String empUser;
     private String empPassword;
     private String empQuestion;
     private String empAnwser;
+    private String empPicture;
+    private String empJoinDate;
     private boolean empIsActive;
 
     public EmployeeInfo() {
     }
 
-    public EmployeeInfo(int empId, String empName, String empUser, String empPassword, String empQuestion, String empAnwser, boolean empIsActive) {
+    public EmployeeInfo(int empId, String empName, String empGender, String empDOB, String empUser, String empPassword, String empQuestion, String empAnwser, String empPicture, String empJoinDate) {
         this.empId = empId;
         this.empName = empName;
+        this.empGender = empGender;
+        this.empDOB = empDOB;
         this.empUser = empUser;
         this.empPassword = empPassword;
         this.empQuestion = empQuestion;
         this.empAnwser = empAnwser;
-        this.empIsActive = empIsActive;
+        this.empPicture = empPicture;
+        this.empJoinDate = empJoinDate;
     }
 
+    
+    
     public int getEmpId() {
         return empId;
     }
@@ -36,6 +45,22 @@ public class EmployeeInfo {
 
     public void setEmpName(String empName) {
         this.empName = empName;
+    }
+
+    public String getEmpGender() {
+        return empGender;
+    }
+
+    public void setEmpGender(String empGender) {
+        this.empGender = empGender;
+    }
+
+    public String getEmpDOB() {
+        return empDOB;
+    }
+
+    public void setEmpDOB(String empDOB) {
+        this.empDOB = empDOB;
     }
 
     public String getEmpUser() {
@@ -70,6 +95,22 @@ public class EmployeeInfo {
         this.empAnwser = empAnwser;
     }
 
+    public String getEmpPicture() {
+        return empPicture;
+    }
+
+    public void setEmpPicture(String empPicture) {
+        this.empPicture = empPicture;
+    }
+
+    public String getEmpJoinDate() {
+        return empJoinDate;
+    }
+
+    public void setEmpJoinDate(String empJoinDate) {
+        this.empJoinDate = empJoinDate;
+    }
+
     public boolean isEmpIsActive() {
         return empIsActive;
     }
@@ -77,6 +118,6 @@ public class EmployeeInfo {
     public void setEmpIsActive(boolean empIsActive) {
         this.empIsActive = empIsActive;
     }
-    
-    
+
+   
 }

@@ -288,7 +288,6 @@ public class LoginFormController implements Initializable {
                 error = true;
             }
 
-            // Validate Username (no special characters, min 6 characters)
             if (!username.matches("^[a-zA-Z0-9_]+$") || username.length() < 6) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error Message");
@@ -298,7 +297,6 @@ public class LoginFormController implements Initializable {
                 error = true;
             }
 
-            // Validate Password (min 6 characters)
             if (password.length() < 6) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error Message");

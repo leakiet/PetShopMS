@@ -100,7 +100,7 @@ public class ProductsDAO {
             pStm = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             pStm.setString(1, pro.getProName());
             pStm.setString(2, pro.getProSKU());
-            pStm.setString(3, pro.getProCategory());
+            pStm.setInt(3, pro.getProCateId());
 
             Path sourcePath = Paths.get(imagePath);
             String fileName = sourcePath.getFileName().toString();

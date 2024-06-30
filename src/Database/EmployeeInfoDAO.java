@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javaproject.EmployeeData;
 import javaproject.LoginFormController;
 
 public class EmployeeInfoDAO {
@@ -19,13 +20,12 @@ public class EmployeeInfoDAO {
     static Statement stm = null;
     static ResultSet rs = null;
     static PreparedStatement pStatement = null;
-
-    private ArrayList<EmployeeInfo> empList;
+//    private ArrayList<EmployeeInfo> empList;
     private Alert alert;
 
-    public EmployeeInfoDAO() {
-        empList = new ArrayList<>();
-    }
+//    public EmployeeInfoDAO() {
+//        empList = new ArrayList<>();
+//    }
 
     public boolean loginUser(String username, String password, String accountType) {
         String sql;
@@ -48,6 +48,18 @@ public class EmployeeInfoDAO {
                     alert.setHeaderText(null);
                     alert.setContentText("Login Successfully");
                     alert.showAndWait();
+                    
+                    EmployeeData.id = rs.getInt("empId");
+                    EmployeeData.fullname = rs.getString("empName");
+                    EmployeeData.username = rs.getString("empUser");
+                    EmployeeData.gender = rs.getString("empGender");
+                    EmployeeData.DOB = rs.getString("empDOB");
+                    EmployeeData.joinDate = rs.getString("empJoinDate");
+                    EmployeeData.phone = rs.getInt("empPhone");
+                    EmployeeData.email = rs.getString("empEmail");
+                    EmployeeData.address = rs.getString("empAddress");
+                    EmployeeData.picture = rs.getString("empPicture");
+                    
                     return true;
                 } else {
                     alert = new Alert(AlertType.ERROR);

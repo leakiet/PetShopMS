@@ -18,7 +18,7 @@
    <children>
       <AnchorPane prefHeight="600.0" prefWidth="800.0">
          <children>
-            <AnchorPane fx:id="formLogin" layoutX="400.0" prefHeight="600.0" prefWidth="400.0">
+            <AnchorPane fx:id="formLogin" layoutX="400.0" prefHeight="600.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="123.0" layoutY="105.0" text="LOG IN" textFill="#38723f">
                      <font>
@@ -26,19 +26,19 @@
                      </font>
                   </Label>
                   <TextField fx:id="lgUsername" layoutX="75.0" layoutY="203.0" prefHeight="40.0" prefWidth="250.0" promptText="Username" />
+                  <PasswordField fx:id="lgPassword" layoutX="75.0" layoutY="260.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" />
+                  <TextField fx:id="lgPwShown" layoutX="75.0" layoutY="260.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" visible="false" />
+                  <CheckBox fx:id="lgShowPw" layoutX="75.0" layoutY="308.0" mnemonicParsing="false" onAction="#ocShowPw" prefHeight="40.0" prefWidth="131.0" text="Show Password" />
                   <Button layoutX="75.0" layoutY="356.0" mnemonicParsing="false" onAction="#ocLogin" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: GREEN;" text="Login" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
                   <Hyperlink fx:id="linkForgetPassword" alignment="CENTER" layoutX="135.0" layoutY="470.0" onAction="#switchForgetPassword" prefHeight="40.0" prefWidth="131.0" text="Forgot password?" />
-                  <PasswordField fx:id="lgPassword" layoutX="75.0" layoutY="260.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" />
-                  <TextField fx:id="lgPwShown" layoutX="75.0" layoutY="260.0" prefHeight="40.0" prefWidth="250.0" promptText="Password" visible="false" />
                   <ComboBox fx:id="lgAccountType" layoutX="122.0" layoutY="510.0" prefHeight="31.0" prefWidth="156.0" promptText="Select Account" />
-                  <CheckBox fx:id="lgShowPw" layoutX="75.0" layoutY="308.0" mnemonicParsing="false" onAction="#ocShowPw" prefHeight="40.0" prefWidth="131.0" text="Show Password" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formCreateAccount" layoutX="400.0" prefHeight="600.0" prefWidth="400.0" visible="false">
+            <AnchorPane fx:id="formCreateAccount" layoutX="400.0" prefHeight="600.0" prefWidth="400.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="99.0" layoutY="63.0" text="REGISTER" textFill="#38723f">
                      <font>
@@ -61,7 +61,7 @@
                   <PasswordField fx:id="suPwConfirm" layoutX="76.0" layoutY="312.0" prefHeight="40.0" prefWidth="250.0" promptText="Confirm Password" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="formResetPassword" layoutX="400.0" prefHeight="600.0" prefWidth="400.0" visible="false">
+            <AnchorPane fx:id="formResetPassword" layoutX="400.0" prefHeight="600.0" prefWidth="400.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="54.0" layoutY="93.0" text="RESET PASSWORD" textFill="#38723f">
                      <font>
@@ -80,7 +80,7 @@
                   <PasswordField fx:id="rpConfirmPw" layoutX="76.0" layoutY="389.0" prefHeight="40.0" prefWidth="250.0" promptText="Confirm New Password" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="leftSide" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: GREEN;">
+            <AnchorPane fx:id="leftSide" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: GREEN;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label layoutX="148.0" layoutY="248.0" text="PET SHOP" textFill="WHITE">
                      <font>

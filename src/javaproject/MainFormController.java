@@ -38,9 +38,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -65,8 +67,6 @@ public class MainFormController implements Initializable {
     private AnchorPane formProducts;
     @FXML
     private AnchorPane formSearchProducts;
-    @FXML
-    private TextField inputSearch;
     @FXML
     private AnchorPane formBill;
     @FXML
@@ -99,17 +99,11 @@ public class MainFormController implements Initializable {
     private AnchorPane mainForm;
 
     @FXML
-    private Label updateContact;
-    @FXML
-    private Label updateContact1;
-    @FXML
     private TableColumn<InvoiceItem, String> tcNameInvoice;
     @FXML
     private TableColumn<InvoiceItem, Float> tcPriceInvoice;
     @FXML
     private TableColumn<InvoiceItem, Integer> tcQuantityInvoice;
-    @FXML
-    private Button mc;
     @FXML
     private Label ma_account;
     @FXML
@@ -133,7 +127,7 @@ public class MainFormController implements Initializable {
     @FXML
     private TextField ma_updateEmail;
     @FXML
-    private TextField ma_updateAddress;
+    private TextArea ma_updateAddress;
     @FXML
     private TextField productNameTextField;
     @FXML
@@ -208,21 +202,58 @@ public class MainFormController implements Initializable {
     String seachCategorySelected = "All";
     String imagePath;
     
-    
+    @FXML
+    private Label ma_joinDate;
+    @FXML
+    private Label ma_gender;
+    @FXML
+    private TextField ma_updateDOB;
+    @FXML
+    private TextField ma_updateGender;
+    @FXML
+    private Label ma_DOB;
+    @FXML
+    private ImageView ma_picture;
+    @FXML
+    private Button ma_btnchangePW;
+    @FXML
+    private VBox ma_ChangePwForm;
+    @FXML
+    private PasswordField ma_tfCurrentPW;
+    @FXML
+    private PasswordField ma_tfNewPW;
+    @FXML
+    private PasswordField ma_tfConfirmPW;
+    @FXML
+    private ComboBox<String> pl_category;
+    @FXML
+    private TextField pl_tfSearch;
+
+    public void SetUserData() {
+        menuFullName.setText(EmployeeData.fullname);
+        ma_fullname.setText(EmployeeData.fullname);
+        ma_account.setText(EmployeeData.username);
+        ma_staffId.setText(String.valueOf(EmployeeData.id));
+        ma_joinDate.setText(EmployeeData.joinDate);
+        ma_DOB.setText(EmployeeData.DOB);
+        ma_gender.setText(EmployeeData.gender);
+        ma_phone.setText(String.valueOf(EmployeeData.phone));
+        ma_address.setText(EmployeeData.address);
+        ma_email.setText(EmployeeData.email);
+        String path = "file:/D:/Java2/javaproject/" + EmployeeData.picture;
+        var image = new Image(path);
+        menuPicture.setImage(image);
+        ma_picture.setImage(image);
+    }
 
     public void DisplayProduct() {
-        ArrayList<Products> productList;
-        productList = dao.data();
-
-        if (productList == null) {
-            System.out.println("Product List is Null");
-        }
-
+        ObservableList<Products> pList = filteredProducts;
+        
         int column = 0;
         int row = 1;
 
         try {
-            for (int i = 0; i < productList.size(); i++) {
+            for (int i = 0; i < pList.size(); i++) {
                 FXMLLoader loader = new FXMLLoader();
                 URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
                 loader.setLocation(url);
@@ -233,10 +264,10 @@ public class MainFormController implements Initializable {
 
                 AnchorPane pane = loader.load();
                 ProductCardController controller = loader.getController();
-                controller.setData(productList.get(i));
+                controller.setData(pList.get(i));
                 controller.setMainController(this);
 
-                if (column == 3) {
+                if (column == 4) {
                     column = 0;
                     ++row;
                 }
@@ -263,15 +294,15 @@ public class MainFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        SetUserData();
         DisplayProduct();
         InvoiceTable();
-        
         handleOnDragImage();
         DisplayProducts();
         ComboBoxCategory();
     }
-    
-     public void ResetField() {
+
+    public void ResetField() {
         productNameTextField.setText("");
         producSKUTextField.setText("");
         productDescriptionTextField.setText("");
@@ -286,11 +317,21 @@ public class MainFormController implements Initializable {
     }
 
     public void ComboBoxCategory() {
+        pl_category.setItems(category);
+        pl_category.valueProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                selectedCategory = String.valueOf(category.indexOf(newValue) + 1);
+            } catch (Exception e) {
+                selectedCategory = "0";
+            }
+//            selectedNameCategory = newValue;
+        });
+        
         productCategoryComboBox.setItems(category);
         productCategoryComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 selectedCategory = String.valueOf(category.indexOf(newValue) + 1);
-                System.out.println(selectedCategory);
+//                System.out.println(selectedCategory);
             } catch (Exception e) {
                 selectedCategory = "0";
             }
@@ -340,8 +381,7 @@ public class MainFormController implements Initializable {
         productDateColumn.setCellValueFactory(new PropertyValueFactory<>("proDate"));
         productTableView.setItems(filteredProducts);
     }
-    
-    
+
     private void handleOnDragImage() {
         addImageButton.setOnDragOver(event -> {
             if (event.getGestureSource() != addImageButton && event.getDragboard().hasFiles()) {
@@ -387,6 +427,7 @@ public class MainFormController implements Initializable {
         formCustomers.setVisible(false);
         formInvoices.setVisible(false);
         formMyAccount.setVisible(false);
+//        DisplayProduct();
     }
 
     @FXML
@@ -454,25 +495,39 @@ public class MainFormController implements Initializable {
     }
 
     @FXML
-    private void handleChangePw(MouseEvent event) {
-    }
-
-    @FXML
-    private void ma_btnChangePW() {
-    }
-
-    @FXML
     private void handleSwitchUpdate(ActionEvent event) {
         ma_updateContactForm.setVisible(true);
         ma_contactForm.setVisible(false);
-
+        ma_updateFullname.setText(ma_fullname.getText());
+        ma_updateDOB.setText(ma_DOB.getText());
+        ma_updateGender.setText(ma_gender.getText());
+        ma_updatePhone.setText(ma_phone.getText());
+        ma_updateEmail.setText(ma_email.getText());
+        ma_updateAddress.setText(ma_address.getText());
     }
 
     @FXML
     private void handleBackToInfomation(ActionEvent event) {
         ma_updateContactForm.setVisible(false);
         ma_contactForm.setVisible(true);
+    }
 
+    @FXML
+    private void ma_openChangePW(ActionEvent event) {
+        ma_ChangePwForm.setVisible(true);
+    }
+
+    @FXML
+    private void ma_closeChangePW(ActionEvent event) {
+        ma_ChangePwForm.setVisible(false);
+    }
+    
+    @FXML
+    private void ma_handleUpdatePW(ActionEvent event) {
+    }
+
+    @FXML
+    private void ma_updatePicture(MouseEvent event) {
     }
 
     @FXML
@@ -480,12 +535,8 @@ public class MainFormController implements Initializable {
     }
 
     @FXML
-    private void updateCancelUpdate(ActionEvent event) {
-    }
-
-    @FXML
     private void handleAddImage(ActionEvent event) {
-         FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Image");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Images", "*.*"),
@@ -524,6 +575,7 @@ public class MainFormController implements Initializable {
                 throw new IllegalArgumentException("Product name cannot be empty!");
             }
             String pCategory = selectedCategory;
+            int proCate = Integer.parseInt(selectedCategory);
             String productNameCate = selectedNameCategory;
             System.out.println(pCategory);
             if (pCategory == null) {
@@ -581,9 +633,10 @@ public class MainFormController implements Initializable {
             alert.setTitle("Confirm Add Product");
 
             if (alert.getResult() == ButtonType.YES) {
-                Products pro = new Products(productName, productSku, productNameCate, proImg,
+                Products pro = new Products(productName, productSku, productNameCate, proCate, proImg,
                         productDescription, proQuantity, productPrice, date);
                 dao.AddProductDB(pro, imagePath, randomStringImage);
+                
                 productsList.add(pro);
                 ResetField();
             }
@@ -599,7 +652,7 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleUpdateButton(ActionEvent event) {
-         if (proSelected == null) {
+        if (proSelected == null) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning");
             alert.setHeaderText("No product selected");
@@ -662,13 +715,13 @@ public class MainFormController implements Initializable {
                             productName.equals(proSelected.getProName()) ? proSelected.getProName() : productName,
                             proSKU.equals(proSelected.getProSKU()) ? proSelected.getProSKU() : proSKU,
                             selectedNameCategory.equals(proSelected.getProCategory()) ? proSelected.getProCategory()
-                                    : selectedNameCategory,
+                            : selectedNameCategory,
                             proCate == proSelected.getProCateId() ? proSelected.getProCateId() : proCate,
                             proImg.equals(proSelected.getProImage()) ? proSelected.getProImage() : proImg,
                             proDescription.equals(proSelected.getProDescription()) ? proSelected.getProDescription()
-                                    : proDescription,
+                            : proDescription,
                             productQuantity == proSelected.getProQuantity() ? proSelected.getProQuantity()
-                                    : productQuantity,
+                            : productQuantity,
                             productPrice == proSelected.getProPrice() ? proSelected.getProPrice() : productPrice,
                             date.equals(proSelected.getProDate()) ? proSelected.getProDate() : date);
                     dao.UpdateProductDB(proEdit, imagePath, null, proSelected.getProImage());
@@ -693,13 +746,13 @@ public class MainFormController implements Initializable {
                             productName.equals(proSelected.getProName()) ? proSelected.getProName() : productName,
                             proSKU.equals(proSelected.getProSKU()) ? proSelected.getProSKU() : proSKU,
                             selectedNameCategory.equals(proSelected.getProCategory()) ? proSelected.getProCategory()
-                                    : selectedNameCategory,
+                            : selectedNameCategory,
                             proCate == proSelected.getProCateId() ? proSelected.getProCateId() : proCate,
                             proImg.equals(proSelected.getProImage()) ? proSelected.getProImage() : proImg,
                             proDescription.equals(proSelected.getProDescription()) ? proSelected.getProDescription()
-                                    : proDescription,
+                            : proDescription,
                             productQuantity == proSelected.getProQuantity() ? proSelected.getProQuantity()
-                                    : productQuantity,
+                            : productQuantity,
                             productPrice == proSelected.getProPrice() ? proSelected.getProPrice() : productPrice,
                             date.equals(proSelected.getProDate()) ? proSelected.getProDate() : date);
                     dao.UpdateProductDB(proEdit, imagePath, randomStringImage, proSelected.getProImage());
@@ -714,7 +767,6 @@ public class MainFormController implements Initializable {
             alert.setHeaderText("Invalid input");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-            return;
         }
     }
 
@@ -796,7 +848,9 @@ public class MainFormController implements Initializable {
             System.out.println("Exception loading image: " + cause.getMessage());
         }
     }
-    
-    
 
+    @FXML
+    private void pl_handleSearch(MouseEvent event) {
+    }
+    
 }

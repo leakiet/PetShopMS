@@ -68,11 +68,12 @@ public class Products {
         this.proDate = proDate;
     }
 
-    public Products(String proName, String proSKU, String proCategory, String proImage,
+    public Products(String proName, String proSKU, String proCategory, int proCateId, String proImage,
             String proDescription, int proQuantity, float proPrice, String proDate) {
         this.proName = proName;
         this.proSKU = proSKU;
         this.proCategory = proCategory;
+        this.proCateId = proCateId;
         this.proImage = proImage;
         this.proDescription = proDescription;
         this.proQuantity = proQuantity;
