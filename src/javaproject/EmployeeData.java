@@ -4,7 +4,7 @@ public class EmployeeData {
      public static int id;
      public static String fullname;  
      public static String username;
-     public static int phone;
+     public static String phone;
      public static String email;
      public static String address;
      public static String gender;

@@ -26,15 +26,14 @@ public class EmployeeInfoDAO {
 //    public EmployeeInfoDAO() {
 //        empList = new ArrayList<>();
 //    }
-
     public boolean loginUser(String username, String password, String accountType) {
         String sql;
-        if(accountType == "Staff"){
-             sql = "SELECT * FROM tbEmployeeInfo WHERE empUser =?  and empPassword = ? ";
+        if (accountType == "Staff") {
+            sql = "SELECT * FROM tbEmployeeInfo WHERE empUser =?  and empPassword = ? ";
         } else {
-             sql = "SELECT * FROM tbAdmin WHERE adUser =?  and adPassword = ? ";
+            sql = "SELECT * FROM tbAdmin WHERE adUser =?  and adPassword = ? ";
         }
-        
+
         try {
             cn = connect.GetConnectDB();
             pStatement = cn.prepareStatement(sql);
@@ -48,18 +47,18 @@ public class EmployeeInfoDAO {
                     alert.setHeaderText(null);
                     alert.setContentText("Login Successfully");
                     alert.showAndWait();
-                    
+
                     EmployeeData.id = rs.getInt("empId");
                     EmployeeData.fullname = rs.getString("empName");
                     EmployeeData.username = rs.getString("empUser");
                     EmployeeData.gender = rs.getString("empGender");
                     EmployeeData.DOB = rs.getString("empDOB");
                     EmployeeData.joinDate = rs.getString("empJoinDate");
-                    EmployeeData.phone = rs.getInt("empPhone");
+                    EmployeeData.phone = rs.getString("empPhone");
                     EmployeeData.email = rs.getString("empEmail");
                     EmployeeData.address = rs.getString("empAddress");
                     EmployeeData.picture = rs.getString("empPicture");
-                    
+
                     return true;
                 } else {
                     alert = new Alert(AlertType.ERROR);
@@ -164,4 +163,69 @@ public class EmployeeInfoDAO {
         }
         return false;
     }
+
+    public boolean changePassword(String username, String password, String newPassword) {
+        String checkSql = "SELECT * FROM tbEmployeeInfo WHERE empUser = ? and empPassword = ? ";
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(checkSql);
+            pStatement.setString(1, username);
+            pStatement.setString(2, password);
+            rs = pStatement.executeQuery();
+
+            if (rs.next()) {
+                String updateSql = "UPDATE tbEmployeeInfo SET empPassword = ? WHERE empUser = ?";
+                pStatement = cn.prepareStatement(updateSql);
+                pStatement.setString(1, newPassword);
+                pStatement.setString(2, username);
+                int rowsAffected = pStatement.executeUpdate();
+
+                return rowsAffected > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                pStatement.close();
+                cn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return false;
+    }
+
+    public boolean updateEmployeeInfo(String username, String fullName, String dob, String gender, String phone, String email, String address) {
+        String updateSql = "UPDATE tbEmployeeInfo SET empName = ?, empDOB = ?, empGender = ?, empPhone = ?, empEmail = ?, empAddress = ? WHERE empUser = ?";
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(updateSql);
+            pStatement.setString(1, fullName);
+            pStatement.setString(2, dob);
+            pStatement.setString(3, gender);
+            pStatement.setString(4, phone);
+            pStatement.setString(5, email);
+            pStatement.setString(6, address);
+            pStatement.setString(7, username);
+            int rowsAffected = pStatement.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (pStatement != null) {
+                    pStatement.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return false;
+    }
+    
 }

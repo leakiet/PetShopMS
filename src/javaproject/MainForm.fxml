@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -33,19 +32,19 @@
                             <children>
                                 <AnchorPane fx:id="formBill" layoutX="1000.0" prefHeight="880.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <TableView fx:id="tvInvoice" layoutX="10.0" layoutY="100.0" prefHeight="360.0" prefWidth="363.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="8.0">
+                                        <TableView fx:id="tvInvoice" layoutX="10.0" layoutY="100.0" prefHeight="360.0" prefWidth="387.0" AnchorPane.bottomAnchor="500.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
                                             <columns>
-                                                <TableColumn fx:id="tcNameInvoice" maxWidth="326.0" prefWidth="181.0" text="Name" />
-                                                <TableColumn fx:id="tcPriceInvoice" prefWidth="81.0" text="Price" />
-                                                <TableColumn fx:id="tcQuantityInvoice" prefWidth="83.0" text="Quantity" />
+                                                <TableColumn fx:id="tcNameInvoice" maxWidth="326.0" prefWidth="178.0" text="Name" />
+                                                <TableColumn fx:id="tcPriceInvoice" prefWidth="61.0" text="Price" />
+                                                <TableColumn fx:id="tcQuantityInvoice" prefWidth="106.0" text="Quantity" />
                                             </columns>
                                         </TableView>
-                                        <Label layoutX="166.0" layoutY="42.0" prefHeight="45.0" prefWidth="73.0" text="INVOICE" AnchorPane.topAnchor="42.0">
+                                        <Label layoutX="165.0" layoutY="40.0" prefHeight="45.0" prefWidth="73.0" text="INVOICE">
                                             <font>
                                                 <Font size="36.0" />
                                             </font>
                                         </Label>
-                                        <VBox layoutX="53.0" layoutY="470.0" prefHeight="306.0" prefWidth="299.0" spacing="10.0">
+                                        <VBox layoutX="53.0" layoutY="470.0" prefHeight="306.0" prefWidth="299.0" spacing="10.0" AnchorPane.bottomAnchor="150.0">
                                             <children>
                                                 <HBox prefHeight="40.0" prefWidth="421.0">
                                                     <children>
@@ -150,17 +149,17 @@
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
                                         </VBox>
-                                        <Button layoutX="30.0" layoutY="795.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="97.0" text="Pay Invoice">
+                                        <Button layoutX="30.0" layoutY="795.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="97.0" text="Pay Invoice" AnchorPane.bottomAnchor="30.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
                                         </Button>
-                                        <Button layoutX="146.0" layoutY="795.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="Cancel">
+                                        <Button layoutX="146.0" layoutY="795.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="Cancel" AnchorPane.bottomAnchor="30.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
                                         </Button>
-                                        <Button layoutX="253.0" layoutY="795.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" text="Print Receipt">
+                                        <Button layoutX="252.0" layoutY="795.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" text="Print Receipt" AnchorPane.bottomAnchor="30.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -169,16 +168,16 @@
                                 </AnchorPane>
                                 <AnchorPane fx:id="formSearchProducts" prefHeight="100.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0">
                                     <children>
-                                        <Label layoutX="35.0" layoutY="30.0" text="PET SHOP MANAGEMENT SYSTEM" textFill="WHITE">
+                                        <Label layoutX="44.0" layoutY="28.0" prefHeight="45.0" prefWidth="461.0" text="PET SHOP MANAGEMENT SYSTEM" textFill="WHITE">
                                             <font>
                                                 <Font size="30.0" />
                                             </font>
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="formProductsList" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" style="-fx-background-color: silver;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="100.0">
+                                <AnchorPane fx:id="formProductsList" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" style="-fx-background-color: silver;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="100.0">
                                     <children>
-                                        <Label layoutX="42.0" layoutY="17.0" prefHeight="47.0" prefWidth="404.0" stylesheets="@../Css/mainform.css" text="PRODUCTS">
+                                        <Label layoutX="50.0" layoutY="17.0" prefHeight="47.0" prefWidth="404.0" stylesheets="@../Css/mainform.css" text="PRODUCTS">
                                             <font>
                                                 <Font size="30.0" />
                                             </font>
@@ -196,33 +195,29 @@
                                                   </ScrollPane>
                                  </children>
                               </AnchorPane>
-                                        <ComboBox fx:id="pl_category" layoutX="556.0" layoutY="23.0" prefHeight="35.0" prefWidth="150.0" promptText="Category" />
-                                        <TextField fx:id="pl_tfSearch" layoutX="722.0" layoutY="23.0" prefHeight="35.0" prefWidth="237.0" promptText="Search By Name" />
-                              <ImageView fitHeight="32.0" fitWidth="40.0" layoutX="927.0" layoutY="25.0" onDragDetected="#pl_handleSearch" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../accessories/search-alt-svgrepo-com.png" />
-                                 </image>
-                              </ImageView>
+                                        <ComboBox fx:id="pl_category" layoutX="556.0" layoutY="23.0" prefHeight="35.0" prefWidth="150.0" promptText="All" AnchorPane.rightAnchor="304.0" AnchorPane.topAnchor="23.0" />
+                                        <TextField fx:id="pl_tfSearch" layoutX="722.0" layoutY="23.0" onAction="#pl_handleSearch" prefHeight="35.0" prefWidth="237.0" promptText="Input Name To Search" AnchorPane.rightAnchor="51.0" AnchorPane.topAnchor="23.0" />
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="formGrooming" layoutY="-2.0" prefHeight="880.0" prefWidth="1000.0" visible="false">
+                                <AnchorPane fx:id="formGrooming" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="100.0">
                                     <children>
-                                        <TableView fx:id="tvGroomingSchedule" layoutY="104.0" prefHeight="316.0" prefWidth="1000.0">
+                                        <TableView fx:id="tvGroomingSchedule" prefHeight="300.0" prefWidth="1010.0" AnchorPane.bottomAnchor="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columns>
                                                 <TableColumn minWidth="0.0" prefWidth="56.0" text="ID" />
-                                                <TableColumn prefWidth="146.0" text="Service Name" />
-                                                <TableColumn minWidth="0.0" prefWidth="155.0" text="Customer Name" />
-                                                <TableColumn minWidth="0.0" prefWidth="130.0" text="Customer phone" />
-                                                <TableColumn minWidth="0.0" prefWidth="100.0" text="Pet Name" />
-                                                <TableColumn minWidth="0.0" prefWidth="104.0" text="Pet Weight" />
-                                                <TableColumn minWidth="0.0" prefWidth="117.0" text="Schedule Time" />
-                                                <TableColumn minWidth="0.0" prefWidth="72.0" text="Price" />
-                                                <TableColumn minWidth="0.0" prefWidth="118.0" text="Booking Time" />
+                                                <TableColumn prefWidth="174.0" text="Service Name" />
+                                                <TableColumn minWidth="0.0" prefWidth="149.0" text="Customer Name" />
+                                                <TableColumn minWidth="0.0" prefWidth="131.0" text="Customer phone" />
+                                                <TableColumn minWidth="0.0" prefWidth="111.0" text="Pet Name" />
+                                                <TableColumn minWidth="0.0" prefWidth="98.0" text="Pet Weight" />
+                                                <TableColumn minWidth="0.0" prefWidth="122.0" text="Schedule Time" />
+                                                <TableColumn minWidth="100.0" prefWidth="100.0" text="Price" />
+                                                <TableColumn minWidth="100.0" prefWidth="100.0" text="Date" />
+                                    <TableColumn minWidth="100.0" prefWidth="100.0" text="Status" />
                                             </columns>
                                         </TableView>
-                                        <AnchorPane fx:id="formAddGrooming" layoutX="412.0" layoutY="428.0" prefHeight="438.0" prefWidth="588.0">
+                                        <AnchorPane fx:id="formAddGrooming" layoutX="421.0" layoutY="340.0" prefHeight="365.0" prefWidth="552.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0">
                                             <children>
-                                                <HBox layoutX="87.0" layoutY="24.0" prefHeight="35.0" prefWidth="480.0">
+                                                <HBox layoutX="69.0" layoutY="25.0" prefHeight="35.0" prefWidth="480.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Service Name:">
                                                             <font>
@@ -232,7 +227,7 @@
                                                         <TextField editable="false" prefHeight="35.0" prefWidth="341.0" promptText="Service Name" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="133.0" layoutY="66.0" prefHeight="35.0" prefWidth="387.0">
+                                                <HBox layoutX="81.0" layoutY="78.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Customer Name:">
                                                             <font>
@@ -242,7 +237,7 @@
                                                         <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Name" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="133.0" layoutY="109.0" prefHeight="35.0" prefWidth="387.0">
+                                                <HBox layoutX="81.0" layoutY="121.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Customer Phone:">
                                                             <font>
@@ -252,7 +247,7 @@
                                                         <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Phone" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="133.0" layoutY="151.0" prefHeight="35.0" prefWidth="387.0">
+                                                <HBox layoutX="81.0" layoutY="163.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Pet Name:">
                                                             <font>
@@ -262,7 +257,7 @@
                                                         <TextField prefHeight="35.0" prefWidth="228.0" promptText="Pet Name" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="133.0" layoutY="195.0" prefHeight="35.0" prefWidth="387.0">
+                                                <HBox layoutX="81.0" layoutY="207.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Pet Weight:">
                                                             <font>
@@ -272,7 +267,7 @@
                                                         <TextField prefHeight="35.0" prefWidth="228.0" promptText="Pet Weight" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="133.0" layoutY="244.0" prefHeight="35.0" prefWidth="387.0">
+                                                <HBox layoutX="81.0" layoutY="256.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Schedule Time:">
                                                             <font>
@@ -282,7 +277,7 @@
                                                         <DatePicker prefHeight="35.0" prefWidth="225.0" promptText="Time" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="133.0" layoutY="286.0" prefHeight="35.0" prefWidth="387.0">
+                                                <HBox layoutX="81.0" layoutY="298.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Service Price:">
                                                             <font>
@@ -292,115 +287,106 @@
                                                         <TextField prefHeight="35.0" prefWidth="228.0" promptText="Service Price" />
                                                     </children>
                                                 </HBox>
-                                                <Button layoutX="197.0" layoutY="342.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="89.0" text="Schedule">
+                                                <Button layoutX="145.0" layoutY="354.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="89.0" text="Schedule">
                                                     <font>
                                                         <Font size="14.0" />
                                                     </font>
                                                 </Button>
-                                                <Button layoutX="309.0" layoutY="342.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Cancel">
+                                                <Button layoutX="257.0" layoutY="354.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Cancel">
                                                     <font>
                                                         <Font size="14.0" />
                                                     </font>
                                                 </Button>
-                                                <Button layoutX="400.0" layoutY="342.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="97.0" text="Add Invoice">
+                                                <Button layoutX="348.0" layoutY="354.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="97.0" text="Add Invoice">
                                                     <font>
                                                         <Font size="14.0" />
                                                     </font>
                                                 </Button>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane layoutX="14.0" layoutY="428.0" prefHeight="422.0" prefWidth="363.0">
-                                            <children>
-                                                <ListView layoutX="7.0" layoutY="14.0" prefHeight="403.0" prefWidth="350.0" />
-                                            </children>
-                                        </AnchorPane>
-                                    </children>
-                                </AnchorPane>
-                                <AnchorPane fx:id="formTitleGrooming" prefHeight="100.0" prefWidth="1000.0" style="-fx-background-color: green;" visible="false">
-                                    <children>
-                                        <Label layoutX="35.0" layoutY="30.0" text="PET SHOP MANAGEMENT SYSTEM" textFill="WHITE">
-                                            <font>
-                                                <Font size="30.0" />
-                                            </font>
-                                        </Label>
+                              <TableView layoutX="40.0" layoutY="392.0" prefHeight="370.0" prefWidth="370.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="590.0">
+                                <columns>
+                                  <TableColumn prefWidth="269.0" text="Service Name" />
+                                  <TableColumn prefWidth="104.0" text="Price" />
+                                </columns>
+                              </TableView>
                                     </children>
                                 </AnchorPane>
                             </children>
                         </AnchorPane>
                         <AnchorPane fx:id="formInventory" prefHeight="78.0" prefWidth="1398.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <AnchorPane layoutY="1.0" prefHeight="100.0" prefWidth="1398.0">
+                                <AnchorPane prefHeight="100.0" prefWidth="1410.0" style="-fx-background-color: silver;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <Label layoutX="31.0" layoutY="28.0" text="PET SHOP MANAGEMENT SYSTEM">
                                             <font>
                                                 <Font size="30.0" />
                                             </font>
                                         </Label>
-                                        <Label layoutX="1171.0" layoutY="51.0" text="INVENTORY">
+                                        <Label layoutX="1171.0" layoutY="51.0" text="INVENTORY" AnchorPane.rightAnchor="100.0">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <TableView fx:id="productTableView" layoutX="-6.0" layoutY="101.0" onMouseClicked="#handleTableInventory" prefHeight="448.0" prefWidth="1398.0">
+                                <TableView fx:id="productTableView" layoutY="100.0" onMouseClicked="#handleTableInventory" prefHeight="448.0" prefWidth="1410.0" AnchorPane.bottomAnchor="360.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                                     <columns>
-                                        <TableColumn fx:id="productIdColumn" prefWidth="49.666656494140625" text="Id" />
-                                        <TableColumn fx:id="productImageColumn" prefWidth="126.33334350585938" text="Image" />
-                                        <TableColumn fx:id="productSkuColumn" prefWidth="124.66665649414062" text="SKU" />
-                                        <TableColumn fx:id="productNameColumn" prefWidth="125.3333740234375" text="Name" />
-                                        <TableColumn fx:id="productCategoryColumn" prefWidth="152.33331298828125" text="Category" />
-                                        <TableColumn fx:id="productDescriptionColumn" prefWidth="277.666748046875" text="Description" />
-                                        <TableColumn fx:id="productQuantityColumn" prefWidth="191.0" text="Quantity" />
-                                        <TableColumn fx:id="productPriceColumn" prefWidth="142.0" text="Price" />
-                                        <TableColumn fx:id="productDateColumn" prefWidth="216.3333740234375" text="Date" />
+                                        <TableColumn fx:id="productIdColumn" prefWidth="54.0" text="Id" />
+                                        <TableColumn fx:id="productImageColumn" prefWidth="165.0" text="Image" />
+                                        <TableColumn fx:id="productSkuColumn" prefWidth="113.0" text="SKU" />
+                                        <TableColumn fx:id="productNameColumn" prefWidth="179.0" text="Name" />
+                                        <TableColumn fx:id="productCategoryColumn" prefWidth="155.0" text="Category" />
+                                        <TableColumn fx:id="productDescriptionColumn" prefWidth="267.0" text="Description" />
+                                        <TableColumn fx:id="productQuantityColumn" prefWidth="166.0" text="Quantity" />
+                                        <TableColumn fx:id="productPriceColumn" prefWidth="155.0" text="Price" />
+                                        <TableColumn fx:id="productDateColumn" prefWidth="155.0" text="Date" />
                                     </columns>
                                 </TableView>
-                                <AnchorPane layoutY="550.0" prefHeight="328.0" prefWidth="1399.0">
+                                <AnchorPane layoutY="550.0" prefHeight="360.0" prefWidth="1410.0" AnchorPane.bottomAnchor="0.0">
                                     <children>
-                                        <HBox layoutX="41.0" layoutY="31.0" prefHeight="237.0" prefWidth="541.0" spacing="10.0">
-                                            <children>
-                                                <VBox spacing="10.0">
-                                                    <children>
-                                                        <TextField fx:id="productNameTextField" promptText="ProductName" />
-                                                        <TextField fx:id="producSKUTextField" promptText="ProductSKU" />
-                                                        <TextField fx:id="productDescriptionTextField" prefHeight="53.0" prefWidth="203.0" promptText="ProductDescription" />
-                                                        <ComboBox fx:id="productCategoryComboBox" promptText="Select option category" />
-                                                        <Button fx:id="addImageButton" mnemonicParsing="false" onAction="#handleAddImage" onDragDropped="#handleDropImage" prefHeight="31.0" prefWidth="203.0" text="Choose Image" />
-                                                        <TextField fx:id="productPriceTextField" promptText="Price" />
-                                                        <TextField fx:id="productQuantityTextField" promptText="Quantity" />
-                                                    </children>
-                                                </VBox>
-                                                <VBox spacing="10.0">
-                                                    <children>
-                                                        <HBox spacing="10.0">
-                                                            <children>
-                                                                <Button fx:id="addProductButton" mnemonicParsing="false" onAction="#handleAddButton" text="Add" />
-                                                                <Button fx:id="updateProductButton" mnemonicParsing="false" onAction="#handleUpdateButton" text="Update" />
-                                                                <Button fx:id="deleteProductButton" mnemonicParsing="false" onAction="#handleDeleteButton" text="delete" />
-                                                            </children>
-                                                        </HBox>
-                                                    </children>
-                                                </VBox>
-                                                <Button fx:id="clearBtn" mnemonicParsing="false" onMouseClicked="#handleClearField" text="clear" />
-                                            </children>
-                                        </HBox>
-                                        <HBox layoutX="745.0" layoutY="31.0" prefHeight="60.0" prefWidth="523.0">
+                                            <HBox layoutX="678.0" layoutY="89.0" prefHeight="208.0" prefWidth="388.0" spacing="10.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="215.0" prefWidth="306.0" spacing="10.0">
+                                       <children>
+                                                        <Button fx:id="addImageButton" mnemonicParsing="false" onAction="#handleAddImage" onDragDropped="#handleDropImage" prefHeight="31.0" prefWidth="126.0" text="Choose Image" />
+                                                          <Button fx:id="addProductButton" mnemonicParsing="false" onAction="#handleAddButton" prefHeight="31.0" prefWidth="136.0" text="Add" />
+                                                          <Button fx:id="updateProductButton" mnemonicParsing="false" onAction="#handleUpdateButton" prefHeight="31.0" prefWidth="123.0" text="Update" />
+                                                          <Button fx:id="deleteProductButton" mnemonicParsing="false" onAction="#handleDeleteButton" prefHeight="31.0" prefWidth="127.0" text="Delete" />
+                                                      <Button fx:id="clearBtn" mnemonicParsing="false" onMouseClicked="#handleClearField" prefHeight="31.0" prefWidth="127.0" text="Clear" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </VBox>
+                                              <ImageView fx:id="productImageView" fitHeight="208.0" fitWidth="231.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                                            </HBox>
+                                          <VBox layoutX="320.0" layoutY="51.0" prefHeight="258.0" prefWidth="313.0" spacing="10.0">
+                                              <children>
+                                                  <TextField fx:id="productNameTextField" promptText="ProductName" />
+                                                  <TextField fx:id="producSKUTextField" promptText="ProductSKU" />
+                                                  <TextField fx:id="productDescriptionTextField" prefHeight="36.0" prefWidth="316.0" promptText="ProductDescription" />
+                                                  <ComboBox fx:id="productCategoryComboBox" promptText="Select option category" />
+                                                  <TextField fx:id="productPriceTextField" promptText="Price" />
+                                                  <TextField fx:id="productQuantityTextField" promptText="Quantity" />
+                                              </children>
+                                          </VBox>
+                                        <HBox layoutX="678.0" layoutY="51.0" prefHeight="38.0" prefWidth="482.0">
                                             <children>
                                                 <ComboBox fx:id="filterProductCategoryComboBox" prefWidth="150.0" promptText="Filter Category">
                                                     <HBox.margin>
                                                         <Insets right="30.0" />
                                                     </HBox.margin>
                                                 </ComboBox>
-                                                <TextField fx:id="searchProductTextField" promptText="Seach By name">
+                                                <TextField fx:id="searchProductTextField" prefHeight="31.0" prefWidth="190.0" promptText="Seach By name">
                                                     <HBox.margin>
                                                         <Insets right="30.0" />
                                                     </HBox.margin>
                                                 </TextField>
-                                                <Button fx:id="searchProductButton" mnemonicParsing="false" onAction="#handleSeachButton" text="seach" />
+                                                <Button fx:id="searchProductButton" mnemonicParsing="false" onAction="#handleSeachButton" prefHeight="31.0" prefWidth="83.0" text="seach" />
                                             </children>
                                         </HBox>
-                                        <ImageView fx:id="productImageView" fitHeight="208.0" fitWidth="231.0" layoutX="1143.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true" />
                                     </children>
                                 </AnchorPane>
                             </children>
@@ -473,21 +459,21 @@
                         </AnchorPane>
                         <AnchorPane fx:id="formMyAccount" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <AnchorPane prefHeight="100.0" prefWidth="1398.0">
+                                <AnchorPane prefHeight="100.0" prefWidth="1410.0" style="-fx-background-color: SILVER;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <Label layoutX="31.0" layoutY="28.0" text="PET SHOP MANAGEMENT SYSTEM">
                                             <font>
                                                 <Font size="30.0" />
                                             </font>
                                         </Label>
-                                        <Label layoutX="1246.0" layoutY="58.0" prefHeight="30.0" prefWidth="111.0" text="My Account">
+                                        <Label layoutX="1246.0" layoutY="58.0" prefHeight="30.0" prefWidth="111.0" text="My Account" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="50.0">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane layoutX="9.0" layoutY="100.0" prefHeight="780.0" prefWidth="1380.0">
+                                <AnchorPane layoutY="100.0" prefHeight="780.0" prefWidth="1410.0">
                                     <children>
                                         <ImageView fx:id="ma_picture" fitHeight="222.0" fitWidth="270.0" layoutX="222.0" layoutY="64.0" onMouseClicked="#ma_updatePicture" pickOnBounds="true" preserveRatio="true">
                                             <image>
@@ -688,7 +674,7 @@
                                                                         <Font size="18.0" />
                                                                     </font>
                                                                 </Label>
-                                                                <Label fx:id="ma_address" alignment="TOP_LEFT" prefHeight="71.0" prefWidth="297.0" wrapText="true">
+                                                                <Label fx:id="ma_address" alignment="TOP_LEFT" prefHeight="71.0" prefWidth="297.0" text="Address:" wrapText="true">
                                                                     <font>
                                                                         <Font size="18.0" />
                                                                     </font>
@@ -713,7 +699,7 @@
                                                 </VBox>
                                                 <VBox fx:id="ma_updateContactForm" layoutX="17.0" layoutY="74.0" prefHeight="528.0" prefWidth="485.0">
                                                     <children>
-                                                        <Label alignment="CENTER" prefHeight="45.0" prefWidth="478.0" text="Update Your Contact information">
+                                                        <Label alignment="CENTER" prefHeight="45.0" prefWidth="478.0" text="UPDATE CONTACT INFORMATION">
                                                             <font>
                                                                 <Font size="30.0" />
                                                             </font>
@@ -897,7 +883,7 @@
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <Label fx:id="menuFullName" layoutX="15.0" layoutY="240.0" prefHeight="49.0" prefWidth="212.0" text="full name">
+                        <Label fx:id="menuFullName" layoutX="15.0" layoutY="240.0" prefHeight="49.0" prefWidth="212.0" text="Full Name">
                             <font>
                                 <Font size="18.0" />
                             </font>

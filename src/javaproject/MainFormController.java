@@ -1,5 +1,6 @@
 package javaproject;
 
+import Database.EmployeeInfoDAO;
 import Database.ProductsDAO;
 import Models.InvoiceItem;
 import Models.Products;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -49,6 +51,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -73,8 +76,6 @@ public class MainFormController implements Initializable {
     private TableView<InvoiceItem> tvInvoice;
     @FXML
     private AnchorPane formProductsList;
-    @FXML
-    private AnchorPane formTitleGrooming;
     @FXML
     private AnchorPane formGrooming;
     @FXML
@@ -179,8 +180,9 @@ public class MainFormController implements Initializable {
     @FXML
     private TableView<Products> productTableView;
 
+    EmployeeInfoDAO empDAO = new EmployeeInfoDAO();
     ProductsDAO dao = new ProductsDAO();
-    ObservableList<InvoiceItem> invoiceItems = FXCollections.observableArrayList();
+    ObservableList<InvoiceItem> invoiceItemList = FXCollections.observableArrayList();
 
     ObservableList<Products> productsList = FXCollections.observableArrayList(dao.ListProductDB());
     ObservableList<ProductsCategory> productCategory = FXCollections.observableArrayList(dao.ListCategoryDB());
@@ -193,15 +195,16 @@ public class MainFormController implements Initializable {
                     productCategory.stream().map(ProductsCategory::getCateName),
                     Stream.of("All")).toArray(String[]::new));
 
+    FilteredList<Products> filteredProducts = new FilteredList<>(productsList, p -> true);
+
     Products proSelected;
     int indexSelected;
-    FilteredList<Products> filteredProducts = new FilteredList<>(productsList, p -> true);
     String selectedCategory;
     String selectedNameCategory;
     String targetDir = "src/images/";
     String seachCategorySelected = "All";
     String imagePath;
-    
+
     @FXML
     private Label ma_joinDate;
     @FXML
@@ -237,7 +240,7 @@ public class MainFormController implements Initializable {
         ma_joinDate.setText(EmployeeData.joinDate);
         ma_DOB.setText(EmployeeData.DOB);
         ma_gender.setText(EmployeeData.gender);
-        ma_phone.setText(String.valueOf(EmployeeData.phone));
+        ma_phone.setText(EmployeeData.phone);
         ma_address.setText(EmployeeData.address);
         ma_email.setText(EmployeeData.email);
         String path = "file:/D:/Java2/javaproject/" + EmployeeData.picture;
@@ -246,13 +249,14 @@ public class MainFormController implements Initializable {
         ma_picture.setImage(image);
     }
 
-    public void DisplayProduct() {
+    public void DisplayProductList() {
         ObservableList<Products> pList = filteredProducts;
-        
+
         int column = 0;
         int row = 1;
 
         try {
+            gridPane.getChildren().clear();
             for (int i = 0; i < pList.size(); i++) {
                 FXMLLoader loader = new FXMLLoader();
                 URL url = new File("src/javaproject/productCard.fxml").toURI().toURL();
@@ -282,20 +286,43 @@ public class MainFormController implements Initializable {
     }
 
     public void addInvoiceItem(InvoiceItem item) {
-        invoiceItems.add(item);
+        for (int index = 0; index < invoiceItemList.size(); index++) {
+            InvoiceItem ii = invoiceItemList.get(index);
+            if (ii.getName().equals(item.getName())) {
+                ii.setQuantity(ii.getQuantity() + item.getQuantity());
+                invoiceItemList.set(index, ii);
+                return;
+            }
+        }
+        invoiceItemList.add(item);
     }
 
     private void InvoiceTable() {
         tcNameInvoice.setCellValueFactory(new PropertyValueFactory<>("Name"));
         tcPriceInvoice.setCellValueFactory(new PropertyValueFactory<>("Price"));
         tcQuantityInvoice.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
-        tvInvoice.setItems(invoiceItems);
+        tvInvoice.setItems(invoiceItemList);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        productsList.addListener((ListChangeListener<Products>) change -> {
+            while (change.next()) {
+                if (change.wasAdded() || change.wasRemoved() || change.wasUpdated()) {
+                    DisplayProductList();
+                }
+            }
+        });
+        pl_category.valueProperty().addListener((obs, oldValue, newValue) -> handleCategoryFilter());
+
+        pl_tfSearch.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                pl_handleSearch();
+            }
+        });
+
+        DisplayProductList();
         SetUserData();
-        DisplayProduct();
         InvoiceTable();
         handleOnDragImage();
         DisplayProducts();
@@ -317,16 +344,11 @@ public class MainFormController implements Initializable {
     }
 
     public void ComboBoxCategory() {
-        pl_category.setItems(category);
+        pl_category.setItems(seachCategories);
         pl_category.valueProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                selectedCategory = String.valueOf(category.indexOf(newValue) + 1);
-            } catch (Exception e) {
-                selectedCategory = "0";
-            }
-//            selectedNameCategory = newValue;
+            seachCategorySelected = newValue;
         });
-        
+
         productCategoryComboBox.setItems(category);
         productCategoryComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             try {
@@ -419,23 +441,18 @@ public class MainFormController implements Initializable {
     @FXML
     private void switchMenuProducts(MouseEvent event) throws IOException {
         formProducts.setVisible(true);
-        formSearchProducts.setVisible(true);
         formProductsList.setVisible(true);
-        formTitleGrooming.setVisible(false);
         formGrooming.setVisible(false);
         formInventory.setVisible(false);
         formCustomers.setVisible(false);
         formInvoices.setVisible(false);
         formMyAccount.setVisible(false);
-//        DisplayProduct();
     }
 
     @FXML
     private void switchMenuGrooming(MouseEvent event) {
         formProducts.setVisible(true);
-        formSearchProducts.setVisible(false);
         formProductsList.setVisible(false);
-        formTitleGrooming.setVisible(true);
         formGrooming.setVisible(true);
         formInventory.setVisible(false);
         formCustomers.setVisible(false);
@@ -521,9 +538,61 @@ public class MainFormController implements Initializable {
     private void ma_closeChangePW(ActionEvent event) {
         ma_ChangePwForm.setVisible(false);
     }
-    
+
     @FXML
-    private void ma_handleUpdatePW(ActionEvent event) {
+    private void ma_handleUpdatePW(ActionEvent event) throws IOException {
+        Alert alert;
+        if (ma_account.getText().isEmpty() || ma_tfCurrentPW.getText().isEmpty() || ma_tfNewPW.getText().isEmpty() || ma_tfConfirmPW.getText().isEmpty()) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill in all the fields");
+            alert.showAndWait();
+        } else {
+            String username = ma_account.getText();
+            String password = ma_tfCurrentPW.getText();
+            String newPassword = ma_tfNewPW.getText();
+            String confirmPassword = ma_tfConfirmPW.getText();
+            boolean error = false;
+
+            if (!newPassword.equals(confirmPassword)) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Password and Confirm Password do not match");
+                alert.showAndWait();
+                error = true;
+            }
+
+            if (!error) {
+                boolean changePW = empDAO.changePassword(username, password, newPassword);
+                if (changePW) {
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Success Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Password reset successfully. Please Login again !!");
+                    alert.showAndWait();
+
+                    URL url = new File("src/javaproject/LoginForm.fxml").toURI().toURL();
+                    Parent root = FXMLLoader.load(url);
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setTitle("Pet Shop Management System");
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.show();
+
+                    Stage loginStage = (Stage) mainForm.getScene().getWindow();
+                    loginStage.close();
+                } else {
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to change password. Please check your inputs.");
+                    alert.showAndWait();
+                }
+            }
+        }
     }
 
     @FXML
@@ -532,6 +601,68 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleUpdateContact(ActionEvent event) {
+        Alert alert;
+        if (ma_account.getText().isEmpty() || ma_updateFullname.getText().isEmpty() || ma_updateDOB.getText().isEmpty() || ma_updateGender.getText().isEmpty() || ma_updatePhone.getText().isEmpty() || ma_updateEmail.getText().isEmpty() || ma_updateAddress.getText().isEmpty()) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please fill in all the fields");
+            alert.showAndWait();
+        } else {
+            String username = ma_account.getText();
+            String fullname = ma_updateFullname.getText();
+            String dob = ma_updateDOB.getText();
+            String gender = ma_updateGender.getText();
+            String phone = ma_updatePhone.getText();
+            String email = ma_updateEmail.getText();
+            String address = ma_updateAddress.getText();
+
+            boolean error = false;
+
+            if (!phone.matches("0[0-9]{9}")) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Phone number must be 10 digits long and start with 0.");
+                alert.showAndWait();
+                error = true;
+            }
+
+            if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid email format.");
+                alert.showAndWait();
+                error = true;
+            }
+
+            boolean updateSuccess = empDAO.updateEmployeeInfo(username, fullname, dob, gender, phone, email, address);
+            if (updateSuccess) {
+                alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Success Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Information updated successfully.");
+                alert.showAndWait();
+
+                ma_fullname.setText(fullname);
+                ma_DOB.setText(dob);
+                ma_gender.setText(gender);
+                ma_phone.setText(phone);
+                ma_address.setText(address);
+                ma_email.setText(email);
+
+                ma_updateContactForm.setVisible(false);
+                ma_contactForm.setVisible(true);
+
+            } else {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to update information. Please check your inputs.");
+                alert.showAndWait();
+            }
+        }
     }
 
     @FXML
@@ -543,7 +674,7 @@ public class MainFormController implements Initializable {
                 new FileChooser.ExtensionFilter("JPEG", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("JFIF", "*.jfif"));
-                new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
+        new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
 
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
@@ -636,7 +767,7 @@ public class MainFormController implements Initializable {
                 Products pro = new Products(productName, productSku, productNameCate, proCate, proImg,
                         productDescription, proQuantity, productPrice, date);
                 dao.AddProductDB(pro, imagePath, randomStringImage);
-                
+
                 productsList.add(pro);
                 ResetField();
             }
@@ -849,8 +980,37 @@ public class MainFormController implements Initializable {
         }
     }
 
+    // Start Search Product List //
+    public void setProductFilter(String name, String category) {
+        filteredProducts.setPredicate(p -> {
+            if (category != null && category.equals("all")) {
+                return p.getProName().toLowerCase().contains(name);
+            } else {
+                return (category == null
+                        || category.equals(p.getProCategory().toLowerCase()))
+                        && (name.isEmpty() || p.getProName().toLowerCase().contains(name));
+            }
+        });
+    }
+
+    private void handleCategoryFilter() {
+        String cate = pl_category.getValue() != null
+                ? pl_category.getValue().toLowerCase()
+                : null;
+        setProductFilter("", cate);
+        pl_tfSearch.setText("");
+        DisplayProductList();
+    }
+
     @FXML
-    private void pl_handleSearch(MouseEvent event) {
+    private void pl_handleSearch() {
+        String name = pl_tfSearch.getText().toLowerCase();
+        String cate = pl_category.getValue() != null
+                ? pl_category.getValue().toLowerCase()
+                : null;
+        setProductFilter(name, cate);
+        DisplayProductList();
     }
     
+    //End Search Product List //
 }

@@ -4,13 +4,22 @@ public class InvoiceItem {
     private String name;
     private float price;
     private int quantity;
-
+    private int id;
+    
     public InvoiceItem(String name, float price, int quantity) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getName() {
         return name;
     }
@@ -19,7 +28,7 @@ public class InvoiceItem {
         this.name = name;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
