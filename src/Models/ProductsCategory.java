@@ -9,7 +9,10 @@ public class ProductsCategory {
         this.cateName = cateName;
     }
 
- 
+    public ProductsCategory(String cateName) {
+        this.cateName = cateName;
+    }
+
     public int getCateId() {
         return cateId;
     }
@@ -18,7 +21,6 @@ public class ProductsCategory {
         this.cateId = cateId;
     }
 
-  
     public String getCateName() {
         return cateName;
     }

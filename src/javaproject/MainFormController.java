@@ -12,16 +12,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -35,8 +43,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -47,6 +57,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -54,6 +65,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -191,13 +204,8 @@ public class MainFormController implements Initializable {
     ObservableList<Products> productsList = FXCollections.observableArrayList(dao.ListProductDB());
     ObservableList<ProductsCategory> productCategory = FXCollections.observableArrayList(dao.ListCategoryDB());
 
-    ObservableList<String> category = FXCollections.observableArrayList(
-            productCategory.stream().map(ProductsCategory::getCateName).toArray(String[]::new));
-
-    ObservableList<String> seachCategories = FXCollections.observableArrayList(
-            Stream.concat(
-                    productCategory.stream().map(ProductsCategory::getCateName),
-                    Stream.of("All")).toArray(String[]::new));
+    ObservableList<String> category = FXCollections.observableArrayList();
+    ObservableList<String> searchCategories = FXCollections.observableArrayList();
 
     Products proSelected;
     int indexSelected;
@@ -207,6 +215,40 @@ public class MainFormController implements Initializable {
     String targetDir = "src/images/";
     String seachCategorySelected = "All";
     String imagePath;
+    private boolean isUpdateCombobox = true;
+
+    @FXML
+    private Button addcateBtn;
+
+    // Khai báo một biến cờ để kiểm tra sự thay đổi mới
+    public void optionCate() {
+        Runnable updateLists = () -> {
+            if (isUpdateCombobox) {
+                category.clear();
+                searchCategories.clear();
+                List<String> categoryNames = productCategory.stream()
+                        .map(ProductsCategory::getCateName)
+                        .collect(Collectors.toList());
+                List<String> allCategories = new ArrayList<>(categoryNames);
+                allCategories.add("All");
+
+                Platform.runLater(() -> {
+                    category.addAll(categoryNames);
+                    searchCategories.addAll(allCategories);
+                });
+
+                isUpdateCombobox = false; // Đánh dấu là đã cập nhật
+            }
+        };
+
+        productCategory.addListener((ListChangeListener<ProductsCategory>) change -> {
+            isUpdateCombobox = true; // Đánh dấu có sự thay đổi mới
+            updateLists.run();
+        });
+
+        // Gọi updateLists ban đầu để cập nhật combobox
+        updateLists.run();
+    }
 
     public void DisplayProduct() {
         ArrayList<Products> productList;
@@ -262,8 +304,8 @@ public class MainFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         DisplayProduct();
+        optionCate();
         InvoiceTable();
-
         handleOnDragImage();
         DisplayProducts();
         ComboBoxCategory();
@@ -296,7 +338,7 @@ public class MainFormController implements Initializable {
             // System.out.println(selectedCategory);
         });
 
-        filterProductCategoryComboBox.setItems(seachCategories);
+        filterProductCategoryComboBox.setItems(searchCategories);
         filterProductCategoryComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             seachCategorySelected = newValue;
         });
@@ -817,4 +859,145 @@ public class MainFormController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleAddCategory(MouseEvent event) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Add Category");
+        dialog.setHeaderText("Add New Category");
+        // ButtonType closeButtonType = new ButtonType("Close");
+        // updateButtonType.setOnAction(event1 -> handleUpdateCategoryButton(dialog));
+        ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(cancelButtonType);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20));
+
+        Label nameLabel = new Label("Name Category:");
+        grid.add(nameLabel, 0, 0);
+
+        TextField textFieldName = new TextField();
+        grid.add(textFieldName, 1, 0);
+
+        Text messageError = new Text();
+        messageError.setFill(Color.RED);
+        grid.add(messageError, 1, 3);
+
+        Button addBtn = new Button();
+        addBtn.setText("Add");
+        grid.add(addBtn, 0, 4);
+
+        Button updateBtn = new Button();
+        updateBtn.setText("Update");
+        grid.add(updateBtn, 1, 4);
+
+        // addButtonType.setOnAction(event1 -> handleAddCategoryButton(dialog));
+
+        TableView<ProductsCategory> tableCategory = new TableView<>();
+        TableColumn<ProductsCategory, Integer> cateIdColumn = new TableColumn<>("ID");
+        TableColumn<ProductsCategory, String> cateNameColumn = new TableColumn<>("Name");
+
+        cateIdColumn.setPrefWidth(80);
+        cateNameColumn.setPrefWidth(180);
+        AtomicInteger indexcate = new AtomicInteger(0);
+        AtomicInteger cateid = new AtomicInteger(0);
+
+        tableCategory.setOnMouseClicked(event1 -> {
+            if (event1.getButton() == MouseButton.PRIMARY) {
+                ProductsCategory selectedItemcategory = tableCategory.getSelectionModel().getSelectedItem();
+                if (selectedItemcategory != null) {
+                    cateid.set(selectedItemcategory.getCateId());
+                    int indexcategory = tableCategory.getSelectionModel().getSelectedIndex();
+                    indexcate.set(indexcategory);
+                    textFieldName.setText(selectedItemcategory.getCateName());
+                }
+            }
+        });
+
+        dialog.getDialogPane().setContent(new VBox(8));
+
+        addBtn.setOnAction(ev -> {
+            try {
+                String cateName = textFieldName.getText();
+                if (cateName.isEmpty()) {
+                    throw new IllegalArgumentException("Please input name category");
+                }
+                ProductsCategory category = new ProductsCategory(cateName);
+                Alert alert = new Alert(AlertType.CONFIRMATION,
+                        "Are you sure you want to add this category " + "'" + cateName + "'" + " ?",
+                        ButtonType.YES,
+                        ButtonType.CANCEL);
+                alert.setTitle("Confirm Add Category");
+
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.YES) {
+                    productCategory.add(category);
+                    dao.AddCategoryDB(category);
+                    textFieldName.setText("");
+                    messageError.setText("");
+                    dialog.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                messageError.setText(e.getMessage() + "!");
+            }
+        });
+
+        // Định nghĩa hành động cho nút "Update"
+        updateBtn.setOnAction(ev -> {
+            try {
+                String cateName = textFieldName.getText();
+                if (cateName.isEmpty()) {
+                    throw new IllegalArgumentException("Please select category");
+                }
+                if (cateid.get() == -1) {
+                    throw new IllegalAccessException("Please select category");
+                }
+                Alert alert = new Alert(AlertType.CONFIRMATION,
+                        "Are you sure you want to update this product " + "'" + cateName + "'" + "?",
+                        ButtonType.YES,
+                        ButtonType.CANCEL);
+                alert.setTitle("Confirm Update Product");
+
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.YES) {
+                    ProductsCategory category = new ProductsCategory(cateid.get(), cateName);
+                    productCategory.set(indexcate.get(), category);
+                    dao.UpdateCategoryDB(category);
+                    textFieldName.setText("");
+                    messageError.setText("");
+                    cateid.set(-1);
+                    dialog.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                messageError.setText(e.getMessage() + "!");
+            }
+        });
+
+        cateIdColumn.setCellValueFactory(new PropertyValueFactory<>("CateId"));
+        cateNameColumn.setCellValueFactory(new PropertyValueFactory<>("CateName"));
+        tableCategory.getColumns().addAll(cateIdColumn, cateNameColumn);
+        tableCategory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        try
+
+        {
+            for (ProductsCategory category : productCategory) {
+                tableCategory.getItems().add(category);
+            }
+        } catch (Exception e) {
+            System.out.println("Error getting category data: " + e.getMessage());
+        }
+
+        dialog.getDialogPane().setContent(grid);
+        VBox vbox = new VBox(10);
+        vbox.getChildren().addAll(nameLabel, textFieldName, tableCategory);
+        grid.add(vbox, 0, 2, 3, 1);
+
+        dialog.showAndWait();
+
+    }
 }

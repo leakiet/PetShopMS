@@ -747,6 +747,7 @@
                                             </children>
                                         </HBox>
                                         <ImageView fx:id="productImageView" fitHeight="208.0" fitWidth="231.0" layoutX="775.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
+                              <Button fx:id="addcateBtn" layoutX="776.0" layoutY="105.0" mnemonicParsing="false" onMouseClicked="#handleAddCategory" prefHeight="27.0" prefWidth="153.0" text="Add Category" />
                                     </children>
                                 </AnchorPane>
                             </children>

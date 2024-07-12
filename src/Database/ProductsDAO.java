@@ -147,6 +147,60 @@ public class ProductsDAO {
         return pro;
     }
 
+    public ProductsCategory AddCategoryDB(ProductsCategory cate) {
+        String sql = "INSERT INTO tbProductCategory (cateName) VALUES (?)";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pStm.setString(1, cate.getCateName());
+            pStm.executeUpdate();
+            ResultSet generatedKeys = pStm.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                cate.setCateId(generatedKeys.getInt(1));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pStm != null) {
+                    pStm.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return cate;
+    }
+
+    public void UpdateCategoryDB(ProductsCategory cate) {
+        String sql = "update tbProductCategory set cateName = ? where cateId = ?";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setString(1, cate.getCateName());
+            pStm.setInt(2, cate.getCateId());
+            System.out.println(cate.getCateId());
+            pStm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pStm != null) {
+                    pStm.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void UpdateProductDB(Products pro, String imagePath, String pathRandom, String oldImage) {
         String targetDir = "src/images/";
         if (oldImage == imagePath) {
