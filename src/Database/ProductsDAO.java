@@ -25,35 +25,6 @@ public class ProductsDAO {
 
     private ArrayList<ProductsCategory> category = new ArrayList<>();
 
-    public ArrayList<Products> data() {
-        ArrayList<Products> productList = new ArrayList<>();
-        String sql = "select proId, proName,proImage,proPrice from tbProductInfo";
-        try {
-            cn = connect.GetConnectDB();
-            stm = cn.createStatement();
-            rs = stm.executeQuery(sql);
-            while (rs.next()) {
-                Products product = new Products();
-                product.setProId(rs.getInt("proId"));
-                product.setProName(rs.getString("proName"));
-                product.setProImage(rs.getString("proImage"));
-                product.setProPrice(rs.getFloat("proPrice"));
-                productList.add(product);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                rs.close();
-                cn.close();
-                stm.close();
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return productList;
-    }
-
     public ArrayList<ProductsCategory> ListCategoryDB() {
         String sql = "SELECT * FROM tbProductCategory;";
         try {
@@ -257,4 +228,61 @@ public class ProductsDAO {
             }
         }
     }
+    
+    //Category
+    public ProductsCategory AddCategoryDB(ProductsCategory cate) {
+        String sql = "INSERT INTO tbProductCategory (cateName) VALUES (?)";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            pStm.setString(1, cate.getCateName());
+            pStm.executeUpdate();
+            ResultSet generatedKeys = pStm.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                cate.setCateId(generatedKeys.getInt(1));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pStm != null) {
+                    pStm.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return cate;
+    }
+
+    public void UpdateCategoryDB(ProductsCategory cate) {
+        String sql = "update tbProductCategory set cateName = ? where cateId = ?";
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setString(1, cate.getCateName());
+            pStm.setInt(2, cate.getCateId());
+            System.out.println(cate.getCateId());
+            pStm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pStm != null) {
+                    pStm.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
 }

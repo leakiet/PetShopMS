@@ -1,10 +1,10 @@
 .mainFxmlClass {
-    /* Styles for the main form */
+                
     #mainForm {
         -fx-background-color: #f0f0f0;
+        -fx-font-size: 18px;
     }
-
-    /* Styles for the menu */
+    
     #formMenu {
         -fx-background-color: #dcdcdc;
     }
@@ -14,13 +14,13 @@
     }
 
     #menuFullName {
-        -fx-font-size: 14px;
+        -fx-font-size: 18px;
         -fx-font-weight: bold;
         -fx-text-fill: #333;
     }
 
     #formMenu Label {
-        -fx-font-size: 18px;
+        -fx-font-size: 25px;
         -fx-padding: 10px;
         -fx-cursor: hand;
         -fx-background-color: transparent;
@@ -34,7 +34,7 @@
     }
 
     #formMenu Button {
-        -fx-font-size: 14px;
+        -fx-font-size: 18px;
         -fx-padding:  10px;
         -fx-background-color: #ff6666;
         -fx-text-fill: white;
@@ -49,20 +49,19 @@
         -fx-padding: 10px;
     }
 
-    /* Styles for the Products section */
     #formProducts {
         -fx-background-color: #ffffff;
     }
 
     #formProductsList Label {
-        -fx-font-size: 14px;
+        -fx-font-size: 18px;
         -fx-padding: 5px;
-        -fx-alignment: center; /* Align center */
+        -fx-alignment: center;
         -fx-background-color: #f5f5f5;
         -fx-border-color: #dcdcdc;
         -fx-border-width: 1px;
         -fx-border-radius: 5px;
-        -fx-hgrow: ALWAYS; /* Ensure the labels grow to take available space */
+        -fx-hgrow: ALWAYS;
     }
 
     #gridPane {
@@ -81,7 +80,7 @@
     }
 
     #formSearchProducts TextField, #formSearchProducts ComboBox {
-        -fx-font-size: 16px;
+        -fx-font-size: 18px;
         -fx-padding: 5px;
     }
 
@@ -101,12 +100,12 @@
     }
 
     #formBill TextField {
-        -fx-font-size: 14px;
+        -fx-font-size: 18px;
         -fx-padding: 5px;
     }
 
     #formBill Button {
-        -fx-font-size: 14px;
+        -fx-font-size: 18px;
         -fx-padding:  10px;
         -fx-background-color: #4caf50;
         -fx-text-fill: white;
@@ -127,12 +126,12 @@
     }
 
     #formAddGrooming TextField, #formAddGrooming DatePicker {
-        -fx-font-size: 14px;
+        -fx-font-size: 18px;
         -fx-padding: 5px;
     }
 
     #formAddGrooming Button {
-        -fx-font-size: 14px;
+        -fx-font-size: 18px;
         -fx-padding:  10px;
         -fx-background-color: #4caf50;
         -fx-text-fill: white;
@@ -180,6 +179,10 @@
 
     #formInvoices TableView {
         -fx-border-color: #dcdcdc;
+    }
+    
+    #formMyAccount Label {
+        -fx-font-size: 30px;
     }
 
 }

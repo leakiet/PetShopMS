@@ -5,6 +5,7 @@ public class InvoiceItem {
     private float price;
     private int quantity;
     private int id;
+    private float subTotal;
     
     public InvoiceItem(String name, float price, int quantity) {
         this.name = name;
@@ -12,6 +13,23 @@ public class InvoiceItem {
         this.quantity = quantity;
     }
 
+    public InvoiceItem(String name, float price, int quantity, float subTotal) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.subTotal = subTotal;
+    }
+
+    
+    public float getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(float subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    
     public int getId() {
         return id;
     }

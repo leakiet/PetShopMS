@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="226" pageHeight="425" columnWidth="186" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ff657ac-0fb6-42a5-a133-742185a35eef">
+	<property name="ireport.zoom" value="3.138428376721004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT   graTotal, rName, rPrice, rQuantity
+FROM         dbo.receipt]]>
+	</queryString>
+	<field name="rName" class="java.lang.String"/>
+	<field name="rPrice" class="java.lang.Double"/>
+	<field name="rQuantity" class="java.lang.Integer"/>
+	<field name="graTotal" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="44" y="29" width="100" height="20" uuid="1a8cbab8-543e-4f2c-acbd-738698d4b0a3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Comic Sans MS" size="12"/>
+				</textElement>
+				<text><![CDATA[PetShop]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement key="" positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="0" y="1" width="60" height="20" uuid="5e0e219a-f74b-4063-827e-edabcd8cfe74"/>
+				<textElement textAlignment="Center">
+					<font fontName="Consolas" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Product]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="1" width="63" height="20" uuid="8530c82b-1f29-4232-9716-4ecd0e1fba6a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Consolas" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="2" width="62" height="20" uuid="26a717bd-6e28-47e7-81e9-97d45fc62bdd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Consolas" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Price $]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<line>
+				<reportElement x="2" y="30" width="185" height="1" uuid="70038fe9-d367-47cc-85af-f7cfdbb00c95"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="60" height="30" uuid="b921c22c-1ec5-4f95-ac85-de1042768ccf"/>
+				<textElement textAlignment="Center" markup="styled">
+					<font fontName="Comic Sans MS" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="60" y="0" width="63" height="30" uuid="2638db84-dced-4027-9f5e-f28565f3f92a"/>
+				<textElement textAlignment="Center" markup="styled">
+					<font fontName="Comic Sans MS" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rQuantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="0" width="62" height="30" uuid="844baf38-663c-470f-96dd-fbbe46853769"/>
+				<textElement textAlignment="Center" markup="styled">
+					<font fontName="Comic Sans MS" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rPrice}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="65" y="0" width="58" height="25" uuid="d1e22039-feb5-40e8-849d-42f93981c85d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Comic Sans MS" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total: $]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="123" y="0" width="62" height="25" uuid="a274ac38-0322-40b4-b9fb-116055e1cbd7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Comic Sans MS" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{graTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="14" y="0" width="172" height="20" uuid="475da962-43ed-488e-afc4-07826630d84c"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Comic Sans MS" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[THANK YOU FOR YOUR ORDER!!!]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="86" y="20" width="100" height="20" uuid="7a4b3dbb-7857-4af3-96c4-05283b26b2b6"/>
+				<textElement textAlignment="Right">
+					<font fontName="Comic Sans MS" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

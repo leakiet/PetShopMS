@@ -20,12 +20,10 @@ public class EmployeeInfoDAO {
     static Statement stm = null;
     static ResultSet rs = null;
     static PreparedStatement pStatement = null;
-//    private ArrayList<EmployeeInfo> empList;
     private Alert alert;
 
-//    public EmployeeInfoDAO() {
-//        empList = new ArrayList<>();
-//    }
+    ArrayList<EmployeeInfo> empList = new ArrayList<>();
+
     public boolean loginUser(String username, String password, String accountType) {
         String sql;
         if (accountType == "Staff") {
@@ -48,17 +46,18 @@ public class EmployeeInfoDAO {
                     alert.setContentText("Login Successfully");
                     alert.showAndWait();
 
-                    EmployeeData.id = rs.getInt("empId");
-                    EmployeeData.fullname = rs.getString("empName");
-                    EmployeeData.username = rs.getString("empUser");
-                    EmployeeData.gender = rs.getString("empGender");
-                    EmployeeData.DOB = rs.getString("empDOB");
-                    EmployeeData.joinDate = rs.getString("empJoinDate");
-                    EmployeeData.phone = rs.getString("empPhone");
-                    EmployeeData.email = rs.getString("empEmail");
-                    EmployeeData.address = rs.getString("empAddress");
-                    EmployeeData.picture = rs.getString("empPicture");
-
+                    if (accountType == "Staff") {
+                        EmployeeData.id = rs.getInt("empId");
+                        EmployeeData.fullname = rs.getString("empName");
+                        EmployeeData.username = rs.getString("empUser");
+                        EmployeeData.gender = rs.getString("empGender");
+                        EmployeeData.DOB = rs.getString("empDOB");
+                        EmployeeData.joinDate = rs.getString("empJoinDate");
+                        EmployeeData.phone = rs.getString("empPhone");
+                        EmployeeData.email = rs.getString("empEmail");
+                        EmployeeData.address = rs.getString("empAddress");
+                        EmployeeData.picture = rs.getString("empPicture");
+                    }
                     return true;
                 } else {
                     alert = new Alert(AlertType.ERROR);
@@ -227,5 +226,104 @@ public class EmployeeInfoDAO {
         }
         return false;
     }
-    
+
+    public boolean updateEmpPicture(String username, String imagePath) {
+        String sql = "UPDATE tbEmployeeInfo SET empPicture = ? WHERE empUser = ?";
+
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(sql);
+            pStatement.setString(1, imagePath);
+            pStatement.setString(2, username);
+            int rowsAffected = pStatement.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (pStatement != null) {
+                    pStatement.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public ArrayList<EmployeeInfo> ListEmployee() {
+        String sql = "SELECT * FROM tbEmployeeInfo;";
+        try {
+            cn = connect.GetConnectDB();
+            stm = cn.createStatement();
+            rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                EmployeeInfo emp = new EmployeeInfo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                        rs.getString(5), rs.getString(10), rs.getBoolean(11), rs.getString(12), rs.getString(13), rs.getString(14), rs.getString(9));
+                empList.add(emp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return empList;
+    }
+
+    public void updateStatus(int id, String newStatus) {
+        boolean isActive;
+        if (newStatus.equals("Active")) {
+            isActive = true;
+        } else {
+            isActive = false;
+        }
+
+        String sql = "UPDATE tbEmployeeInfo SET empIsActive = ? WHERE empId = ?";
+
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(sql);
+            pStatement.setBoolean(1, isActive);
+            pStatement.setInt(2, id);
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pStatement != null) {
+                    pStatement.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public void resetPassword(int id, String newPassword) {
+        String updateSql = "UPDATE tbEmployeeInfo SET empPassword = ? WHERE empId = ?";
+        try {
+            pStatement = cn.prepareStatement(updateSql);
+            pStatement.setString(1, newPassword);
+            pStatement.setInt(2, id);
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                rs.close();
+                pStatement.close();
+                cn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
 }

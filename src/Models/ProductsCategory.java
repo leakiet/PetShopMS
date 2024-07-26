@@ -9,6 +9,9 @@ public class ProductsCategory {
         this.cateName = cateName;
     }
 
+    public ProductsCategory(String cateName) {
+        this.cateName = cateName;
+    }
  
     public int getCateId() {
         return cateId;
