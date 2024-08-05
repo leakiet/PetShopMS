@@ -16,6 +16,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -31,7 +32,7 @@
                     <children>
                         <AnchorPane fx:id="formProducts" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <AnchorPane fx:id="formBill" layoutX="1000.0" prefHeight="880.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <AnchorPane fx:id="formBill" layoutX="1010.0" layoutY="-6.0" prefHeight="880.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <TableView fx:id="tvInvoice" layoutX="10.0" layoutY="100.0" prefHeight="360.0" prefWidth="387.0" AnchorPane.bottomAnchor="500.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
                                             <columns>
@@ -63,7 +64,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="40.0" prefWidth="421.0">
                                                     <children>
-                                                        <Label prefHeight="35.0" prefWidth="224.0" text="Promotion Code:">
+                                                        <Label prefHeight="35.0" prefWidth="224.0" text="Use Point">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
@@ -124,7 +125,7 @@
                                                                 <Font size="14.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Name">
+                                                        <TextField fx:id="invoice_CusName" prefHeight="35.0" prefWidth="228.0" promptText="Customer Name">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
@@ -138,7 +139,7 @@
                                                                 <Font size="14.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Phone">
+                                                        <TextField fx:id="invoice_CusPhone" prefHeight="35.0" prefWidth="228.0" promptText="Customer Phone">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
@@ -146,16 +147,13 @@
                                                     </children>
                                                 </HBox>
                                             </children>
-                                            <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                            </padding>
                                         </VBox>
                                         <Button layoutX="30.0" layoutY="795.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="111.0" text="Pay Invoice" AnchorPane.bottomAnchor="40.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
                                         </Button>
-                                        <Button layoutX="145.0" layoutY="827.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="Cancel" AnchorPane.bottomAnchor="40.0">
+                                        <Button layoutX="145.0" layoutY="827.0" mnemonicParsing="false" onAction="#handleCancelnvoice" prefHeight="40.0" prefWidth="89.0" text="Cancel" AnchorPane.bottomAnchor="40.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -165,6 +163,10 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </Button>
+                              <Label fx:id="label_Point" layoutX="225.0" layoutY="777.0" prefHeight="36.0" prefWidth="53.0" text="Point:" visible="false" AnchorPane.bottomAnchor="95.0" />
+                              <Label fx:id="invoice_CusId" layoutX="53.0" layoutY="27.0" text="CusId" />
+                              <Label fx:id="invoice_CusPoint" layoutX="304.0" layoutY="777.0" prefHeight="36.0" prefWidth="45.0" text="Point" visible="false" AnchorPane.bottomAnchor="95.0" />
+                              <Button layoutX="30.0" layoutY="773.0" mnemonicParsing="false" onAction="#handleCheckCustomer" prefHeight="41.0" prefWidth="158.0" text="Check Customer" AnchorPane.bottomAnchor="90.0" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane fx:id="formSearchProducts" prefHeight="100.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="0.0">
@@ -176,14 +178,14 @@
                                         </Label>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane fx:id="formProductsList" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" style="-fx-background-color: silver;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="100.0">
+                                <AnchorPane fx:id="formProductsList" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="100.0">
                                     <children>
-                                        <Label layoutX="50.0" layoutY="17.0" prefHeight="47.0" prefWidth="404.0" stylesheets="@../Css/mainform.css" text="PRODUCTS">
+                                        <Label layoutX="50.0" layoutY="17.0" prefHeight="60.0" prefWidth="660.0" stylesheets="@../Css/mainform.css" text="PRODUCTS" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="300.0">
                                             <font>
                                                 <Font size="30.0" />
                                             </font>
                                         </Label>
-                              <AnchorPane layoutX="14.0" layoutY="64.0" prefHeight="669.0" prefWidth="923.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
+                              <AnchorPane layoutX="14.0" layoutY="164.0" prefHeight="650.0" prefWidth="970.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="164.0">
                                  <children>
                                                   <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="20.0" layoutY="14.0" prefHeight="678.0" prefWidth="964.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
                                                       <content>
@@ -191,43 +193,58 @@
                                                               <rowConstraints>
                                                                   <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                                               </rowConstraints>
+                                             <columnConstraints>
+                                                <ColumnConstraints />
+                                             </columnConstraints>
                                                           </GridPane>
                                                       </content>
                                                   </ScrollPane>
                                  </children>
                               </AnchorPane>
-                                        <ComboBox fx:id="pl_category" layoutX="556.0" layoutY="23.0" prefHeight="35.0" prefWidth="150.0" promptText="All" AnchorPane.rightAnchor="304.0" AnchorPane.topAnchor="23.0" />
-                                        <TextField fx:id="pl_tfSearch" layoutX="722.0" layoutY="23.0" onAction="#pl_handleSearch" prefHeight="35.0" prefWidth="237.0" promptText="Input Name To Search" AnchorPane.rightAnchor="51.0" AnchorPane.topAnchor="23.0" />
+                                        <ComboBox fx:id="pl_category" layoutX="799.0" layoutY="22.0" prefHeight="50.0" prefWidth="150.0" promptText="All" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="22.0" />
+                                        <TextField fx:id="pl_tfSearch" layoutX="200.0" layoutY="90.0" onAction="#pl_handleSearch" prefHeight="60.0" prefWidth="765.0" promptText="Input Barcode" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" />
                                     </children>
                                 </AnchorPane>
                                 <AnchorPane fx:id="formGrooming" layoutY="100.0" prefHeight="780.0" prefWidth="1000.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="100.0">
                                     <children>
-                                        <TableView fx:id="tvGroomingSchedule" prefHeight="300.0" prefWidth="1010.0" AnchorPane.bottomAnchor="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <TableView fx:id="tvServiceSchedule" onMouseClicked="#handleTableServiceSchedule" prefHeight="300.0" prefWidth="1010.0" AnchorPane.bottomAnchor="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columns>
-                                                <TableColumn minWidth="0.0" prefWidth="56.0" text="ID" />
-                                                <TableColumn prefWidth="174.0" text="Service Name" />
-                                                <TableColumn minWidth="0.0" prefWidth="149.0" text="Customer Name" />
-                                                <TableColumn minWidth="0.0" prefWidth="131.0" text="Customer phone" />
-                                                <TableColumn minWidth="0.0" prefWidth="111.0" text="Pet Name" />
-                                                <TableColumn minWidth="0.0" prefWidth="98.0" text="Pet Weight" />
-                                                <TableColumn minWidth="0.0" prefWidth="122.0" text="Schedule Time" />
-                                                <TableColumn minWidth="100.0" prefWidth="100.0" text="Price" />
-                                                <TableColumn minWidth="100.0" prefWidth="100.0" text="Date" />
-                                    <TableColumn minWidth="100.0" prefWidth="100.0" text="Status" />
+                                                <TableColumn fx:id="cl_serviceId" minWidth="50.0" prefWidth="56.0" text="ID" />
+                                                <TableColumn fx:id="cl_serviceName" minWidth="200.0" prefWidth="174.0" text="Service Name" />
+                                    <TableColumn fx:id="cl_scheduleDate" minWidth="200.0" prefWidth="119.0" text="Schedule Date" />
+                                                <TableColumn fx:id="cl_scheduleTime" minWidth="200.0" prefWidth="119.0" text="Schedule Time" />
+                                                <TableColumn fx:id="cl_cusName" minWidth="200.0" prefWidth="149.0" text="Customer Name" />
+                                                <TableColumn fx:id="cl_cusPhone" minWidth="100.0" prefWidth="144.0" text="Customer phone" />
+                                                <TableColumn fx:id="cl_petName" minWidth="150.0" prefWidth="98.0" text="Pet Name" />
+                                                <TableColumn fx:id="cl_petWeight" minWidth="100.0" prefWidth="101.0" text="Pet Weight" />
+                                                <TableColumn fx:id="cl_servicePrice" minWidth="100.0" prefWidth="100.0" text="Price" />
+                                    <TableColumn fx:id="cl_Status" minWidth="100.0" prefWidth="100.0" text="Status" />
+                                                <TableColumn fx:id="cl_Date" minWidth="200.0" prefWidth="100.0" text="Date" />
+                                    <TableColumn fx:id="cl_maxWeight" minWidth="200.0" prefWidth="100.0" text="max Weight" />
                                             </columns>
                                         </TableView>
-                                        <AnchorPane fx:id="formAddGrooming" layoutX="421.0" layoutY="340.0" prefHeight="365.0" prefWidth="552.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="50.0">
+                                        <AnchorPane fx:id="formAddGrooming" layoutX="421.0" layoutY="340.0" prefHeight="475.0" prefWidth="552.0" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="50.0">
                                             <children>
-                                                <HBox layoutX="69.0" layoutY="25.0" prefHeight="35.0" prefWidth="480.0">
+                                                <HBox layoutX="52.0" prefHeight="35.0" prefWidth="480.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Service Name:">
                                                             <font>
                                                                 <Font size="20.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField editable="false" prefHeight="35.0" prefWidth="341.0" promptText="Service Name" />
+                                                        <TextField fx:id="sv_serviceName" editable="false" prefHeight="35.0" prefWidth="341.0" promptText="Service Name" />
                                                     </children>
                                                 </HBox>
+                                    <HBox layoutX="81.0" layoutY="44.0" prefHeight="35.0" prefWidth="387.0">
+                                       <children>
+                                          <Label prefHeight="35.0" prefWidth="224.0" text="Service Price:">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="sv_servicePrice" prefHeight="35.0" prefWidth="228.0" promptText="Service Price" />
+                                       </children>
+                                    </HBox>
                                                 <HBox layoutX="81.0" layoutY="78.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Customer Name:">
@@ -235,7 +252,7 @@
                                                                 <Font size="20.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Name" />
+                                                        <TextField fx:id="sv_cusName" prefHeight="35.0" prefWidth="228.0" promptText="Customer Name" />
                                                     </children>
                                                 </HBox>
                                                 <HBox layoutX="81.0" layoutY="121.0" prefHeight="35.0" prefWidth="387.0">
@@ -245,7 +262,7 @@
                                                                 <Font size="20.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Customer Phone" />
+                                                        <TextField fx:id="sv_cusPhone" prefHeight="35.0" prefWidth="228.0" promptText="Customer Phone" />
                                                     </children>
                                                 </HBox>
                                                 <HBox layoutX="81.0" layoutY="163.0" prefHeight="35.0" prefWidth="387.0">
@@ -255,7 +272,7 @@
                                                                 <Font size="20.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Pet Name" />
+                                                        <TextField fx:id="sv_petName" prefHeight="35.0" prefWidth="228.0" promptText="Pet Name" />
                                                     </children>
                                                 </HBox>
                                                 <HBox layoutX="81.0" layoutY="207.0" prefHeight="35.0" prefWidth="387.0">
@@ -265,52 +282,66 @@
                                                                 <Font size="20.0" />
                                                             </font>
                                                         </Label>
-                                                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Pet Weight" />
+                                                        <TextField fx:id="sv_petWeight" prefHeight="35.0" prefWidth="228.0" promptText="Pet Weight" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="81.0" layoutY="256.0" prefHeight="35.0" prefWidth="387.0">
+                                                <HBox layoutX="81.0" layoutY="256.0" prefHeight="49.0" prefWidth="386.0">
+                                                    <children>
+                                                        <Label prefHeight="35.0" prefWidth="224.0" text="Schedule Date:">
+                                                            <font>
+                                                                <Font size="20.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <DatePicker fx:id="sv_scheduleDate" prefHeight="35.0" prefWidth="225.0" promptText="Date" />
+                                                    </children>
+                                                </HBox>
+                                                <HBox layoutX="81.0" layoutY="305.0" prefHeight="35.0" prefWidth="387.0">
                                                     <children>
                                                         <Label prefHeight="35.0" prefWidth="224.0" text="Schedule Time:">
                                                             <font>
                                                                 <Font size="20.0" />
                                                             </font>
                                                         </Label>
-                                                        <DatePicker prefHeight="35.0" prefWidth="225.0" promptText="Time" />
+                                                        <TextField fx:id="sv_scheduleTime" prefHeight="35.0" prefWidth="228.0" promptText="Schedule Time" />
                                                     </children>
                                                 </HBox>
-                                                <HBox layoutX="81.0" layoutY="298.0" prefHeight="35.0" prefWidth="387.0">
-                                                    <children>
-                                                        <Label prefHeight="35.0" prefWidth="224.0" text="Service Price:">
-                                                            <font>
-                                                                <Font size="20.0" />
-                                                            </font>
-                                                        </Label>
-                                                        <TextField prefHeight="35.0" prefWidth="228.0" promptText="Service Price" />
-                                                    </children>
-                                                </HBox>
-                                                <Button layoutX="145.0" layoutY="354.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="89.0" text="Schedule">
+                                                <Button fx:id="btn_Schedule" layoutX="156.0" layoutY="355.0" mnemonicParsing="false" onAction="#HandleAddService" prefHeight="47.0" prefWidth="108.0" text="Schedule">
                                                     <font>
                                                         <Font size="14.0" />
                                                     </font>
                                                 </Button>
-                                                <Button layoutX="257.0" layoutY="354.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Cancel">
+                                                <Button layoutX="273.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleCancelService" prefHeight="47.0" prefWidth="97.0" text="Cancel">
                                                     <font>
                                                         <Font size="14.0" />
                                                     </font>
                                                 </Button>
-                                                <Button layoutX="348.0" layoutY="354.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="97.0" text="Add Invoice">
+                                                <Button layoutX="378.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleAddServiceToInvoice" prefHeight="47.0" prefWidth="126.0" text="Add Invoice">
                                                     <font>
                                                         <Font size="14.0" />
                                                     </font>
                                                 </Button>
+                                    <Button fx:id="btn_Update" layoutX="156.0" layoutY="355.0" mnemonicParsing="false" onAction="#HandleUpdateService" prefHeight="47.0" prefWidth="108.0" text="Update" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btn_Clear" layoutX="34.0" layoutY="355.0" mnemonicParsing="false" onAction="#clearServiceFields" prefHeight="47.0" prefWidth="108.0" text="Reset">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Button>
+                                    <Label fx:id="sv_maxWeight" layoutX="487.0" layoutY="215.0" text="maxW" />
                                             </children>
                                         </AnchorPane>
-                              <TableView layoutX="40.0" layoutY="392.0" prefHeight="370.0" prefWidth="370.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="590.0">
+                              <TableView fx:id="tvServiceList" fixedCellSize="0.0" layoutX="40.0" layoutY="392.0" onMouseClicked="#handleTableServiceList" prefHeight="370.0" prefWidth="370.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="590.0">
                                 <columns>
-                                  <TableColumn prefWidth="269.0" text="Service Name" />
-                                  <TableColumn prefWidth="104.0" text="Price" />
+                                  <TableColumn fx:id="list_serviceName" minWidth="400.0" prefWidth="342.0" text="Service Name" />
+                                  <TableColumn fx:id="list_servicePrice" minWidth="150.0" prefWidth="90.0" text="Price" />
+                                    <TableColumn fx:id="list_maxWeight" minWidth="150.0" prefWidth="0.0" text="Max Weight" />
                                 </columns>
                               </TableView>
+                              <DatePicker fx:id="sv_SearchDate" layoutX="50.0" layoutY="345.0" onAction="#handleSearchByDate" prefHeight="39.0" prefWidth="197.0" promptText="Select Date" AnchorPane.bottomAnchor="450.0" />
+                              <Button layoutX="261.0" layoutY="345.0" mnemonicParsing="false" onAction="#ShowAllServiceSchedule" text="Show All" AnchorPane.bottomAnchor="450.0" />
                                     </children>
                                 </AnchorPane>
                             </children>
@@ -508,9 +539,9 @@
                                 </AnchorPane>
                                 <AnchorPane layoutY="100.0" prefHeight="780.0" prefWidth="1410.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                                     <children>
-                                        <AnchorPane layoutX="815.0" layoutY="51.0" prefHeight="682.0" prefWidth="518.0">
+                                        <AnchorPane layoutX="472.0" layoutY="97.0" prefHeight="536.0" prefWidth="430.0">
                                             <children>
-                                                <VBox fx:id="ma_contactForm" layoutX="-3.0" layoutY="-3.0" prefHeight="690.0" prefWidth="575.0">
+                                                <VBox fx:id="ma_contactForm" layoutX="-3.0" layoutY="-3.0" prefHeight="590.0" prefWidth="469.0">
                                                     <children>
                                                         <Label alignment="CENTER" prefHeight="45.0" prefWidth="478.0" text="YOUR CONTACT INFORMATION">
                                                             <font>
@@ -600,7 +631,7 @@
                                                                         <Font size="18.0" />
                                                                     </font>
                                                                 </Label>
-                                                                <Label fx:id="ma_phone" prefHeight="45.0" prefWidth="407.0" text="Phone:" HBox.hgrow="ALWAYS">
+                                                                <Label fx:id="ma_phone" prefHeight="32.0" prefWidth="272.0" text="Phone:" HBox.hgrow="ALWAYS">
                                                                     <font>
                                                                         <Font size="18.0" />
                                                                     </font>
@@ -623,7 +654,7 @@
                                                                         <Font size="18.0" />
                                                                     </font>
                                                                 </Label>
-                                                                <Label fx:id="ma_email" prefHeight="45.0" prefWidth="414.0" text="Email:" wrapText="true" HBox.hgrow="ALWAYS">
+                                                                <Label fx:id="ma_email" prefHeight="32.0" prefWidth="295.0" text="Email:" wrapText="true" HBox.hgrow="ALWAYS">
                                                                     <font>
                                                                         <Font size="18.0" />
                                                                     </font>
@@ -646,7 +677,7 @@
                                                                         <Font size="18.0" />
                                                                     </font>
                                                                 </Label>
-                                                                <Label fx:id="ma_address" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="143.0" prefWidth="404.0" text="Address" wrapText="true" HBox.hgrow="ALWAYS">
+                                                                <Label fx:id="ma_address" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="143.0" prefWidth="298.0" text="Address" wrapText="true" HBox.hgrow="ALWAYS">
                                                                     <font>
                                                                         <Font size="18.0" />
                                                                     </font>
@@ -669,7 +700,7 @@
                                                         </Button>
                                                     </children>
                                                 </VBox>
-                                                <VBox fx:id="ma_updateContactForm" layoutX="17.0" layoutY="8.0" prefHeight="626.0" prefWidth="542.0" visible="false">
+                                                <VBox fx:id="ma_updateContactForm" layoutX="17.0" layoutY="8.0" prefHeight="528.0" prefWidth="425.0" visible="false">
                                                     <children>
                                                         <Label alignment="CENTER" prefHeight="45.0" prefWidth="478.0" text="UPDATE CONTACT INFORMATION">
                                                             <font>
@@ -815,10 +846,9 @@
                                                 </VBox>
                                             </children>
                                         </AnchorPane>
-                              <VBox layoutX="66.0" layoutY="78.0" prefHeight="537.0" prefWidth="420.0" spacing="10.0">
+                              <VBox layoutX="71.0" layoutY="51.0" prefHeight="491.0" prefWidth="326.0" spacing="10.0">
                                  <children>
-                                    <HBox prefHeight="278.0" prefWidth="1369.0" />
-                                              <ImageView fx:id="ma_picture" fitHeight="399.0" fitWidth="503.0" onMouseClicked="#ma_updatePicture" pickOnBounds="true" preserveRatio="true">
+                                              <ImageView fx:id="ma_picture" fitHeight="291.0" fitWidth="487.0" onMouseClicked="#ma_updatePicture" pickOnBounds="true" preserveRatio="true">
                                                   <image>
                                                       <Image url="@../../../JavaProject/src/accessories/happy.png" />
                                                   </image>
@@ -828,7 +858,7 @@
                                                       <Font size="18.0" />
                                                   </font>
                                               </Label>
-                                              <VBox prefHeight="136.0" prefWidth="227.0">
+                                              <VBox prefHeight="129.0" prefWidth="306.0">
                                                   <children>
                                                       <HBox prefHeight="50.0" prefWidth="227.0">
                                                           <children>
@@ -879,7 +909,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </VBox>
-                              <VBox layoutX="512.0" layoutY="163.0" prefHeight="265.0" prefWidth="265.0">
+                              <VBox layoutX="102.0" layoutY="542.0" prefHeight="226.0" prefWidth="265.0">
                                  <children>
                                               <Button fx:id="ma_btnchangePW" mnemonicParsing="false" onAction="#ma_openChangePW" prefHeight="39.0" prefWidth="264.0" text="CHANGE PASSWORD">
                                                   <font>
@@ -904,6 +934,21 @@
                                     </VBox>
                                  </children>
                               </VBox>
+                              <AnchorPane layoutX="959.0" layoutY="97.0" prefHeight="544.0" prefWidth="422.0">
+                                 <children>
+                                    <Label layoutX="116.0" layoutY="31.0" text="Today's Sale Report" />
+                                    <TableView fx:id="tv_SaleReport" layoutX="14.0" layoutY="83.0" prefHeight="296.0" prefWidth="397.0">
+                                      <columns>
+                                        <TableColumn fx:id="cl_saleReportID" minWidth="130.0" prefWidth="75.0" text="Invoice ID" />
+                                        <TableColumn fx:id="cl_saleReportValue" minWidth="120.0" prefWidth="75.0" text="Value" />
+                                          <TableColumn fx:id="cl_saleReportDate" minWidth="150.0" prefWidth="75.0" text="Date" />
+                                      </columns>
+                                    </TableView>
+                                    <Label layoutX="227.0" layoutY="399.0" text="Total:" />
+                                    <Label fx:id="saleReportTotal" layoutX="307.0" layoutY="399.0" text="Total" />
+                                    <DatePicker fx:id="saleReport_DatePicker" layoutX="28.0" layoutY="392.0" onAction="#filterSalesByDate" prefHeight="39.0" prefWidth="177.0" />
+                                 </children>
+                              </AnchorPane>
                                     </children>
                                 </AnchorPane>
                             </children>

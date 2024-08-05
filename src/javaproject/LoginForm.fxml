@@ -78,6 +78,7 @@
                   <ComboBox fx:id="rpQuestion" layoutX="75.0" layoutY="233.0" prefHeight="36.0" prefWidth="250.0" promptText="Security Question" />
                   <PasswordField fx:id="rpPassword" layoutX="75.0" layoutY="337.0" prefHeight="40.0" prefWidth="250.0" promptText="New Password" />
                   <PasswordField fx:id="rpConfirmPw" layoutX="76.0" layoutY="389.0" prefHeight="40.0" prefWidth="250.0" promptText="Confirm New Password" />
+                  <Button layoutX="152.0" layoutY="520.0" mnemonicParsing="false" onAction="#backToLogin" text="&lt;&lt; Go Back" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="leftSide" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: GREEN;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">

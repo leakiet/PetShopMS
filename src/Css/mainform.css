@@ -116,7 +116,6 @@
         -fx-background-color: #45a049;
     }
 
-    /* Styles for the Grooming section */
     #formGrooming TableView, #formGrooming ListView {
         -fx-border-color: #dcdcdc;
     }
@@ -142,7 +141,6 @@
         -fx-background-color: #45a049;
     }
 
-    /* Styles for the Inventory section */
     #formInventory {
         -fx-background-color: #ffffff;
     }
@@ -155,7 +153,6 @@
         -fx-border-color: #dcdcdc;
     }
 
-    /* Styles for the Customers section */
     #formCustomers {
         -fx-background-color: #ffffff;
     }
@@ -168,7 +165,6 @@
         -fx-border-color: #dcdcdc;
     }
 
-    /* Styles for the Invoices section */
     #formInvoices {
         -fx-background-color: #ffffff;
     }
@@ -182,7 +178,7 @@
     }
     
     #formMyAccount Label {
-        -fx-font-size: 30px;
+        -fx-font-size: 22px;
     }
 
 }
@@ -192,3 +188,4 @@
         -fx-font-size: 30px;
     }
 }
+

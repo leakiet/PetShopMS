@@ -3,13 +3,18 @@ package javaproject;
 import Database.ConnectDB;
 import Database.CustomersDAO;
 import Database.EmployeeInfoDAO;
+import Database.InvoiceDAO;
 import Database.ProductsDAO;
 import Database.ReceiptDAO;
+import Database.ServiceDAO;
 import Models.Customers;
+import Models.Invoice;
 import Models.InvoiceItem;
 import Models.Products;
 import Models.ProductsCategory;
 import Models.Receipt;
+import Models.Service;
+import Models.ServiceList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -83,9 +88,12 @@ import javafx.stage.Stage;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -94,15 +102,12 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
 import net.sf.jasperreports.engine.JasperCompileManager;
 
-
 public class MainFormController implements Initializable {
 
     @FXML
     private AnchorPane formMenu, formProductsList, formGrooming, formProducts, formSearchProducts, formBill;
     @FXML
     private TableView<InvoiceItem> tvInvoice;
-    @FXML
-    private TableView<?> tvGroomingSchedule;
     @FXML
     private AnchorPane formAddGrooming;
     @FXML
@@ -206,6 +211,8 @@ public class MainFormController implements Initializable {
     EmployeeInfoDAO empDAO = new EmployeeInfoDAO();
     ProductsDAO dao = new ProductsDAO();
     CustomersDAO cusDAO = new CustomersDAO();
+    ServiceDAO serviceDAO = new ServiceDAO();
+    InvoiceDAO invoiceDAO = new InvoiceDAO();
 
     ObservableList<InvoiceItem> invoiceItemList = FXCollections.observableArrayList();
 
@@ -219,22 +226,31 @@ public class MainFormController implements Initializable {
     ObservableList<Customers> customersList = FXCollections.observableArrayList(cusDAO.ListCustomerDB());
     FilteredList<Customers> filteredCustomers = new FilteredList<>(customersList, p -> true);
 
+    ObservableList<Service> serviceList = FXCollections.observableArrayList(serviceDAO.ListService());
+    FilteredList<Service> filteredService = new FilteredList<>(serviceList, p -> true);
+
+    ObservableList<Invoice> saleList = FXCollections.observableArrayList(invoiceDAO.ListSaleReport());
+    FilteredList<Invoice> filteredSaleList = new FilteredList<>(saleList, p -> true);
+
     ObservableList<String> genderCustomer = FXCollections.observableArrayList("Male", "Female", "Other");
     private String genderCustomerSelected;
 
-    Customers cusSelected;
+    private Customers cusSelected;
     private int indexSelectedCustomer;
-    Products proSelected;
+    private Products proSelected;
     private int indexSelected;
     private String selectedCategory;
     private String selectedNameCategory;
-    private String targetDir = "src/images/";
-    private String empPicDir = "src/accessories/";
+    private final String targetDir = "src/images/";
+    private final String empPicDir = "src/accessories/";
     private String seachCategorySelected = "All";
     private String imagePath;
     private boolean isUpdateCombobox = true;
     private float promotionDiscount = 0;
     private final String[] genders = {"Male", "Female", "Other"};
+    private ServiceList selectedServiceList;
+    private Service selectedService;
+    private int indexSelectedService;
 
     @FXML
     private Label ma_joinDate;
@@ -314,6 +330,552 @@ public class MainFormController implements Initializable {
     private TextField invoice_Amount;
     @FXML
     private TextField invoice_Change;
+    @FXML
+    private TableView<Service> tvServiceSchedule;
+    @FXML
+    private TableColumn<Service, Integer> cl_serviceId;
+    @FXML
+    private TableColumn<Service, String> cl_serviceName;
+    @FXML
+    private TableColumn<Service, String> cl_cusName;
+    @FXML
+    private TableColumn<Service, String> cl_cusPhone;
+    @FXML
+    private TableColumn<Service, String> cl_petName;
+    @FXML
+    private TableColumn<Service, Float> cl_petWeight;
+    @FXML
+    private TableColumn<Service, String> cl_scheduleDate;
+    @FXML
+    private TableColumn<Service, String> cl_scheduleTime;
+    @FXML
+    private TableColumn<Service, Float> cl_servicePrice;
+    @FXML
+    private TableColumn<Service, String> cl_Status;
+    @FXML
+    private TableColumn<Service, String> cl_Date;
+    @FXML
+    private TableColumn<Service, Float> cl_maxWeight;
+    @FXML
+    private TextField sv_serviceName;
+    @FXML
+    private TextField sv_cusName;
+    @FXML
+    private TextField sv_cusPhone;
+    @FXML
+    private TextField sv_petName;
+    @FXML
+    private TextField sv_petWeight;
+    @FXML
+    private TextField sv_scheduleTime;
+    @FXML
+    private DatePicker sv_scheduleDate;
+    @FXML
+    private TextField sv_servicePrice;
+    @FXML
+    private TableView<ServiceList> tvServiceList;
+    @FXML
+    private TableColumn<ServiceList, String> list_serviceName;
+    @FXML
+    private TableColumn<ServiceList, Float> list_servicePrice;
+    @FXML
+    private TableColumn<ServiceList, Float> list_maxWeight;
+    @FXML
+    private Button btn_Schedule;
+    @FXML
+    private Button btn_Update;
+    @FXML
+    private Button btn_Clear;
+    @FXML
+    private Label sv_maxWeight;
+    @FXML
+    private DatePicker sv_SearchDate;
+    @FXML
+    private TableView<Invoice> tv_SaleReport;
+    @FXML
+    private TableColumn<Invoice, Integer> cl_saleReportID;
+    @FXML
+    private TableColumn<Invoice, Float> cl_saleReportValue;
+    @FXML
+    private TableColumn<Invoice, String> cl_saleReportDate;
+    @FXML
+    private Label saleReportTotal;
+    @FXML
+    private DatePicker saleReport_DatePicker;
+    @FXML
+    private TextField invoice_CusName;
+    @FXML
+    private Label invoice_CusId;
+    @FXML
+    private Label invoice_CusPoint;
+    @FXML
+    private TextField invoice_CusPhone;
+    @FXML
+    private Label label_Point;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        productsList.addListener((ListChangeListener<Products>) change -> {
+            while (change.next()) {
+                if (change.wasAdded() || change.wasRemoved() || change.wasUpdated()) {
+                    DisplayProductList();
+                }
+            }
+        });
+        pl_category.valueProperty().addListener((obs, oldValue, newValue) -> handleCategoryFilter());
+        pl_tfSearch.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                pl_handleSearch();
+            }
+        });
+
+        invoiceItemList.addListener((ListChangeListener<InvoiceItem>) change -> {
+            updateInvoiceTotal();
+        });
+
+        invoice_proCode.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyPromotionCode(newValue);
+            updateInvoiceTotal();
+        });
+
+        invoice_Amount.textProperty().addListener((observable, oldValue, newValue) -> {
+            updateInvoiceTotal();
+        });
+
+        dateCustomerDob.setValue(LocalDate.now());
+        optionCate();
+        DisplayProductList();
+        SetUserData();
+        InvoiceTable();
+        handleOnDragImage();
+        DisplayProducts();
+        ComboBoxCategory();
+        DisplayCustomers();
+        ComboboxCustomerGender();
+        genderList();
+
+        SetListData();
+        ShowServiceSchedule();
+        sv_SearchDate.setValue(LocalDate.now());
+        handleSearchByDate();
+
+        ShowSaleReport();
+        saleReport_DatePicker.setValue(LocalDate.now());
+        filterSalesByDate();
+
+    }
+
+    public void SetListData() {
+        list_serviceName.setCellValueFactory(new PropertyValueFactory<>("serviceListName"));
+        list_servicePrice.setCellValueFactory(new PropertyValueFactory<>("serviceListPrice"));
+        list_maxWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
+
+        ObservableList<ServiceList> services = FXCollections.observableArrayList(
+                new ServiceList("Bath Dog Below 5kg", 12, 5),
+                new ServiceList("Bath Dog From 5-10Kg", 17, 10),
+                new ServiceList("Bath Dog From 10-20Kg", 22, 20),
+                new ServiceList("Bath Dog From 20-30Kg", 27, 30),
+                new ServiceList("Bath Dog From 30-40Kg", 32, 40),
+                new ServiceList("Bath Dog Above 40Kg", 37, 100),
+                new ServiceList("Grooming Dog Below 5kg", 15, 5),
+                new ServiceList("Grooming Dog From 5-10Kg", 20, 10),
+                new ServiceList("Grooming Dog From 10-20Kg", 25, 20),
+                new ServiceList("Grooming Dog From 20-30Kg", 30, 30),
+                new ServiceList("Grooming Dog From 30-40Kg", 35, 40),
+                new ServiceList("Grooming Dog Above 40Kg", 40, 100),
+                new ServiceList("Bath Cat Below 5kg", 10, 5),
+                new ServiceList("Bath Cat From 5-10Kg", 15, 10),
+                new ServiceList("Bath Cat From 10-20Kg", 20, 20),
+                new ServiceList("Bath Cat From 20-30Kg", 25, 30),
+                new ServiceList("Bath Cat Above 30Kg", 30, 50),
+                new ServiceList("Grooming Cat Below 5kg", 13, 5),
+                new ServiceList("Grooming Cat From 5-10Kg", 18, 10),
+                new ServiceList("Grooming Cat From 10-20Kg", 23, 20),
+                new ServiceList("Grooming Cat From 20-30Kg", 28, 30),
+                new ServiceList("Grooming Cat Above 30Kg", 33, 50)
+        );
+
+        tvServiceList.setItems(services);
+    }
+
+    @FXML
+    public void handleTableServiceList() {
+        try {
+            selectedServiceList = tvServiceList.getSelectionModel().getSelectedItem();
+            if (selectedServiceList == null) {
+                throw new NullPointerException("No service selected");
+            }
+            sv_serviceName.setText(selectedServiceList.getServiceListName());
+            sv_servicePrice.setText(String.valueOf(selectedServiceList.getServiceListPrice()));
+            sv_maxWeight.setText(String.valueOf(selectedServiceList.getWeight()));
+
+        } catch (NullPointerException e) {
+
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    public void ShowServiceSchedule() {
+        cl_serviceId.setCellValueFactory(new PropertyValueFactory<>("serId"));
+        cl_serviceName.setCellValueFactory(new PropertyValueFactory<>("serName"));
+        cl_cusName.setCellValueFactory(new PropertyValueFactory<>("serCusName"));
+        cl_cusPhone.setCellValueFactory(new PropertyValueFactory<>("serCusPhone"));
+        cl_petName.setCellValueFactory(new PropertyValueFactory<>("serPetName"));
+        cl_petWeight.setCellValueFactory(new PropertyValueFactory<>("serPetWeight"));
+        cl_scheduleDate.setCellValueFactory(new PropertyValueFactory<>("serScheduleDate"));
+        cl_scheduleTime.setCellValueFactory(new PropertyValueFactory<>("serScheduleTime"));
+        cl_servicePrice.setCellValueFactory(new PropertyValueFactory<>("serPrice"));
+        cl_maxWeight.setCellValueFactory(new PropertyValueFactory<>("maxWeight"));
+        cl_Status.setCellValueFactory(new PropertyValueFactory<>("serStatus"));
+        cl_Date.setCellValueFactory(new PropertyValueFactory<>("serDate"));
+
+        tvServiceSchedule.setItems(filteredService);
+    }
+
+    public void ShowSaleReport() {
+        cl_saleReportID.setCellValueFactory(new PropertyValueFactory<>("InvoicesID"));
+        cl_saleReportValue.setCellValueFactory(new PropertyValueFactory<>("Total"));
+        cl_saleReportDate.setCellValueFactory(new PropertyValueFactory<>("InvoicesDate"));
+
+        tv_SaleReport.setItems(filteredSaleList);
+    }
+
+    private void updateSaleReportTotal() {
+        float total = filteredSaleList.stream()
+                .map(Invoice::getTotal)
+                .reduce(0f, Float::sum);
+        saleReportTotal.setText(String.format("%.2f", total));
+    }
+
+    @FXML
+    private void filterSalesByDate() {
+        LocalDate selectedDate = saleReport_DatePicker.getValue();
+
+        if (selectedDate != null) {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = selectedDate.format(dateFormatter);
+
+            filteredSaleList.setPredicate(invoice -> {
+                String invoiceDate = invoice.getInvoicesDate();
+                return invoiceDate != null && invoiceDate.equals(formattedDate);
+            });
+        } else {
+            filteredSaleList.setPredicate(service -> true);
+        }
+
+        updateSaleReportTotal();
+    }
+
+    @FXML
+    public void HandleAddService() {
+        try {
+            String serviceName = sv_serviceName.getText();
+            String cusName = sv_cusName.getText();
+            String cusPhone = sv_cusPhone.getText();
+            String petName = sv_petName.getText();
+            String petWeightStr = sv_petWeight.getText();
+            String scheduleTime = sv_scheduleTime.getText();
+            String servicePriceStr = sv_servicePrice.getText();
+            float maxWeight = Float.parseFloat(sv_maxWeight.getText());
+
+            if (serviceName.isEmpty() || cusName.isEmpty() || cusPhone.isEmpty() || petName.isEmpty()
+                    || petWeightStr.isEmpty() || scheduleTime.isEmpty() || servicePriceStr.isEmpty()) {
+                showErrorMessage("All fields must be filled.");
+                return;
+            }
+
+            float petWeight = Float.parseFloat(petWeightStr);
+            if (petWeight >= maxWeight) {
+                showErrorMessage("Pet weight must be less than " + maxWeight);
+                return;
+            }
+
+            if (!cusPhone.matches("^0\\d{9}$")) {
+                showErrorMessage("Phone number must be 10 digits and start with 0.");
+                return;
+            }
+
+            LocalDate date = sv_scheduleDate.getValue();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String scheduleDate;
+            if (date != null) {
+                LocalDate currentDate = LocalDate.now();
+                if (date.isBefore(currentDate)) {
+                    showErrorMessage("Schedule date must be today or later.");
+                    return;
+                }
+                scheduleDate = date.format(dateFormatter);
+            } else {
+                showErrorMessage("Date cannot be null");
+                return;
+            }
+
+            if (!scheduleTime.isEmpty()) {
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime time = LocalTime.parse(scheduleTime, timeFormatter);
+                scheduleTime = time.format(timeFormatter);
+            } else {
+                showErrorMessage("Time cannot be empty");
+                return;
+            }
+
+            float servicePrice = Float.parseFloat(servicePriceStr);
+            LocalDate today = LocalDate.now();
+            String currentDate = today.format(dateFormatter);
+
+            Service newService = new Service(serviceName, cusName, cusPhone, petName, petWeight,
+                    scheduleDate, scheduleTime, servicePrice, maxWeight, "Scheduled");
+
+            serviceDAO.AddService(newService);
+            newService.setSerDate(currentDate);
+            serviceList.add(newService);
+
+            showMessage("Add successully");
+            clearServiceFields();
+
+        } catch (NumberFormatException e) {
+            showErrorMessage("Invalid number format. Please check your input.");
+        } catch (DateTimeParseException e) {
+            showErrorMessage("Invalid date or time format. Please check your input.");
+        } catch (IllegalArgumentException e) {
+            showErrorMessage(e.getMessage());
+        } catch (Exception e) {
+            showErrorMessage("An unexpected error occurred. Please try again.");
+        }
+    }
+
+    @FXML
+    private void HandleUpdateService(ActionEvent event) {
+        try {
+            int serviceId = selectedService.getSerId();
+            String serviceName = sv_serviceName.getText();
+            String cusName = sv_cusName.getText();
+            String cusPhone = sv_cusPhone.getText();
+            String petName = sv_petName.getText();
+            String petWeightStr = sv_petWeight.getText();
+            String scheduleTime = sv_scheduleTime.getText();
+            float servicePrice = Float.parseFloat(sv_servicePrice.getText());
+            String serviceStatus = "Processing";
+            float maxWeight = Float.parseFloat(sv_maxWeight.getText());
+            String scheduleDate;
+
+            if (serviceName.isEmpty() || cusName.isEmpty() || cusPhone.isEmpty() || petName.isEmpty()
+                    || petWeightStr.isEmpty() || scheduleTime.isEmpty() || servicePrice == 0) {
+                showErrorMessage("All fields must be filled.");
+                return;
+            }
+
+            float petWeight = Float.parseFloat(petWeightStr);
+            if (petWeight >= maxWeight) {
+                showErrorMessage("Pet weight must be less than " + maxWeight);
+                return;
+            }
+
+            if (!cusPhone.matches("^0\\d{9}$")) {
+                showErrorMessage("Phone number must be 10 digits and start with 0.");
+                return;
+            }
+
+            LocalDate date = sv_scheduleDate.getValue();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            if (date != null) {
+                LocalDate currentDate = LocalDate.now();
+                if (date.isBefore(currentDate)) {
+                    showErrorMessage("Schedule date must be today or later.");
+                    return;
+                }
+                scheduleDate = date.format(dateFormatter);
+            } else {
+                showErrorMessage("Date cannot be null");
+                return;
+            }
+
+            if (!scheduleTime.isEmpty()) {
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime time = LocalTime.parse(scheduleTime, timeFormatter);
+                scheduleTime = time.format(timeFormatter);
+            } else {
+                showErrorMessage("Time cannot be empty");
+                return;
+            }
+
+            Service updateService = new Service(serviceId, serviceName, cusName, cusPhone, petName, petWeight,
+                    scheduleDate, scheduleTime, servicePrice, maxWeight, serviceStatus);
+
+            serviceDAO.UpdateService(updateService);
+
+            LocalDate today = LocalDate.now();
+            String currentDate = today.format(dateFormatter);
+            updateService.setSerDate(currentDate);
+            serviceList.set(indexSelectedService, updateService);
+
+            showMessage("Update successully");
+            clearServiceFields();
+
+        } catch (NumberFormatException e) {
+            showErrorMessage("Invalid number format. Please check your input.");
+        } catch (DateTimeParseException e) {
+            showErrorMessage("Invalid date or time format. Please check your input.");
+        } catch (IllegalArgumentException e) {
+            showErrorMessage(e.getMessage());
+        } catch (Exception e) {
+            showErrorMessage("An unexpected error occurred. Please try again.");
+        }
+    }
+
+    @FXML
+    public void handleCancelService() {
+        if (selectedService == null) {
+            showErrorMessage("No service selected.");
+            return;
+        }
+
+        if ("Cancelled".equals(selectedService.getSerStatus())) {
+            showErrorMessage("This service already cancelled.");
+            return;
+        }
+
+        if ("Finished".equals(selectedService.getSerStatus())) {
+            showErrorMessage("This service already Finished, cannot cancel.");
+            return;
+        }
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Do you want to Cancel this service?");
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String newStatus = "Cancelled";
+            serviceDAO.UpdateServiceStatus(selectedService.getSerId(), newStatus);
+
+            selectedService.setSerStatus(newStatus);
+            serviceList.set(indexSelectedService, selectedService);
+            showMessage("Service has been Cancelled");
+
+        }
+    }
+
+    @FXML
+    public void handleAddServiceToInvoice() {
+        if (selectedService == null) {
+            showErrorMessage("No service selected.");
+            return;
+        }
+
+        if ("Cancelled".equals(selectedService.getSerStatus())) {
+            showErrorMessage("This service has already been cancelled.");
+            return;
+        }
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Do you want to add this service to the invoice?");
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String name = selectedService.getSerName();
+            float price = selectedService.getSerPrice();
+            int quantity = 1;
+
+            InvoiceItem item = new InvoiceItem(name, price, quantity);
+            invoiceItemList.add(item);
+
+            String newStatus = "Finished";
+            serviceDAO.UpdateServiceStatus(selectedService.getSerId(), newStatus);
+
+            selectedService.setSerStatus(newStatus);
+            serviceList.set(indexSelectedService, selectedService);
+            showMessage("Service Added to Invoice");
+        }
+    }
+
+    @FXML
+    private void handleSearchByDate() {
+        LocalDate selectedDate = sv_SearchDate.getValue();
+
+        if (selectedDate != null) {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = selectedDate.format(dateFormatter);
+
+            filteredService.setPredicate(service -> {
+                String serviceDate = service.getSerScheduleDate();
+                return serviceDate != null && serviceDate.equals(formattedDate);
+            });
+        } else {
+            filteredService.setPredicate(service -> true);
+        }
+    }
+
+    private void showMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("INFORMATION");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void handleTableServiceSchedule(MouseEvent event) {
+        try {
+            selectedService = tvServiceSchedule.getSelectionModel().getSelectedItem();
+            indexSelectedService = tvServiceSchedule.getSelectionModel().getSelectedIndex();
+
+            if (selectedService != null) {
+                sv_serviceName.setText(selectedService.getSerName());
+                sv_servicePrice.setText(String.valueOf(selectedService.getSerPrice()));
+                sv_cusName.setText(selectedService.getSerCusName());
+                sv_cusPhone.setText(selectedService.getSerCusPhone());
+                sv_petName.setText(selectedService.getSerPetName());
+                sv_petWeight.setText(String.valueOf(selectedService.getSerPetWeight()));
+                sv_maxWeight.setText(String.valueOf(selectedService.getMaxWeight()));
+                sv_scheduleTime.setText(selectedService.getSerScheduleTime());
+
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                if (selectedService.getSerScheduleDate() != null && !selectedService.getSerScheduleDate().isEmpty()) {
+                    LocalDate scheduleDate = LocalDate.parse(selectedService.getSerScheduleDate(), dateFormatter);
+                    sv_scheduleDate.setValue(scheduleDate);
+                } else {
+                    sv_scheduleDate.setValue(null);
+                }
+
+                btn_Update.setVisible(true);
+                btn_Schedule.setVisible(false);
+            } else {
+                btn_Update.setVisible(false);
+                btn_Schedule.setVisible(true);
+            }
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void clearServiceFields() {
+        sv_serviceName.clear();
+        sv_cusName.clear();
+        sv_cusPhone.clear();
+        sv_petName.clear();
+        sv_petWeight.clear();
+        sv_scheduleTime.clear();
+        sv_scheduleDate.setValue(null);
+        sv_servicePrice.clear();
+
+        btn_Update.setVisible(false);
+        btn_Schedule.setVisible(true);
+    }
 
     public void SetUserData() {
         menuFullName.setText(EmployeeData.fullname);
@@ -421,13 +983,12 @@ public class MainFormController implements Initializable {
     }
 
     private void applyPromotionCode(String code) {
-        // Bạn có thể tùy chỉnh logic kiểm tra mã khuyến mãi ở đây
         if (code.equalsIgnoreCase("PROMO10")) {
-            promotionDiscount = 0.10f; // Giảm giá 10%
+            promotionDiscount = 0.10f;
         } else if (code.equalsIgnoreCase("PROMO20")) {
-            promotionDiscount = 0.20f; // Giảm giá 20%
+            promotionDiscount = 0.20f;
         } else {
-            promotionDiscount = 0; // Không giảm giá nếu mã không hợp lệ
+            promotionDiscount = 0;
         }
     }
 
@@ -440,55 +1001,67 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void handleGenerateReceipt(ActionEvent event) throws SQLException {
-        try {
-            // Load the JasperReport
-            String reportPath = "D:\\Java2\\javaproject\\src\\Report\\report1.jrxml";
-            JasperReport jasperReport = JasperCompileManager.compileReport(reportPath);
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Confirm");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("Do you want to print receipt?");
 
-            // Parameters for the report
-            Map<String, Object> parameters = new HashMap<>();
-            // Add any required parameters here
-            ConnectDB connectDB = new ConnectDB();
-            java.sql.Connection cn = connectDB.GetConnectDB();
-            String query = "SELECT * FROM receipt"; // Thay 'receipt' bằng tên bảng của bạn
-            java.sql.PreparedStatement pStatement = cn.prepareStatement(query);
-            java.sql.ResultSet resultSet = pStatement.executeQuery();
-            // Fill the report with data
-            JRResultSetDataSource jrResultSetDataSource = new JRResultSetDataSource(resultSet);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrResultSetDataSource);
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
 
-            // View the report
-            JasperViewer.viewReport(jasperPrint, false);
-        } catch (JRException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("An error occurred while generating the receipt.");
-            alert.showAndWait();
-        }
+                String reportPath = "D:\\Java2\\javaproject\\src\\Report\\report1.jrxml";
+                JasperReport jasperReport = JasperCompileManager.compileReport(reportPath);
 
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirm");
-        alert.setHeaderText(null);
-        alert.setContentText("Print Receipt Successfully");
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            // Xóa dữ liệu sau khi in biên lai
-            ReceiptDAO receiptDAO = new ReceiptDAO();
-            boolean isDeleted = receiptDAO.deleteAllReceipts();
+                Map<String, Object> parameters = new HashMap<>();
 
-            if (isDeleted) {
-                System.out.println("All receipts deleted from database successfully.");
-            } else {
-                System.out.println("Failed to delete receipts from database.");
+                ConnectDB connectDB = new ConnectDB();
+                java.sql.Connection cn = connectDB.GetConnectDB();
+                String query = "SELECT * FROM receipt";
+                java.sql.PreparedStatement pStatement = cn.prepareStatement(query);
+                java.sql.ResultSet resultSet = pStatement.executeQuery();
+
+                JRResultSetDataSource jrResultSetDataSource = new JRResultSetDataSource(resultSet);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrResultSetDataSource);
+
+                JasperViewer.viewReport(jasperPrint, false);
+
+//                ReceiptDAO receiptDAO = new ReceiptDAO();
+//                boolean isDeleted = receiptDAO.deleteAllReceipts();
+//
+//                if (isDeleted) {
+//                    System.out.println("All receipts deleted from database successfully.");
+//                } else {
+//                    System.out.println("Failed to delete receipts from database.");
+//                }
+            } catch (JRException e) {
+                e.printStackTrace();
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("An error occurred while generating the receipt.");
+                errorAlert.showAndWait();
             }
-
-            invoiceItemList.clear();
-            clearFields();
-            updateInvoiceTotal();
         }
     }
-    
+
+    @FXML
+    private void handleCancelnvoice(ActionEvent event) {
+        ReceiptDAO receiptDAO = new ReceiptDAO();
+        boolean isDeleted = receiptDAO.deleteAllReceipts();
+
+        if (isDeleted) {
+            System.out.println("All receipts deleted from database successfully.");
+        } else {
+            System.out.println("Failed to delete receipts from database.");
+        }
+
+        invoiceItemList.clear();
+        clearFields();
+        updateInvoiceTotal();
+        DisplayProductList();
+    }
+
     private void clearFields() {
         invoice_proCode.setText("");
         invoice_Amount.setText("");
@@ -513,58 +1086,15 @@ public class MainFormController implements Initializable {
                     searchCategories.addAll(allCategories);
                 });
 
-                isUpdateCombobox = false; // Đánh dấu là đã cập nhật
+                isUpdateCombobox = false;
             }
         };
 
         productCategory.addListener((ListChangeListener<ProductsCategory>) change -> {
-            isUpdateCombobox = true; // Đánh dấu có sự thay đổi mới
+            isUpdateCombobox = true;
             updateLists.run();
         });
-        // Gọi updateLists ban đầu để cập nhật combobox
         updateLists.run();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        productsList.addListener((ListChangeListener<Products>) change -> {
-            while (change.next()) {
-                if (change.wasAdded() || change.wasRemoved() || change.wasUpdated()) {
-                    DisplayProductList();
-                }
-            }
-        });
-        pl_category.valueProperty().addListener((obs, oldValue, newValue) -> handleCategoryFilter());
-        pl_tfSearch.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                pl_handleSearch();
-            }
-        });
-
-        invoiceItemList.addListener((ListChangeListener<InvoiceItem>) change -> {
-            updateInvoiceTotal();
-        });
-
-        invoice_proCode.textProperty().addListener((observable, oldValue, newValue) -> {
-            applyPromotionCode(newValue);
-            updateInvoiceTotal();
-        });
-
-        invoice_Amount.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateInvoiceTotal();
-        });
-
-        dateCustomerDob.setValue(LocalDate.now());
-        optionCate();
-        DisplayProductList();
-        SetUserData();
-        InvoiceTable();
-        handleOnDragImage();
-        DisplayProducts();
-        ComboBoxCategory();
-        DisplayCustomers();
-        ComboboxCustomerGender();
-        genderList();
     }
 
     public void ResetField() {
@@ -574,8 +1104,6 @@ public class MainFormController implements Initializable {
         productPriceTextField.setText("");
         productQuantityTextField.setText("");
         productImageView.setImage(null);
-        // productImageView.setImage(new
-        // Image(getClass().getResourceAsStream("/Images/imagedefault1.jpg")));
         addImageButton.setText("Choose Image");
         productCategoryComboBox.setValue(null);
         ;
@@ -586,12 +1114,10 @@ public class MainFormController implements Initializable {
         productCategoryComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             try {
                 selectedCategory = String.valueOf(category.indexOf(newValue) + 1);
-//                System.out.println(selectedCategory);
             } catch (Exception e) {
                 selectedCategory = "0";
             }
             selectedNameCategory = newValue;
-            // System.out.println(selectedCategory);
         });
 
         filterProductCategoryComboBox.setItems(searchCategories);
@@ -727,17 +1253,25 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void btnLogOut(ActionEvent event) throws MalformedURLException, IOException {
-        URL url = new File("src/javaproject/LoginForm.fxml").toURI().toURL();
-        Parent root = FXMLLoader.load(url);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setTitle("Pet Shop Management System");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to log out?");
 
-        Stage loginStage = (Stage) mainForm.getScene().getWindow();
-        loginStage.close();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            URL url = new File("src/javaproject/LoginForm.fxml").toURI().toURL();
+            Parent root = FXMLLoader.load(url);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Pet Shop Management System");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+
+            Stage currentStage = (Stage) mainForm.getScene().getWindow();
+            currentStage.close();
+        }
     }
 
     @FXML
@@ -898,10 +1432,10 @@ public class MainFormController implements Initializable {
     }
 
     public void genderList() {
-        List<String> aList = new ArrayList<>();
-        aList.addAll(Arrays.asList(genders));
+        List<String> list = new ArrayList<>();
+        list.addAll(Arrays.asList(genders));
 
-        ObservableList listData = FXCollections.observableArrayList(aList);
+        ObservableList listData = FXCollections.observableArrayList(list);
         ma_updateGender.setItems(listData);
     }
 
@@ -1005,7 +1539,7 @@ public class MainFormController implements Initializable {
                 new FileChooser.ExtensionFilter("JPEG", "*.jpg", "*.jpeg"),
                 new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("JFIF", "*.jfif"));
-        new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("WEBP", "*.webp", "*.webp");
 
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
@@ -1335,14 +1869,14 @@ public class MainFormController implements Initializable {
     }
 
     // Start Search Product List //
-    public void setProductFilter(String name, String category) {
+    public void setProductFilter(String barcode, String category) {
         filteredProducts.setPredicate(p -> {
             if (category != null && category.equals("all")) {
-                return p.getProName().toLowerCase().contains(name);
+                return p.getProSKU().toLowerCase().contains(barcode);
             } else {
                 return (category == null
                         || category.equals(p.getProCategory().toLowerCase()))
-                        && (name.isEmpty() || p.getProName().toLowerCase().contains(name));
+                        && (barcode.isEmpty() || p.getProSKU().toLowerCase().contains(barcode));
             }
         });
     }
@@ -1358,11 +1892,11 @@ public class MainFormController implements Initializable {
 
     @FXML
     private void pl_handleSearch() {
-        String name = pl_tfSearch.getText().toLowerCase();
+        String barcode = pl_tfSearch.getText().toLowerCase();
         String cate = pl_category.getValue() != null
                 ? pl_category.getValue().toLowerCase()
                 : null;
-        setProductFilter(name, cate);
+        setProductFilter(barcode, cate);
         DisplayProductList();
     }
 
@@ -1716,4 +2250,42 @@ public class MainFormController implements Initializable {
     private void handlePrintProducts(ActionEvent event) {
     }
 
+    @FXML
+    private void ShowAllServiceSchedule(ActionEvent event) {
+        sv_SearchDate.setValue(null);
+    }
+
+    @FXML
+    private void handleCheckCustomer(ActionEvent event) {
+        String phone = invoice_CusPhone.getText();
+        String name = invoice_CusName.getText();
+
+        if (name.isEmpty()) {
+            showErrorMessage("Name cannot be empty.");
+            return;
+        }
+
+        if (phone.isEmpty()) {
+            showErrorMessage("Phone number cannot be empty.");
+            return;
+        }
+
+        if (phone.length() != 10 || !phone.matches("\\d+")) {
+            showErrorMessage("Phone number must be exactly 10 digits.");
+            return;
+        }
+
+        Customers customer = cusDAO.CheckCustomer(name, phone);
+
+        if (customer != null) {
+            invoice_CusPoint.setText(String.valueOf(customer.getCusPoint()));
+            invoice_CusName.setText(customer.getCusName());
+            invoice_CusId.setText(String.valueOf(customer.getCusId()));
+
+            invoice_CusPoint.setVisible(true);
+            label_Point.setVisible(true);
+
+            showMessage("Customer: " + customer.getCusName());
+        }
+    }
 }

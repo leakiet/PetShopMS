@@ -268,6 +268,13 @@ public class EmployeeInfoDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                    stm.close();
+                    cn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
         }
         return empList;
     }
@@ -290,15 +297,94 @@ public class EmployeeInfoDAO {
             pStatement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             try {
-                if (pStatement != null) {
                     pStatement.close();
-                }
-                if (cn != null) {
                     cn.close();
-                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
+    public void updateGender(int id, String newGender) {
+        String sql = "UPDATE tbEmployeeInfo SET empGender = ? WHERE empId = ?";
+
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(sql);
+            pStatement.setString(1, newGender);
+            pStatement.setInt(2, id);
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+        } finally {
+            try {
+                    pStatement.close();
+                    cn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
+    public void updatePhone(int id, String newPhone) {
+        String sql = "UPDATE tbEmployeeInfo SET empPhone = ? WHERE empId = ?";
+
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(sql);
+            pStatement.setString(1, newPhone);
+            pStatement.setInt(2, id);
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+        } finally {
+            try {
+                    pStatement.close();
+                    cn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
+    public void updateFullname(int id, String newName) {
+        String sql = "UPDATE tbEmployeeInfo SET empName = ? WHERE empId = ?";
+
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(sql);
+            pStatement.setString(1, newName);
+            pStatement.setInt(2, id);
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+        } finally {
+            try {
+                    pStatement.close();
+                    cn.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
+    public void updateEmail(int id, String newEmail) {
+        String sql = "UPDATE tbEmployeeInfo SET empEmail = ? WHERE empId = ?";
+
+        try {
+            cn = connect.GetConnectDB();
+            pStatement = cn.prepareStatement(sql);
+            pStatement.setString(1, newEmail);
+            pStatement.setInt(2, id);
+            pStatement.executeUpdate();
+
+        } catch (SQLException e) {
+        } finally {
+            try {
+                    pStatement.close();
+                    cn.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

@@ -1,3 +1,26 @@
 .mainFxmlClass {
-
 }
+
+#card1 {
+  -fx-background-color: #fff;
+  -fx-background-radius: 20px;
+}
+#card2 {
+  -fx-background-color: #fff;
+
+  -fx-background-radius: 20px;
+}
+#card3 {
+  -fx-background-color: #fff;
+
+  -fx-background-radius: 20px;
+}
+#card4 {
+  -fx-background-color: #fff;
+
+  -fx-background-radius: 20px;
+}
+.cart {
+  -fx-background-color: #d15662;
+}
+

@@ -28,7 +28,7 @@ public class CustomersDAO {
             rs = stm.executeQuery(sql);
             while (rs.next()) {
                 Customers cus = new Customers(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                        rs.getString(5), rs.getString(6), rs.getFloat(7), rs.getFloat(8));
+                        rs.getString(5), rs.getString(6), rs.getFloat(7), rs.getFloat(8), rs.getString(9));
                 this.listCustomers.add(cus);
             }
         } catch (Exception e) {
@@ -90,6 +90,48 @@ public class CustomersDAO {
             e.printStackTrace();
         }
 
+    }
+
+    public Customers CheckCustomer(String name, String phone) {
+        Customers customer = null;
+        String sql = "SELECT * FROM tbCustomer WHERE cusPhone = ?";
+
+        try {
+            cn = connect.GetConnectDB();
+            pStm = cn.prepareStatement(sql);
+            pStm.setString(1, phone);
+            rs = pStm.executeQuery();
+
+            if (rs.next()) {
+                // Customer exists
+                customer = new Customers(
+                        rs.getInt("cusId"),
+                        rs.getString("cusName"),
+                        rs.getString("cusPhone"),
+                        rs.getString("cusDOB"),
+                        rs.getString("cusAddress"),
+                        rs.getString("cusGender"),
+                        rs.getFloat("cusTotalPaid"),
+                        rs.getFloat("cusPoint"),
+                        rs.getString(9)
+                );
+            } else {
+                // Customer does not exist, create a new one with default values
+                customer = new Customers();
+                customer.setCusName(name.isEmpty() ? "guest" : name);
+                customer.setCusPhone(phone);
+                customer.setCusDob(""); // Default or empty date
+                customer.setCusAddress(""); // Default or empty address
+                customer.setCusGender(""); // Default or empty gender
+                customer.setCusTotalPaid(0);
+                customer.setCusPoint(0);
+                customer = AddCustomerDB(customer); // Save the new customer to the database
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return customer;
     }
 
 }

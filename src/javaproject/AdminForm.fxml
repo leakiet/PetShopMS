@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -16,185 +21,337 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="880.0" prefWidth="1650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaproject.AdminFormController">
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <AnchorPane fx:id="formReport" prefHeight="880.0" prefWidth="1410.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <AnchorPane fx:id="formDashBoard" prefHeight="880.0" prefWidth="1410.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <VBox fx:id="formEmployee" layoutY="-7.0" prefHeight="880.0" prefWidth="1400.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-7.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="150.0" prefWidth="1410.0" spacing="10.0" style="-fx-background-color: GREEN;">
-                     <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0" />
-                        <Label alignment="CENTER" prefHeight="80.0" prefWidth="800.0" text="PETSHOP MANAGEMENT SYSTEM - ADMIN" textFill="WHITE">
-                           <font>
-                              <Font size="36.0" />
-                           </font></Label>
-                        <Pane prefHeight="200.0" prefWidth="200.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="70.0" prefWidth="1400.0" spacing="10.0">
-                     <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0" />
-                        <Label alignment="CENTER" prefHeight="100.0" prefWidth="339.0" text="EMPLOYEES MANAGEMENT">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
+<BorderPane fx:id="AdminForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="880.0" prefWidth="1650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaproject.AdminFormController">
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <AnchorPane fx:id="formReport" prefHeight="880.0" prefWidth="1410.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <AnchorPane fx:id="formDashBoard" prefHeight="880.0" prefWidth="1410.0">
+                    <stylesheets>
+                        <URL value="@../Css/adminform.css" />
+                    </stylesheets>
+                    <children>
+                        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+                        <HBox layoutX="105.0" layoutY="117.0" prefHeight="208.0" prefWidth="1192.0" spacing="30.0" stylesheets="@../Css/adminform.css">
+                            <children>
+                                <VBox id="card1" fx:id="card1" onMouseClicked="#handleCard1" prefHeight="220.0" prefWidth="355.0" stylesheets="@../Css/adminform.css">
+                                    <children>
+                                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="289.0">
+                                            <children>
+                                                <Label fx:id="txtTitleCard1" prefHeight="40.0" prefWidth="143.0" text="Customers">
+                                                    <font>
+                                                        <Font size="20.0" />
+                                                    </font>
+                                                </Label>
+                                                <Pane prefHeight="40.0" prefWidth="37.0" />
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../Images/customer.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                        </HBox>
+                                        <Label fx:id="txtCard1" prefHeight="156.0" prefWidth="289.0" text="123k">
+                                            <font>
+                                                <Font name="System Bold" size="35.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox id="card2" fx:id="card2" onMouseClicked="#handleCard2" prefHeight="220.0" prefWidth="355.0">
+                                    <children>
+                                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="289.0">
+                                            <children>
+                                                <Label fx:id="txtTitleCard2" prefHeight="41.0" prefWidth="112.0" text="Invoices">
+                                                    <font>
+                                                        <Font size="20.0" />
+                                                    </font>
+                                                </Label>
+                                                <Pane prefHeight="40.0" prefWidth="75.0" />
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../Images/invoice.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                        </HBox>
+                                        <Label fx:id="txtCard2" prefHeight="156.0" prefWidth="289.0" text="250">
+                                            <font>
+                                                <Font name="System Bold" size="35.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox id="card3" fx:id="card3" onMouseClicked="#handleCard3" prefHeight="220.0" prefWidth="355.0">
+                                    <children>
+                                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="289.0">
+                                            <children>
+                                                <Label fx:id="txtTitleCard3" prefHeight="41.0" prefWidth="129.0" text="Revenue">
+                                                    <font>
+                                                        <Font size="20.0" />
+                                                    </font>
+                                                </Label>
+                                                <Pane prefHeight="40.0" prefWidth="57.0" />
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../Images/revenue.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                        </HBox>
+                                        <Label fx:id="txtCard3" prefHeight="156.0" prefWidth="289.0" text="123.000$">
+                                            <font>
+                                                <Font name="System Bold" size="35.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox id="card4" fx:id="card4" onMouseClicked="#handleCard4" prefHeight="220.0" prefWidth="355.0">
+                                    <children>
+                                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="289.0">
+                                            <children>
+                                                <Label fx:id="txtTitleCard4" prefHeight="41.0" prefWidth="86.0" text="Sales">
+                                                    <font>
+                                                        <Font size="20.0" />
+                                                    </font>
+                                                </Label>
+                                                <Pane prefHeight="40.0" prefWidth="90.0" />
+                                                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../Images/sales.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </children>
+                                        </HBox>
+                                        <Label fx:id="txtCard4" prefHeight="156.0" prefWidth="289.0" text="12">
+                                            <font>
+                                                <Font name="System Bold" size="35.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <Label layoutX="106.0" layoutY="59.0" prefHeight="48.0" prefWidth="227.0" text="DashBoard">
+                            <font>
+                                <Font name="System Bold" size="26.0" />
+                            </font>
+                            <padding>
+                                <Insets bottom="10.0" left="30.0" />
+                            </padding>
                         </Label>
-                        <Pane prefHeight="200.0" prefWidth="200.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1400.0" spacing="10.0">
-                     <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0" />
-                        <ComboBox onAction="#admin_searchStaffID" prefWidth="150.0" promptText="Staff ID" />
-                        <TextField onAction="#admin_searchName" promptText="Seaarch By Name" />
-                        <TextField onAction="#admin_searchAccount" promptText="Seaarch By Account" />
-                        <Pane prefHeight="200.0" prefWidth="200.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <Pane prefHeight="0.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                        <ScrollPane pannable="true" prefHeight="580.0" prefWidth="1400.0" HBox.hgrow="ALWAYS">
-                           <content>
-                              <VBox fx:id="empListLayout" prefHeight="642.0" prefWidth="1433.0">
-                                 <children>
-                                    <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1480.0" spacing="10.0">
-                                       <children>
-                                          <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-                                          <Label prefHeight="60.0" prefWidth="90.0" text="STAFF ID" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="60.0" prefWidth="90.0" text="ACCOUNT" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="60.0" prefWidth="160.0" text="FULL NAME" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="60.0" prefWidth="90.0" text="GENDER" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="60.0" prefWidth="120.0" text="PHONE" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="60.0" prefWidth="200.0" text="EMAIL" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="60.0" prefWidth="120.0" text="JOIN DATE" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label prefHeight="60.0" prefWidth="90.0" text="STATUS" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label alignment="CENTER" prefHeight="60.0" prefWidth="350.0" text="ACTIONS" HBox.hgrow="ALWAYS">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </content>
-                        </ScrollPane>
-                        <Pane prefHeight="0.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-      </AnchorPane>
-   </center>
-   <left>
-      <AnchorPane fx:id="formMenu" style="-fx-background-color: SILVER;" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../accessories/laughing.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="60.0" layoutY="213.0" text="Welcome back ">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="15.0" layoutY="240.0" prefHeight="49.0" prefWidth="212.0" text="Admin">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Button layoutX="84.0" layoutY="295.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="80.0" text="Log out" />
-            <VBox layoutY="348.0" prefWidth="240.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="350.0">
-               <children>
-                  <Separator prefWidth="200.0" />
-                  <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
-                  <Label alignment="CENTER" onMouseClicked="#switchDashBoard" prefHeight="44.0" prefWidth="207.0" text="Dashboard" textAlignment="CENTER">
-                     <font>
+                        <VBox layoutX="87.0" layoutY="413.0" prefHeight="439.0" prefWidth="1246.0">
+                            <children>
+                                <ComboBox fx:id="comboboxYearDB" prefWidth="150.0" promptText="Year">
+                                    <VBox.margin>
+                                        <Insets left="30.0" />
+                                    </VBox.margin>
+                                </ComboBox>
+                                <Pane prefHeight="58.0" prefWidth="1192.0" />
+                                <HBox prefHeight="403.0" prefWidth="1228.0" spacing="5.0">
+                                    <children>
+                                        <LineChart fx:id="DBLineChart" prefHeight="377.0" prefWidth="620.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </LineChart>
+                                        <Pane prefHeight="377.0" prefWidth="226.0" />
+                                        <PieChart fx:id="DBpieChart" prefHeight="377.0" prefWidth="515.0" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+                <VBox fx:id="formEmployee" layoutY="-7.0" prefHeight="880.0" prefWidth="1400.0" visible="false" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-7.0">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="150.0" prefWidth="1410.0" spacing="10.0" style="-fx-background-color: GREEN;">
+                            <children>
+                                <Pane prefHeight="200.0" prefWidth="200.0" />
+                                <Label alignment="CENTER" prefHeight="80.0" prefWidth="800.0" text="PETSHOP MANAGEMENT SYSTEM - ADMIN" textFill="WHITE">
+                                    <font>
+                                        <Font size="36.0" />
+                                    </font>
+                                </Label>
+                                <Pane prefHeight="200.0" prefWidth="200.0" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="1400.0" spacing="10.0">
+                            <children>
+                                <Pane prefHeight="200.0" prefWidth="200.0" />
+                                <Label alignment="CENTER" prefHeight="100.0" prefWidth="339.0" text="EMPLOYEES MANAGEMENT">
+                                    <font>
+                                        <Font size="24.0" />
+                                    </font>
+                                </Label>
+                                <Pane prefHeight="200.0" prefWidth="200.0" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1400.0" spacing="10.0">
+                            <children>
+                                <Pane prefHeight="200.0" prefWidth="200.0" />
+                                <TextField onAction="#admin_searchStaffID" promptText="Search By Staff ID" />
+                                <TextField onAction="#admin_searchName" promptText="Seaarch By Name" />
+                                <TextField onAction="#admin_searchAccount" promptText="Seaarch By Account" />
+                                <Pane prefHeight="200.0" prefWidth="200.0" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <Pane prefHeight="0.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                                <ScrollPane pannable="true" prefHeight="580.0" prefWidth="1400.0" HBox.hgrow="ALWAYS">
+                                    <content>
+                                        <VBox fx:id="empListLayout" prefHeight="642.0" prefWidth="1433.0">
+                                            <children>
+                                                <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1480.0" spacing="10.0">
+                                                    <children>
+                                                        <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+                                                        <Label prefHeight="60.0" prefWidth="120.0" text="STAFF ID" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label prefHeight="60.0" prefWidth="120.0" text="ACCOUNT" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label prefHeight="60.0" prefWidth="160.0" text="FULL NAME" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label prefHeight="60.0" prefWidth="150.0" text="GENDER" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label prefHeight="60.0" prefWidth="150.0" text="PHONE" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label prefHeight="60.0" prefWidth="200.0" text="EMAIL" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label prefHeight="60.0" prefWidth="120.0" text="JOIN DATE" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label prefHeight="60.0" prefWidth="120.0" text="STATUS" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label alignment="CENTER" prefHeight="60.0" prefWidth="350.0" text="ACTIONS" HBox.hgrow="ALWAYS">
+                                                            <font>
+                                                                <Font name="System Bold" size="15.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets />
+                                                    </VBox.margin>
+                                                    <padding>
+                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                    </padding>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                    </content>
+                                </ScrollPane>
+                                <Pane prefHeight="0.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </center>
+    <left>
+        <AnchorPane fx:id="formMenu" style="-fx-background-color: SILVER;" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../accessories/laughing.png" />
+                    </image>
+                </ImageView>
+                <Label layoutX="60.0" layoutY="213.0" text="Welcome back ">
+                    <font>
                         <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
-                  <Label alignment="CENTER" onMouseClicked="#switchEmployee" prefHeight="42.0" prefWidth="217.0" text="Employees Management" textAlignment="CENTER">
-                     <font>
+                    </font>
+                </Label>
+                <Label alignment="CENTER" layoutX="15.0" layoutY="240.0" prefHeight="49.0" prefWidth="212.0" text="Admin">
+                    <font>
                         <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
-                  <Label alignment="CENTER" onMouseClicked="#switchReports" prefHeight="38.0" prefWidth="220.0" text="Reports" textAlignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
-                  <Separator prefHeight="0.0" prefWidth="244.0" />
-               </children>
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-            </VBox>
-         </children>
-      </AnchorPane>
-   </left>
+                    </font>
+                </Label>
+                <Button layoutX="84.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="14.0" prefWidth="80.0" text="Log out" />
+                <VBox layoutY="348.0" prefWidth="240.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="350.0">
+                    <children>
+                        <Separator prefWidth="200.0" />
+                        <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
+                        <Label alignment="CENTER" onMouseClicked="#switchDashBoard" prefHeight="44.0" prefWidth="207.0" text="Dashboard" textAlignment="CENTER">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
+                        <Label alignment="CENTER" onMouseClicked="#switchEmployee" prefHeight="42.0" prefWidth="217.0" text="Employees Management" textAlignment="CENTER">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
+                        <Label alignment="CENTER" onMouseClicked="#switchReports" prefHeight="38.0" prefWidth="220.0" text="Reports" textAlignment="CENTER">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Pane prefHeight="0.0" prefWidth="240.0" VBox.vgrow="ALWAYS" />
+                        <Separator prefHeight="0.0" prefWidth="244.0" />
+                    </children>
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </left>
 </BorderPane>

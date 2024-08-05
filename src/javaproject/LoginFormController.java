@@ -385,4 +385,9 @@ public class LoginFormController implements Initializable {
         }
     }
 
+    @FXML
+    private void backToLogin(ActionEvent event) {
+        switchLogin();
+    }
+
 }
